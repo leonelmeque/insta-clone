@@ -12,12 +12,14 @@
     "target": "esnext",
     "baseUrl": ".",
     "paths": {
-      "*":["src/*"],
+      "*": ["src/*"],
       "@navigation/*": ["./src/navigation/*"],
       "@components/*": ["./src/components/*"],
       "@assets/*": ["./src/assets/*"],
       "@screens/*": ["./src/screens/*"],
       "@library/*": ["./src/library/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@redux/*": ["./src/redux/*"],
     }
   },
   "exclude": [

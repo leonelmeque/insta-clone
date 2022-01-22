@@ -23,7 +23,9 @@ module.exports = function (api) {
             "@components": "./src/components",
             "@assets": "./src/assets",
             "@screens": ["./src/screens"],
-            "@library": ["./src/library"]
+            "@library": ["./src/library"],
+            "@hooks": ["./src/hooks"],
+            "@redux": ["./src/redux"]
           }
         }
       ],

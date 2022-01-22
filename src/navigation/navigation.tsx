@@ -15,13 +15,14 @@ import {
   Heart,
 } from '@components/Icons/react-icons';
 import Explore from '@screens/Explore';
-import Register from '@screens/Register';
+import Register from '@screens/auth/Register';
 import { VoidFunctionComponent } from 'react';
-import Landing from '@screens/Landing';
+import Landing from '@screens/auth/Landing';
+import { LandingScreenNavigationParams } from './types';
 
 // Creating navigators
 const Tabs = createBottomTabNavigator();
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<LandingScreenNavigationParams>();
 
 
 // Main app navigation
@@ -107,7 +108,7 @@ export const AppTabNavigation = () => (
 
 export const LandingScreenNavigation: VoidFunctionComponent =
   () => (
-    <Stack.Navigator initialRouteName='Register'>
+    <Stack.Navigator initialRouteName='Landing'>
       <Stack.Screen
         name='Landing'
         component={Landing}

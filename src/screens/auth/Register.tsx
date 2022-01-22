@@ -20,18 +20,23 @@ const Register: FunctionComponent<RegisterProps> = (
 ) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [userName, setUserName] = useState<string>('');
+  const [username, setUserName] = useState<string>('');
 
   const onSignUp = () => {
     console.log(
       `You have registered with ${email} and password ${password}`
     );
-    console.log(Constants.manifest?.extra?.apiKey);
+    
     firebase.default
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then((result) => {
-        console.log(result);
+        firebase.default.firestore().collection("users")
+        .doc(firebase.default.auth()?.currentUser?.uid)
+        .set({
+          username,
+          email
+        })
       })
       .catch((result) => {
         console.log(result);
