@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   FunctionComponent,
   useCallback,
@@ -22,43 +22,38 @@ const Register: FunctionComponent<RegisterProps> = (
   const [password, setPassword] = useState<string>('');
   const [userName, setUserName] = useState<string>('');
 
-  const onSignUp = useCallback(() => {
-
-    console.log(Constants.manifest?.extra?.apiKey)
-    
+  const onSignUp = () => {
+    console.log(
+      `You have registered with ${email} and password ${password}`
+    );
+    console.log(Constants.manifest?.extra?.apiKey);
     firebase.default
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then((result) => {
-        console.log('Your api key is ',process.env.API_KEY)
         console.log(result);
       })
       .catch((result) => {
-          console.log(
-            'Your api key is ',
-            process.env.API_KEY
-          );
         console.log(result);
       });
-  }, []);
+  };
+
   return (
     <SafeAreaView>
       <View>
         <StyledInput
           placeholder='username'
-          onChangeText={(value) => setUserName(() => value)}
-          value={userName}
+          onChangeText={(value) => setUserName(value)}
         />
         <StyledInput
           placeholder='email'
-          onChangeText={(value) => setEmail(() => value)}
+          onChangeText={setEmail}
           value={email}
         />
         <StyledInput
           placeholder='password'
           secureTextEntry
-          onChangeText={(value) => setPassword(() => value)}
-          value={password}
+          onChangeText={(value) => setPassword(value)}
         />
         <StyledButton
           title='Sign Up'

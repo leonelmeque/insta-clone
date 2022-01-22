@@ -1,10 +1,5 @@
-// Import the functions you need from the SDKs you need
-import * as firebase from 'firebase'
-// import { API_KEY, APP_ID, AUTH_DOMAIN, MEASUREMENT_ID, MESSAGING_SENDER_ID, PROJECT_ID, STORAGE_BUCKET } from './constants';
+import firebaseApp from 'firebase/app'
 import Constants from 'expo-constants'
-// TODO: Add SDKs for Firebase products that you want to use
-
-
 
 const firebaseConfig = {
  
@@ -21,8 +16,10 @@ const firebaseConfig = {
 
 
 export default function firebaseInit() {
-    if (firebase.default.apps.length === 0) {
-        const app = firebase.default.initializeApp(firebaseConfig);
+    if (firebaseApp.apps.length===0) {
+        const app = firebaseApp.initializeApp(firebaseConfig)
+      
+        console.log("Fire init")
         // const analytics = firebase.default.analytics(app)
     }
 }
