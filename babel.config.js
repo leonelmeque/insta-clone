@@ -25,7 +25,8 @@ module.exports = function (api) {
             "@screens": ["./src/screens"],
             "@library": ["./src/library"],
             "@hooks": ["./src/hooks"],
-            "@redux": ["./src/redux"]
+            "@redux": ["./src/redux"],
+            "@shared": ["./src/shared"]
           }
         }
       ],

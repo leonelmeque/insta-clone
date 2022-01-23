@@ -20,6 +20,7 @@
       "@library/*": ["./src/library/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@redux/*": ["./src/redux/*"],
+      "@shared/*": ["./src/shared/*"],
     }
   },
   "exclude": [

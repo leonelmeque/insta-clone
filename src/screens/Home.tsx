@@ -4,6 +4,16 @@ import Stories from '@components/Stories';
 import React from 'react';
 import { FlatList, SafeAreaView } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { connect, ConnectedProps } from 'react-redux';
+import {
+  AnyAction,
+  bindActionCreators,
+  Dispatch,
+} from 'redux';
+import { fetchUser } from '@redux/actions';
+import { AnyActionTypeWithPayload } from '@shared/types';
+import { UserState } from 'redux/reducers/user';
+import { useEffect } from 'react';
 
 const posts = [
   {
@@ -64,8 +74,34 @@ const posts = [
     ],
   },
 ];
+type RootState = {
+  userState: UserState<any>;
+};
 
-export default function HomeScreen():JSX.Element {
+const mapStateToProps = (store: RootState) => ({
+  user: store.userState.user,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators({ fetchUser }, dispatch);
+
+const connector = connect(
+  mapStateToProps,
+  mapDispatchToProps
+);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+interface Props extends PropsFromRedux {}
+
+function HomeScreen(props: Props): JSX.Element {
+  useEffect(() => {
+    if (!props.user) {
+      props.fetchUser();
+      return;
+    }
+    console.log('current user is ', props);
+  });
   return (
     <SafeAreaView>
       <HomeAppBar />
@@ -75,9 +111,13 @@ export default function HomeScreen():JSX.Element {
           showsVerticalScrollIndicator={false}
           data={posts}
           keyExtractor={(item) => item.id}
-          renderItem={({ item, index }) => <FeedPost {...item} />}
+          renderItem={({ item, index }) => (
+            <FeedPost {...item} />
+          )}
         />
       </ScrollView>
     </SafeAreaView>
   );
 }
+
+export default connector(HomeScreen);

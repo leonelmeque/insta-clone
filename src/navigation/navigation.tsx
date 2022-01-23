@@ -69,7 +69,7 @@ export const AppTabNavigation = () => (
         tabBarShowLabel: false,
       }}
       name='Home'
-      component={Register}
+      component={Home}
     />
     <Tabs.Screen
       options={{

@@ -11,7 +11,18 @@ import * as firebase from 'firebase';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-// import { API_KEY } from 'src/library/constants';
+
+// Redux imports
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import rootReducer from '@redux/reducers';
+import thunk from 'redux-thunk';
+
+const store = createStore(
+  rootReducer,
+  applyMiddleware(thunk)
+);
+
 //Initializing firebase
 firebaseInit();
 
@@ -22,19 +33,22 @@ export default function App() {
   }>({});
 
   useEffect(() => {
-    firebase.default.auth().onAuthStateChanged((user) => {
-      if (!user) {
-        setState({
-          loggenIn: false,
-          loaded: true,
-        });
-      } else {
-        setState({
-          loggenIn: true,
-          loaded: true,
-        });
-      }
-    });
+    if (!state.loggenIn) {
+      firebase.default.auth().onAuthStateChanged((user) => {
+        if (!user) {
+          setState({
+            loggenIn: false,
+            loaded: true,
+          });
+        } else {
+          console.log('logged');
+          setState({
+            loggenIn: true,
+            loaded: true,
+          });
+        }
+      });
+    }
   });
 
   if (!state?.loaded) {
@@ -47,7 +61,7 @@ export default function App() {
     );
   }
 
-  if (state?.loggenIn) {
+  if (!state?.loggenIn) {
     return (
       <NavigationContainer>
         <LandingScreenNavigation />
@@ -56,8 +70,10 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <AppTabNavigation />
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <AppTabNavigation />
+      </NavigationContainer>
+    </Provider>
   );
 }
