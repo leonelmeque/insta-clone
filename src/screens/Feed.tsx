@@ -94,7 +94,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 interface Props extends PropsFromRedux {}
 
-function HomeScreen(props: Props): JSX.Element {
+function FeedScreen(props: Props): JSX.Element {
   useEffect(() => {
     if (!props.user) {
       props.fetchUser();
@@ -120,4 +120,4 @@ function HomeScreen(props: Props): JSX.Element {
   );
 }
 
-export default connector(HomeScreen);
+export default connector(FeedScreen);

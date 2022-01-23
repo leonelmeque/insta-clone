@@ -66,7 +66,7 @@ const Stories = () => {
               </AddStoryButton>
             )}
           </View>
-          <UserStoryName>{item.username.substring(0,16)}{item.username.length>16 && <>...</> }</UserStoryName>
+          <UserStoryName>{item.username.substring(0,16)}{item.username.length>14 && <>...</> }</UserStoryName>
         </Story>
       )}
     />

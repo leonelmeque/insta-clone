@@ -1,12 +1,13 @@
 import React from 'react';
+
+// Navigation imports
 import {
   BottomTabNavigationOptions,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import Home from '@screens/Home';
-import { Ionicons } from '@expo/vector-icons';
-import { Avatar } from '@components/Avatar';
+
+// Icons imports
 import SvgSearchOutlined from '@components/Icons/react-icons/SearchOutlined';
 import {
   HomeFilled,
@@ -14,18 +15,43 @@ import {
   AddCircular,
   Heart,
 } from '@components/Icons/react-icons';
-import Explore from '@screens/Explore';
-import Register from '@screens/auth/Register';
-import { VoidFunctionComponent } from 'react';
-import Landing from '@screens/auth/Landing';
+import { Ionicons } from '@expo/vector-icons';
+
+// Screens imports
+import FeedScreen from '@screens/Feed';
+import AddScreen from '@screens/Add';
+import ExploreScreen from '@screens/Explore';
+import RegisterScreen from '@screens/auth/Register';
+import LandingScreen from '@screens/auth/Landing';
+import MainScreen from '@screens/Main';
+
+
+// Types Imports
 import { LandingScreenNavigationParams } from './types';
+import { VoidFunctionComponent } from 'react';
+
+// UI Components imports
+import { Avatar } from '@components/Avatar';
+import { View } from 'react-native';
 
 // Creating navigators
 const Tabs = createBottomTabNavigator();
-const Stack = createStackNavigator<LandingScreenNavigationParams>();
+const Stack = createStackNavigator<LandingScreenNavigationParams | any>();
 
 
-// Main app navigation
+const VoidComponent = () => {
+  return <View></View>
+}
+
+// Main Navigation
+export const GlobalNavigation = () => (
+   <Stack.Navigator initialRouteName='Main'>
+     <Stack.Screen name="Main" component={MainScreen} options={{headerShown: false}}/>
+     <Stack.Screen name="Add" component={AddScreen} />
+   </Stack.Navigator>
+)  
+
+// App Tab navigation
 export const AppTabNavigation = () => (
   <Tabs.Navigator
     initialRouteName='Home'
@@ -69,7 +95,7 @@ export const AppTabNavigation = () => (
         tabBarShowLabel: false,
       }}
       name='Home'
-      component={Home}
+      component={FeedScreen}
     />
     <Tabs.Screen
       options={{
@@ -77,15 +103,21 @@ export const AppTabNavigation = () => (
         tabBarShowLabel: false,
       }}
       name='Explore'
-      component={Explore}
+      component={ExploreScreen}
     />
     <Tabs.Screen
+      listeners={({ navigation, route }) => ({
+        tabPress: (event) => {
+          event.preventDefault();
+          navigation.navigate('Add');
+        },
+      })}
       options={{
         headerShown: false,
         tabBarShowLabel: false,
       }}
       name='NewPost'
-      component={Home}
+      component={VoidComponent}
     />
     <Tabs.Screen
       options={{
@@ -93,7 +125,7 @@ export const AppTabNavigation = () => (
         tabBarShowLabel: false,
       }}
       name='Activity'
-      component={Home}
+      component={FeedScreen}
     />
     <Tabs.Screen
       options={{
@@ -101,22 +133,23 @@ export const AppTabNavigation = () => (
         tabBarShowLabel: false,
       }}
       name='Profile'
-      component={Home}
+      component={FeedScreen}
     />
   </Tabs.Navigator>
 );
 
+//  Landing Screens Navigator
 export const LandingScreenNavigation: VoidFunctionComponent =
   () => (
     <Stack.Navigator initialRouteName='Landing'>
       <Stack.Screen
         name='Landing'
-        component={Landing}
+        component={LandingScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
         name='Register'
-        component={Register}
+        component={RegisterScreen}
        
       />
     </Stack.Navigator>

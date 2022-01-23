@@ -18,7 +18,7 @@ type FeedPostProps = {
   isSaved: boolean;
   postDate: string;
   username: string;
-  postId: string;
+  postId?: string;
 };
 
 const FeedPost = ({

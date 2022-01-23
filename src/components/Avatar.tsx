@@ -1,10 +1,14 @@
 import styled from 'styled-components/native';
 import React from 'react';
 
+interface AvatarProps extends React.CSSProperties {
+  size?: number | string;
+}
+
 const StyledAvatar = styled.Image`
-  min-width: ${(props) =>
+  min-width: ${(props: AvatarProps) =>
     props.size ? props.size + 'px' : '32px'};
-  height: ${(props) =>
+  height: ${(props: AvatarProps) =>
     props.size ? props.size + 'px' : '32px'};
   border-radius: 999999px;
   margin-right: 8px;

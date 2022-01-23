@@ -1,15 +1,20 @@
-// import { StatusBar } from 'expo-status-bar';
+// React imports
 import React from 'react';
+import { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+
+// Navigation imports
 import { NavigationContainer } from '@react-navigation/native';
-import firebaseInit from '@library/firebaseConfig';
 import {
   LandingScreenNavigation,
   AppTabNavigation,
+  GlobalNavigation
 } from '@navigation/index';
+
+// Service imports
+import firebaseInit from '@library/firebaseConfig';
 import * as firebase from 'firebase';
-import { useEffect } from 'react';
-import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Redux imports
@@ -18,6 +23,7 @@ import { createStore, applyMiddleware } from 'redux';
 import rootReducer from '@redux/reducers';
 import thunk from 'redux-thunk';
 
+// Creating redux store
 const store = createStore(
   rootReducer,
   applyMiddleware(thunk)
@@ -72,7 +78,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <AppTabNavigation />
+       <GlobalNavigation />
       </NavigationContainer>
     </Provider>
   );
