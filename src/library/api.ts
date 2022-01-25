@@ -33,6 +33,8 @@ export const fireBaseUploadImage = async ({ uri, caption }: { uri: string; capti
     }
 
     task.on("state_changed", taskProgress, taskError, taskCompleted)
-
-    
 }
+
+const getUserPosts = () => {
+    
+} 

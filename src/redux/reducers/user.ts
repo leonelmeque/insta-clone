@@ -1,16 +1,17 @@
 // import { UserActions } from "redux/constants"
 import { AnyAction } from "redux"
-import {  RemoveUserFromState, UserActionType, UserStateChangeAction } from "@redux/constants"
+import { RemoveUserFromState, UserActionType, UserPostsStateChange, UserStateChangeAction } from "@redux/constants"
 
 export interface UserState<T = unknown> {
-    user?: T
+    user?: T;
+    posts?: any[]
 }
 
 const initState: UserState = {
     user: null,
 }
 
-type Action = UserStateChangeAction | RemoveUserFromState
+type Action = UserStateChangeAction | RemoveUserFromState | UserPostsStateChange
 
 export default function userReducer(state = initState, action: Action): UserState {
     switch (action.type) {
@@ -21,6 +22,11 @@ export default function userReducer(state = initState, action: Action): UserStat
         case UserActionType.REMOVE_USER_FROM_STATE: return {
             ...state,
             user: null
+        }
+
+        case UserActionType.USER_POSTS_STATE_CHANGE: return {
+            ...state,
+            posts: []
         }
         default: return state
     }

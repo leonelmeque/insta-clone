@@ -1,6 +1,6 @@
 import * as firebase from "firebase"
 import { Dispatch } from "redux"
-import { RemoveUserFromState, UserActionType } from "@redux/constants"
+import { RemoveUserFromState, UserActionType, UserPostsStateChange } from "@redux/constants"
 import { UserState } from "@redux/reducers/user"
 // import { UserActions } from "@redux/constants"
 
@@ -31,6 +31,50 @@ export function fetchUser() {
                         }
                     })
                 }
+            })
+    }
+}
+
+export function fetchUserPosts() {
+    return (dispatch: Dispatch<UserPostsStateChange>) => {
+        firebase.default
+            .firestore()
+            .collection("posts")
+            .doc(firebase.default
+                ?.auth()
+                ?.currentUser
+                ?.uid)
+            .collection("userPosts")
+            .orderBy('creation', 'asc')
+            .get()
+            .then((snapshop) => {
+
+                let posts = snapshop.docs.map(doc => {
+                    const data = doc.data()
+                    const id = doc.id
+                    return {
+                        id, ...data
+                    }
+                })
+
+                dispatch({
+                    type: UserActionType.USER_POSTS_STATE_CHANGE,
+                    payload: {
+                        posts: posts
+                    }
+                })
+
+
+                // console.log(snapshop?.proto)
+                // if (!snapshop.empty) {
+                //     dispatch({
+                //         type: UserActionType.USER_POSTS_STATE_CHANGE,
+                //         payload: {
+
+                //             posts
+                //         }
+                //     })
+                // }
             })
     }
 }
