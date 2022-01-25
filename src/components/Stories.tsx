@@ -48,6 +48,7 @@ const Stories = () => {
       data={stories}
       horizontal
       renderItem={({ item, index }) => (
+        //@ts-ignore
         <Story onPress={() => alert('Viewing story')}>
           <View>
             <Avatar

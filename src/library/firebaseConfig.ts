@@ -2,7 +2,7 @@ import firebaseApp from 'firebase/app'
 import Constants from 'expo-constants'
 
 const firebaseConfig = {
- 
+
     apiKey: Constants.manifest?.extra?.apiKey,
     authDomain: Constants.manifest?.extra?.authDomain,
     projectId: Constants.manifest?.extra?.projectId,
@@ -12,14 +12,11 @@ const firebaseConfig = {
     measurementId: Constants.manifest?.extra?.measurementId
 };
 
-// Initialize Firebase
-
-
+/**
+ * @description - firebase initialization
+ */
 export default function firebaseInit() {
-    if (firebaseApp.apps.length===0) {
-        const app = firebaseApp.initializeApp(firebaseConfig)
-      
-        console.log("Fire init")
-        // const analytics = firebase.default.analytics(app)
+    if (firebaseApp.apps.length === 0) {
+        firebaseApp.initializeApp(firebaseConfig)
     }
 }
