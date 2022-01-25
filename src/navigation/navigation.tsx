@@ -24,6 +24,7 @@ import ExploreScreen from '@screens/Explore';
 import RegisterScreen from '@screens/auth/Register';
 import LandingScreen from '@screens/auth/Landing';
 import MainScreen from '@screens/Main';
+import UploadImage from '@screens/UploadImage';
 
 
 // Types Imports
@@ -48,6 +49,7 @@ export const GlobalNavigation = () => (
    <Stack.Navigator initialRouteName='Main'>
      <Stack.Screen name="Main" component={MainScreen} options={{headerShown: false}}/>
      <Stack.Screen name="Add" component={AddScreen} />
+     <Stack.Screen name="UploadImage" options={{title:"Save Image"}} component={UploadImage} />
    </Stack.Navigator>
 )  
 

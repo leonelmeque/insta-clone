@@ -16,9 +16,10 @@ import {
 import styled from 'styled-components/native';
 import * as ImagePicker from 'expo-image-picker';
 import { ScrollView } from 'react-native-gesture-handler';
-interface AddScreenProps {}
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+interface AddScreenProps extends NativeStackScreenProps<any> {}
 
-const AddScreen: FunctionComponent<AddScreenProps> = () => {
+const AddScreen: FunctionComponent<AddScreenProps> = ({navigation}) => {
   const [hasGalleryAccess, setHasGalleryAccess] = useState<
     boolean | null
   >(null);
@@ -67,6 +68,7 @@ const AddScreen: FunctionComponent<AddScreenProps> = () => {
        await ImagePicker.getCameraPermissionsAsync()
       setHasGalleryAccess(galleryStatus.status==='granted')
       if (galleryStatus.status !== 'granted') {
+        //@ts-ignore
         alert(
           'The app doesnt have permissions to use the camera roll'
         );
@@ -112,6 +114,10 @@ const AddScreen: FunctionComponent<AddScreenProps> = () => {
         <Button
           title='Choose image from gallery'
           onPress={() => pickImage()}
+        />
+        <Button
+          title='Save'
+          onPress={() => navigation.navigate("UploadImage", {image})}
         />
         {image && <StyledImage source={{ uri: image }} />}
       </View>

@@ -1,4 +1,8 @@
 export type LandingScreenNavigationParams = {
     Register: undefined;
-    Landing: undefined;   
+    Landing: undefined;
+}
+
+export type StackParamsList = {
+    UploadImage: { image: string }
 }
