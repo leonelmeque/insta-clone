@@ -9,6 +9,7 @@ export interface UserState<T = unknown> {
 
 const initState: UserState = {
     user: null,
+    posts: []
 }
 
 type Action = UserStateChangeAction | RemoveUserFromState | UserPostsStateChange
@@ -26,7 +27,7 @@ export default function userReducer(state = initState, action: Action): UserStat
 
         case UserActionType.USER_POSTS_STATE_CHANGE: return {
             ...state,
-            posts: []
+            posts: action.payload.posts
         }
         default: return state
     }

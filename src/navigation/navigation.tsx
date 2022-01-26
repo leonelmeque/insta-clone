@@ -25,7 +25,7 @@ import RegisterScreen from '@screens/auth/Register';
 import LandingScreen from '@screens/auth/Landing';
 import MainScreen from '@screens/Main';
 import UploadImage from '@screens/UploadImage';
-
+import ProfileScreen from '@screens/Profile';
 
 // Types Imports
 import { LandingScreenNavigationParams } from './types';
@@ -37,21 +37,30 @@ import { View } from 'react-native';
 
 // Creating navigators
 const Tabs = createBottomTabNavigator();
-const Stack = createStackNavigator<LandingScreenNavigationParams | any>();
-
+const Stack = createStackNavigator<
+  LandingScreenNavigationParams | any
+>();
 
 const VoidComponent = () => {
-  return <View></View>
-}
+  return <View></View>;
+};
 
 // Main Navigation
 export const GlobalNavigation = () => (
-   <Stack.Navigator initialRouteName='Main'>
-     <Stack.Screen name="Main" component={MainScreen} options={{headerShown: false}}/>
-     <Stack.Screen name="Add" component={AddScreen} />
-     <Stack.Screen name="UploadImage" options={{title:"Save Image"}} component={UploadImage} />
-   </Stack.Navigator>
-)  
+  <Stack.Navigator initialRouteName='Main'>
+    <Stack.Screen
+      name='Main'
+      component={MainScreen}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen name='Add' component={AddScreen} />
+    <Stack.Screen
+      name='UploadImage'
+      options={{ title: 'Save Image' }}
+      component={UploadImage}
+    />
+  </Stack.Navigator>
+);
 
 // App Tab navigation
 export const AppTabNavigation = () => (
@@ -135,7 +144,7 @@ export const AppTabNavigation = () => (
         tabBarShowLabel: false,
       }}
       name='Profile'
-      component={FeedScreen}
+      component={ProfileScreen}
     />
   </Tabs.Navigator>
 );
@@ -152,9 +161,6 @@ export const LandingScreenNavigation: VoidFunctionComponent =
       <Stack.Screen
         name='Register'
         component={RegisterScreen}
-       
       />
     </Stack.Navigator>
   );
-
-

@@ -48,8 +48,7 @@ export function fetchUserPosts() {
             .orderBy('creation', 'asc')
             .get()
             .then((snapshop) => {
-
-                let posts = snapshop.docs.map(doc => {
+                const posts = snapshop.docs.map(doc => {
                     const data = doc.data()
                     const id = doc.id
                     return {
@@ -63,18 +62,6 @@ export function fetchUserPosts() {
                         posts: posts
                     }
                 })
-
-
-                // console.log(snapshop?.proto)
-                // if (!snapshop.empty) {
-                //     dispatch({
-                //         type: UserActionType.USER_POSTS_STATE_CHANGE,
-                //         payload: {
-
-                //             posts
-                //         }
-                //     })
-                // }
             })
     }
 }
