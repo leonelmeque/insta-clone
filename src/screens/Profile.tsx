@@ -25,6 +25,7 @@ type RootState = {
 const mapStateToProps = (store: RootState): UserState => ({
   user: store.userState.user,
   posts: store.userState.posts,
+  following: store.userState.following
 });
 
 const connector = connect(mapStateToProps);
@@ -58,7 +59,7 @@ const Post = (props: { uri: string }) => {
 const Profile: FunctionComponent<
   NativeStackScreenProps<StackParamsList, 'Profile'> &
     ProfileProps
-> = ({ user, posts, navigation, route }) => {
+> = ({ user, posts,following, navigation, route }) => {
   const [currentUserPosts, setCurrentUserPosts] = useState<
     object[] | undefined
   >();
@@ -67,25 +68,25 @@ const Profile: FunctionComponent<
     { username?: string } | undefined
   >();
 
-  const [following, setFollowing] = useState<boolean>();
+  const [follows, setFollows] = useState<boolean>();
 
-   const fetchProfile = async () => {
-     const [userResult, postsResult, followingResult] =
-       await Promise.all([
-         getUser(route.params.uid),
-         fetchUserPosts(route?.params?.uid),
-         isFollowing(route?.params?.uid),
-       ]);
+  const fetchProfile = async () => {
+    const [userResult, postsResult, followingResult] =
+      await Promise.all([
+        getUser(route.params.uid),
+        fetchUserPosts(route?.params?.uid),
+        isFollowing(route?.params?.uid),
+      ]);
 
-     setCurrentUser(userResult as { username: string });
-     setCurrentUserPosts(postsResult);
-     setFollowing(followingResult);
-   };
+    setCurrentUser(userResult as { username: string });
+    setCurrentUserPosts(postsResult);
+    setFollows(followingResult);
+  };
 
   useEffect(() => {
     if (route?.params?.uid) {
       if (!currentUser) {
-        fetchProfile()
+        fetchProfile();
       }
       return;
     }
@@ -95,37 +96,44 @@ const Profile: FunctionComponent<
     return () => {
       console.log('unmounting');
     };
-  });
+  },[]);
 
   return (
     <StyledView>
       <View>
         <Text>{currentUser?.username}</Text>
-
-        {(route?.params?.uid && route.params.uid !== firebase.auth().currentUser?.uid) && (
-          <>
-            {!following ? (
-              <StyledButton
-                onPress={() => {
-                  followUser(route?.params?.uid);
-                }}>
-                <StyledButtonText
-                  style={{ color: 'white' }}>
-                  Follow
-                </StyledButtonText>
-              </StyledButton>
-            ) : (
-              <StyledButton
-                onPress={() => {
-                  unFollowUser(route?.params?.uid);
-                }}>
-                <StyledButtonText>
-                  unfollow
-                </StyledButtonText>
-              </StyledButton>
-            )}
-          </>
-        )}
+        <Text>Following {following?.length}</Text>
+        <Text>Followers {0}</Text>
+        {route?.params?.uid &&
+          route.params.uid !==
+            firebase.auth().currentUser?.uid && (
+            <>
+              {!follows ? (
+                <StyledButton
+                  onPress={() => {
+                    followUser(route?.params?.uid).then(()=>{
+                      setFollows(!follows)
+                    })
+                  }}>
+                  <StyledButtonText
+                    style={{ color: 'white' }}>
+                    Follow
+                  </StyledButtonText>
+                </StyledButton>
+              ) : (
+                <StyledButton
+                  onPress={() => {
+                    unFollowUser(route?.params?.uid).then(()=>{
+                      setFollows(!follows)
+                    });
+                  }}>
+                  <StyledButtonText>
+                    unfollow
+                  </StyledButtonText>
+                </StyledButton>
+              )}
+            </>
+          )}
       </View>
       {/* <UserPostGallery> */}
       <Posts

@@ -1,6 +1,6 @@
 import * as firebase from "firebase"
 import { Dispatch } from "redux"
-import { RemoveUserFromState, UserActionType, UserPostsStateChange } from "@redux/constants"
+import { RemoveUserFromState, UserActionType, UserPostsStateChange, UserFollowingStateChange } from "@redux/constants"
 import { UserState } from "@redux/reducers/user"
 
 
@@ -66,5 +66,37 @@ export function fetchUserPosts() {
                     }
                 })
             })
+    }
+}
+
+/**
+ * @description - returns users that the current user is following
+ */
+
+export function fetchUserFollowing() {
+    return (dispatch: Dispatch<UserFollowingStateChange>) => {
+        firebase.default
+            .firestore()
+            .collection("following")
+            .doc(firebase.default
+                ?.auth()
+                ?.currentUser
+                ?.uid)
+            .collection("userFollowing")
+            .onSnapshot(snapshot => {
+                let following = snapshot.docs.map(doc => {
+                    const id = doc.id
+
+                    return id
+                })
+                dispatch({
+                    type: UserActionType.USER_FOLLOWING_STATE_CHANGE,
+                    payload: {
+                        following: following
+                    }
+                })
+            }
+
+        )
     }
 }
