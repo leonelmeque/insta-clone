@@ -6,7 +6,7 @@ interface AvatarProps extends React.CSSProperties {
 }
 
 const StyledAvatar = styled.Image`
-  min-width: ${(props: AvatarProps) =>
+  width: ${(props: AvatarProps) =>
     props.size ? props.size + 'px' : '32px'};
   height: ${(props: AvatarProps) =>
     props.size ? props.size + 'px' : '32px'};

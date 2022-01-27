@@ -9,3 +9,10 @@ export type AnyActionTypeWithPayload<A, P> = {
     type: A,
     payload?:P
 }
+
+
+export type User = {
+    username: string;
+    email: string;
+    [key:string]: string;
+}

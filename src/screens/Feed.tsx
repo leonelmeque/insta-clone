@@ -1,5 +1,5 @@
 import { HomeAppBar } from '@components/AppBar';
-import FeedPost from '@components/FeedPost';
+import FeedPost from '@components/InstaPost';
 import Stories from '@components/Stories';
 import React from 'react';
 import { FlatList, SafeAreaView } from 'react-native';
@@ -10,9 +10,9 @@ import {
   bindActionCreators,
   Dispatch,
 } from 'redux';
-import { fetchUser, fetchUserPosts } from '@redux/actions';
+import { fetchUser, fetchUserPosts,fetchUserFollowing } from '@redux/actions';
 import { AnyActionTypeWithPayload } from '@shared/types';
-import { UserState } from 'redux/reducers/user';
+import { UserState } from '@redux/reducers/user';
 import { useEffect } from 'react';
 
 const posts = [
@@ -84,7 +84,7 @@ const mapStateToProps = (store: RootState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
-    { fetchUser, fetchUserPosts },
+    { fetchUser, fetchUserPosts, fetchUserFollowing },
     dispatch
   );
 
@@ -102,6 +102,7 @@ function FeedScreen(props: Props): JSX.Element {
     if (!props.user) {
       props.fetchUser();
       props.fetchUserPosts();
+      props.fetchUserFollowing();
       return;
     }
     // console.log('current user is ', props);

@@ -17,6 +17,7 @@ import {
   isFollowing,
 } from '@library/api';
 import firebase from 'firebase'
+import { Avatar } from '@components/Avatar';
 
 type RootState = {
   userState: UserState;
@@ -25,6 +26,7 @@ type RootState = {
 const mapStateToProps = (store: RootState): UserState => ({
   user: store.userState.user,
   posts: store.userState.posts,
+  following: store.userState.following
 });
 
 const connector = connect(mapStateToProps);
@@ -58,7 +60,7 @@ const Post = (props: { uri: string }) => {
 const Profile: FunctionComponent<
   NativeStackScreenProps<StackParamsList, 'Profile'> &
     ProfileProps
-> = ({ user, posts, navigation, route }) => {
+> = ({ user, posts,following, navigation, route }) => {
   const [currentUserPosts, setCurrentUserPosts] = useState<
     object[] | undefined
   >();
@@ -67,25 +69,25 @@ const Profile: FunctionComponent<
     { username?: string } | undefined
   >();
 
-  const [following, setFollowing] = useState<boolean>();
+  const [follows, setFollows] = useState<boolean | null>(null);
 
-   const fetchProfile = async () => {
-     const [userResult, postsResult, followingResult] =
-       await Promise.all([
-         getUser(route.params.uid),
-         fetchUserPosts(route?.params?.uid),
-         isFollowing(route?.params?.uid),
-       ]);
+  const fetchProfile = async () => {
+    const [userResult, postsResult, followingResult] =
+      await Promise.all([
+        getUser(route.params.uid),
+        fetchUserPosts(route?.params?.uid),
+        isFollowing(route?.params?.uid),
+      ]);
 
-     setCurrentUser(userResult as { username: string });
-     setCurrentUserPosts(postsResult);
-     setFollowing(followingResult);
-   };
+    setCurrentUser(userResult as { username: string });
+    setCurrentUserPosts(postsResult);
+    setFollows(followingResult);
+  };
 
   useEffect(() => {
     if (route?.params?.uid) {
       if (!currentUser) {
-        fetchProfile()
+        fetchProfile();
       }
       return;
     }
@@ -95,37 +97,80 @@ const Profile: FunctionComponent<
     return () => {
       console.log('unmounting');
     };
-  });
+  },[]);
 
   return (
     <StyledView>
       <View>
+        <ProfileHeader>
+          <Avatar
+            size='84'
+            source={{
+              uri: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=928&q=80',
+            }}
+          />
+          <View style={{ flex: 1 }}>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                backgroundColor: 'blue',
+              }}>
+              <View
+                style={{ flex: 1, alignItems: 'center' }}>
+                <ProfileStatusNumbers>{currentUserPosts?.length}</ProfileStatusNumbers>
+                <ProfileStatusLabel> Posts </ProfileStatusLabel>
+              </View>
+              <View
+                style={{ flex: 1, alignItems: 'center' }}>
+                <ProfileStatusNumbers>{currentUserPosts?.length}</ProfileStatusNumbers>
+                <ProfileStatusLabel> Following </ProfileStatusLabel>
+              </View>
+              <View
+                style={{ flex: 1, alignItems: 'center' }}>
+                <ProfileStatusNumbers>{0}</ProfileStatusNumbers>
+                <ProfileStatusLabel> Followers </ProfileStatusLabel>
+              </View>
+            </View>
+            <View>
+              {route?.params?.uid &&
+                route.params.uid !==
+                  firebase.auth().currentUser?.uid && (
+                  <>
+                    {!follows ? (
+                      <StyledButton
+                        onPress={() => {
+                          followUser(
+                            route?.params?.uid
+                          ).then(() => {
+                            setFollows(!follows);
+                          });
+                        }}>
+                        <StyledButtonText
+                          style={{ color: 'white' }}>
+                          <>Follow</>
+                        </StyledButtonText>
+                      </StyledButton>
+                    ) : (
+                      <StyledButton
+                        onPress={() => {
+                          unFollowUser(
+                            route?.params?.uid
+                          ).then(() => {
+                            setFollows(!follows);
+                          });
+                        }}>
+                        <StyledButtonText>
+                          Following
+                        </StyledButtonText>
+                      </StyledButton>
+                    )}
+                  </>
+                )}
+            </View>
+          </View>
+        </ProfileHeader>
         <Text>{currentUser?.username}</Text>
-
-        {(route?.params?.uid && route.params.uid !== firebase.auth().currentUser?.uid) && (
-          <>
-            {!following ? (
-              <StyledButton
-                onPress={() => {
-                  followUser(route?.params?.uid);
-                }}>
-                <StyledButtonText
-                  style={{ color: 'white' }}>
-                  Follow
-                </StyledButtonText>
-              </StyledButton>
-            ) : (
-              <StyledButton
-                onPress={() => {
-                  unFollowUser(route?.params?.uid);
-                }}>
-                <StyledButtonText>
-                  unfollow
-                </StyledButtonText>
-              </StyledButton>
-            )}
-          </>
-        )}
       </View>
       {/* <UserPostGallery> */}
       <Posts
@@ -142,9 +187,34 @@ const Profile: FunctionComponent<
         )}
       />
       {/* </UserPostGallery> */}
+      <StyledButton
+        onPress={() => {
+          console.log('sign out complete');
+          navigation.navigate('Landing');
+          // firebase.auth().signOut()
+        }}>
+        <StyledButtonText>Sign out</StyledButtonText>
+      </StyledButton>
     </StyledView>
   );
 };
+
+const ProfileHeader = styled(View)`
+  flex-direction:row;
+`
+
+const ProfileStatusLabel = styled(Text)`
+  text-align:center;
+  font-size:12px;
+  font-weight:bold;
+`
+
+const ProfileStatusNumbers = styled(Text)`
+  text-align:center;
+  font-size: 16px;
+  font-weight: 600;
+`
+
 
 const StyledButton = styled(Pressable)`
   padding: 14px;

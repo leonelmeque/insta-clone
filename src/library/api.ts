@@ -111,7 +111,6 @@ export const unFollowUser = (uid: string) => {
 }
 
 export const isFollowing = (uid: string)=> {
-
      return firebase
         .firestore()
         .collection("following")
@@ -130,3 +129,4 @@ export const isFollowing = (uid: string)=> {
             }
         })
 }
+

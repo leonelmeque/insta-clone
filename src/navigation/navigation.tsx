@@ -2,7 +2,6 @@ import React from 'react';
 
 // Navigation imports
 import {
-  BottomTabNavigationOptions,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
