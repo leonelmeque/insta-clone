@@ -2,7 +2,6 @@ import * as firebase from "firebase"
 import { Dispatch } from "redux"
 import { RemoveUserFromState, UserActionType, UserPostsStateChange } from "@redux/constants"
 import { UserState } from "@redux/reducers/user"
-// import { UserActions } from "@redux/constants"
 
 
 export function fetchUser() {
@@ -35,6 +34,10 @@ export function fetchUser() {
     }
 }
 
+/**
+ * @description - returns a closure function that makes a fetch request to firebase api
+ * @returns Promise
+ */
 export function fetchUserPosts() {
     return (dispatch: Dispatch<UserPostsStateChange>) => {
         firebase.default

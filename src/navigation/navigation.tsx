@@ -28,7 +28,7 @@ import UploadImage from '@screens/UploadImage';
 import ProfileScreen from '@screens/Profile';
 
 // Types Imports
-import { LandingScreenNavigationParams } from './types';
+import { LandingScreenNavigationParams,StackParamsList } from './types';
 import { VoidFunctionComponent } from 'react';
 
 // UI Components imports
@@ -38,7 +38,7 @@ import { View } from 'react-native';
 // Creating navigators
 const Tabs = createBottomTabNavigator();
 const Stack = createStackNavigator<
-  LandingScreenNavigationParams | any
+  LandingScreenNavigationParams | any | StackParamsList
 >();
 
 const VoidComponent = () => {
@@ -59,6 +59,20 @@ export const GlobalNavigation = () => (
       options={{ title: 'Save Image' }}
       component={UploadImage}
     />
+  </Stack.Navigator>
+);
+
+export const ExploreNavigation = () => (
+  <Stack.Navigator initialRouteName='Explore' >
+    <Stack.Screen
+      name='Explore'
+      component={ExploreScreen}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen name='Explore/Profile' options={(props)=>({
+      title: props.route?.params?.profile,
+      headerBackTitleVisible:false
+    })} component={ProfileScreen} />
   </Stack.Navigator>
 );
 
@@ -114,7 +128,7 @@ export const AppTabNavigation = () => (
         tabBarShowLabel: false,
       }}
       name='Explore'
-      component={ExploreScreen}
+      component={ExploreNavigation}
     />
     <Tabs.Screen
       listeners={({ navigation, route }) => ({
@@ -140,7 +154,6 @@ export const AppTabNavigation = () => (
     />
     <Tabs.Screen
       options={{
-        headerShown: false,
         tabBarShowLabel: false,
       }}
       name='Profile'

@@ -1,16 +1,22 @@
 import { FunctionComponent } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
 import { UserState } from '@redux/reducers/user';
-import { fetchUserPosts } from '@redux/actions';
 import styled from 'styled-components/native';
-import { Image, Text, View } from 'react-native';
+import { Image, Pressable, Text, View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
 import { FlatList } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from 'react';
+import { StackParamsList } from '@navigation/types';
 import { useEffect } from 'react';
+import { getUser } from '@library/api';
+import {
+  fetchUserPosts,
+  followUser,
+  unFollowUser,
+  isFollowing,
+} from '@library/api';
+import firebase from 'firebase'
 
 type RootState = {
   userState: UserState;
@@ -31,18 +37,6 @@ const Post = (props: { uri: string }) => {
   const [isImageLoading, setIsImageLoading] =
     useState<boolean>(true);
 
-  useEffect(() => {
-    if (isImageLoading) {
-      console.log('Loading image');
-    } else {
-      console.log('Done loading image');
-    }
-
-    return () => {
-      console.log('Image component is unmounting');
-    };
-  });
-
   return (
     <View style={{ flex: 1 }}>
       {isImageLoading && (
@@ -61,30 +55,111 @@ const Post = (props: { uri: string }) => {
   );
 };
 
-const Profile: FunctionComponent<ProfileProps> = (
-  props
-) => {
+const Profile: FunctionComponent<
+  NativeStackScreenProps<StackParamsList, 'Profile'> &
+    ProfileProps
+> = ({ user, posts, navigation, route }) => {
+  const [currentUserPosts, setCurrentUserPosts] = useState<
+    object[] | undefined
+  >();
+
+  const [currentUser, setCurrentUser] = useState<
+    { username?: string } | undefined
+  >();
+
+  const [following, setFollowing] = useState<boolean>();
+
+   const fetchProfile = async () => {
+     const [userResult, postsResult, followingResult] =
+       await Promise.all([
+         getUser(route.params.uid),
+         fetchUserPosts(route?.params?.uid),
+         isFollowing(route?.params?.uid),
+       ]);
+
+     setCurrentUser(userResult as { username: string });
+     setCurrentUserPosts(postsResult);
+     setFollowing(followingResult);
+   };
+
+  useEffect(() => {
+    if (route?.params?.uid) {
+      if (!currentUser) {
+        fetchProfile()
+      }
+      return;
+    }
+
+    setCurrentUser(user as object);
+    setCurrentUserPosts(posts);
+    return () => {
+      console.log('unmounting');
+    };
+  });
+
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <StyledView>
-        {/* <UserPostGallery> */}
-        <Posts
-          numColumns={3}
-          horizontal={false}
-          data={props.posts}
-          renderItem={({ item, index }) => (
-            <View style={{
-              flex:1/3
+    <StyledView>
+      <View>
+        <Text>{currentUser?.username}</Text>
+
+        {(route?.params?.uid && route.params.uid !== firebase.auth().currentUser?.uid) && (
+          <>
+            {!following ? (
+              <StyledButton
+                onPress={() => {
+                  followUser(route?.params?.uid);
+                }}>
+                <StyledButtonText
+                  style={{ color: 'white' }}>
+                  Follow
+                </StyledButtonText>
+              </StyledButton>
+            ) : (
+              <StyledButton
+                onPress={() => {
+                  unFollowUser(route?.params?.uid);
+                }}>
+                <StyledButtonText>
+                  unfollow
+                </StyledButtonText>
+              </StyledButton>
+            )}
+          </>
+        )}
+      </View>
+      {/* <UserPostGallery> */}
+      <Posts
+        numColumns={3}
+        horizontal={false}
+        data={currentUserPosts}
+        renderItem={({ item, index }) => (
+          <View
+            style={{
+              flex: 1 / 3,
             }}>
-              <Post uri={item.downloadURL} />
-            </View>
-          )}
-        />
-        {/* </UserPostGallery> */}
-      </StyledView>
-    </SafeAreaView>
+            <Post uri={item.downloadURL} />
+          </View>
+        )}
+      />
+      {/* </UserPostGallery> */}
+    </StyledView>
   );
 };
+
+const StyledButton = styled(Pressable)`
+  padding: 14px;
+  width: 100%;
+  text-align: center;
+  background: #4095ce;
+  border-radius: 2px;
+`;
+
+const StyledButtonText = styled(Text)`
+  text-align: center;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+`;
 
 const StyledView = styled(View)`
   flex: 1;
