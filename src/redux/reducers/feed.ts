@@ -1,22 +1,19 @@
 import { FeedActionType, FeedPostsStateChange, FeedStateChangeAction } from "@redux/constants"
-import { User } from "@shared/types"
-
 export interface FeedState {
-    users?: User[];
-    usersLoaded: number;
-    posts: []
+    users: any,
+    usersFollowingLoaded: number;
+    feed: []
 }
 
 const initState: FeedState = {
     users: [],
-    usersLoaded: 0,
-    posts: []
+    usersFollowingLoaded: 0,
+    feed: []
 }
 
 type Action = FeedPostsStateChange | FeedStateChangeAction
 
 export default function feedReducer(state = initState, action: Action): FeedState {
-
     switch (action.type) {
         case FeedActionType.FEED_STATE_CHANGE: return {
             ...state,
@@ -24,9 +21,8 @@ export default function feedReducer(state = initState, action: Action): FeedStat
         }
         case FeedActionType.FEED_POSTS_STATE_CHANGE: return {
             ...state,
-            usersLoaded: action.payload.usersLoaded + 1,
-            users: state.users?.map((user:User)=>user.uid === action.payload.uid ? 
-                {...user, posts: action.payload.posts} : user)
+            usersFollowingLoaded: action?.payload?.usersFollowingLoaded || 0 + 1,
+            feed: [...state.feed, ...action.payload.posts],
         }
         default: return state
     }

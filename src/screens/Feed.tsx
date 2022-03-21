@@ -1,128 +1,63 @@
-import { HomeAppBar } from '@components/AppBar';
-import FeedPost from '@components/InstaPost';
-import Stories from '@components/Stories';
-import React from 'react';
-import { FlatList, SafeAreaView } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import { connect, ConnectedProps } from 'react-redux';
-import {
-  AnyAction,
-  bindActionCreators,
-  Dispatch,
-} from 'redux';
-import { fetchUser, fetchUserPosts,fetchUserFollowing } from '@redux/actions';
-import { AnyActionTypeWithPayload } from '@shared/types';
-import { UserState } from '@redux/reducers/user';
-import { useEffect } from 'react';
+import { HomeAppBar } from "@components/AppBar";
+import FeedPost from "@components/InstaPost";
+import Stories from "@components/Stories";
+import React, { useState } from "react";
+import { SafeAreaView, View, ScrollView } from "react-native";
+import { connect, ConnectedProps } from "react-redux";
+import { UserState } from "@redux/reducers/user";
+import { useEffect } from "react";
+import { FeedState } from "redux/reducers/feed";
 
-const posts = [
-  {
-    id: '1',
-    username: '_natashaGred',
-    isLiked: true,
-    comments: [
-      {
-        user_id: '1',
-        comment: 'Good one',
-        username: 'jhondoe',
-      },
-      {
-        user_id: '2',
-        comment: 'Love it',
-        username: 'janedoe',
-      },
-      {
-        user_id: '3',
-        comment: 'Amazing',
-        username: 'motiondesigner',
-      },
-    ],
-    isSaved: false,
-    postDate: '12/12/2021',
-    likes: [
-      {
-        user_id: '1',
-        username: 'jhondoe',
-      },
-      {
-        user_id: '2',
-        username: 'janedoe',
-      },
-      ,
-      {
-        user_id: '3',
-        username: 'motiondesigner',
-      },
-      {
-        user_id: '4',
-        username: 'theuiblog',
-      },
-    ],
-  },
-  {
-    id: '2',
-    username: '_natashaGred',
-    isLiked: false,
-    comments: [],
-    isSaved: true,
-    postDate: '12/12/2021',
-    likes: [
-      {
-        user_id: '1',
-        username: 'jhondoe',
-      },
-    ],
-  },
-];
 type RootState = {
-  userState: UserState<any>;
+    userState: UserState<any>;
+    feedState: FeedState;
 };
 
 const mapStateToProps = (store: RootState) => ({
-  user: store.userState.user,
+    user: store.userState.user,
+    following: store.userState.following,
+    feed: store.feedState.feed,
+    usersFollowingLoaded: store.feedState.usersFollowingLoaded,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators(
-    { fetchUser, fetchUserPosts, fetchUserFollowing },
-    dispatch
-  );
-
-const connector = connect(
-  mapStateToProps,
-  mapDispatchToProps
-);
+const connector = connect(mapStateToProps, );
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 interface Props extends PropsFromRedux {}
 
 function FeedScreen(props: Props): JSX.Element {
-  useEffect(() => {
-    if (!props.user) {
-      props.fetchUser();
-      props.fetchUserPosts();
-      props.fetchUserFollowing();
-      return;
+    const [posts, setPosts] = useState<object[]>([]);
+
+    function initFeed() {
+        props.feed.sort((x: any, y: any) => y.creation.toDate() - x.creation.toDate());
+        setPosts(props.feed);
     }
-    // console.log('current user is ', props);
-  });
-  return (
-    <SafeAreaView>
-      <HomeAppBar />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Stories />
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={posts}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item, index }) => (
-            <FeedPost {...item} />
-          )}
-        />
-      </ScrollView>
-    </SafeAreaView>
-  );
+
+    useEffect(() => {
+        if (
+            props.usersFollowingLoaded !== props.following?.length &&
+            props.following?.length !==0
+        ) {
+            initFeed();
+        }
+    }, [props.usersFollowingLoaded, props.feed]);
+
+    return (
+        <SafeAreaView>
+            <HomeAppBar />
+            <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
+                <Stories />
+                <View style={{ flex: 1, marginBottom:79 }}>
+                    <ScrollView>
+                        {posts.map((item: any) => (
+                            <FeedPost key={item.id} {...item} />
+                        ))}
+                    </ScrollView>
+                </View>
+            </ScrollView>
+        </SafeAreaView>
+    );
 }
 
-export default connector(FeedScreen);
+export default connect(mapStateToProps, )(FeedScreen);

@@ -48,7 +48,7 @@ export interface FeedPostsStateChange {
     type: FeedActionType.FEED_POSTS_STATE_CHANGE,
     payload: {
         posts: [],
-        usersLoaded?: Pick<FeedState, 'usersLoaded'>,
+        usersFollowingLoaded?: number,
         uid: string
     }
 }

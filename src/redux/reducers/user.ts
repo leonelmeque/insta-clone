@@ -6,13 +6,17 @@ export interface UserState<T = unknown> {
     user?: T;
     posts?: any[];
     following?: any[];
-    followers?: any[]
+    followers?: any[];
+    feed: any[];
+    usersFollowingLoaded?: any
 }
 
 const initState: UserState = {
     user: null,
     posts: [],
-    following: []
+    following: [],
+    feed: [],
+    usersFollowingLoaded:0
 }
 
 type Action = UserStateChangeAction | RemoveUserFromState | UserPostsStateChange | UserFollowingStateChange
@@ -33,7 +37,7 @@ export default function userReducer(state = initState, action: Action): UserStat
         }
         case UserActionType.USER_FOLLOWING_STATE_CHANGE: return {
             ...state,
-            following: action.payload.following
+            following: action.payload.following,
         }
         default: return state
     }

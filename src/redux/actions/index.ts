@@ -1,12 +1,19 @@
 import * as firebase from "firebase"
 import { Dispatch } from "redux"
 import { RemoveUserFromState, UserActionType, UserPostsStateChange, UserFollowingStateChange, FeedActionType, FeedPostsStateChange, FeedStateChangeAction } from "@redux/constants"
-import { UserState } from "@redux/reducers/user"
 import { RootState } from "redux/store"
 
+// Loading all app data
+export function loadData() {
+    return ((dispatch: Dispatch) => {
+        dispatch<any>(fetchUser())
+        dispatch<any>(fetchUserPosts())
+        dispatch<any>(fetchUserFollowing())
+    })
+}
 
 export function fetchUser() {
-    return (dispatch: Dispatch) => {
+    return ((dispatch: Dispatch) => {
         firebase.default
             .firestore()
             .collection("users")
@@ -32,7 +39,7 @@ export function fetchUser() {
                     })
                 }
             })
-    }
+    })
 }
 
 /**
@@ -40,7 +47,7 @@ export function fetchUser() {
  * @returns Promise
  */
 export function fetchUserPosts() {
-    return (dispatch: Dispatch<UserPostsStateChange>) => {
+    return ((dispatch: Dispatch<UserPostsStateChange>) => {
         firebase.default
             .firestore()
             .collection("posts")
@@ -63,11 +70,11 @@ export function fetchUserPosts() {
                 dispatch({
                     type: UserActionType.USER_POSTS_STATE_CHANGE,
                     payload: {
-                        posts: posts
+                        posts
                     }
                 })
             })
-    }
+    })
 }
 
 /**
@@ -75,7 +82,7 @@ export function fetchUserPosts() {
  */
 
 export function fetchUserFollowing() {
-    return (dispatch: Dispatch) => {
+    return ((dispatch: Dispatch) => {
         firebase.default
             .firestore()
             .collection("following")
@@ -85,27 +92,24 @@ export function fetchUserFollowing() {
                 ?.uid)
             .collection("userFollowing")
             .onSnapshot(snapshot => {
-                let following = snapshot.docs.map(doc => {
-                    const id = doc.id
-
-                    return id
-                })
+                let following = snapshot.docs.map(doc => doc.id)
                 dispatch<UserFollowingStateChange>({
                     type: UserActionType.USER_FOLLOWING_STATE_CHANGE,
                     payload: {
-                        following: following
+                        following
                     }
                 })
+
                 for (let i = 0; i < following.length; i++) {
-                    fetchFeedPosts(following[i])
+                    dispatch<any>(fetchUsersData(following[i]))
                 }
             }
 
             )
-    }
+    })
 }
 
-export function fetchFeedPosts(uid: string) {
+export function fetchUsersFollowingPosts(uid: string) {
     return ((dispatch: Dispatch, getState: any) => {
         firebase.default
             .firestore()
@@ -115,9 +119,9 @@ export function fetchFeedPosts(uid: string) {
             .orderBy("creation", "asc")
             .get()
             .then((snapshot) => {
-                //@ts-expect-error
-                const uid = snapshot.query.EP.path.segments[1]
-                console.log(snapshot, uid)
+
+                const uid = snapshot.docs[0].ref.path.split('/')[1]
+
                 const user = getState().feedState.users.find((el: any) => el.uid === uid)
 
                 let posts = snapshot.docs.map(doc => {
@@ -125,20 +129,20 @@ export function fetchFeedPosts(uid: string) {
                     const id = doc.id
                     return { id, ...data, user }
                 })
-
                 dispatch<FeedPostsStateChange>({
                     type: FeedActionType.FEED_POSTS_STATE_CHANGE,
                     payload: {
-                        // usersLoaded: posts.length,
+                        usersFollowingLoaded: posts.length,
                         posts: posts as [],
                         uid
                     }
                 })
+
             })
     })
 }
 
-export function fetchFeed(uid: string) {
+export function fetchUsersData(uid: string) {
     return ((dispatch: Dispatch, getState: RootState) => {
         const found = getState().feedState.users.some((el: any) => el.uid === uid)
         if (!found) {
@@ -158,6 +162,7 @@ export function fetchFeed(uid: string) {
                                 users: user as []
                             }
                         })
+                        dispatch<any>(fetchUsersFollowingPosts(uid))
                     }
                 })
         }

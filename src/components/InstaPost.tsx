@@ -19,6 +19,8 @@ type FeedPostProps = {
   postDate: string;
   username: string;
   postId?: string;
+  name: string;
+  [key:string]: any
 };
 
 const FeedPost = ({
@@ -29,165 +31,161 @@ const FeedPost = ({
   postDate,
   username,
   postId,
+  downloadURL,
+  ...rest
 }: FeedPostProps) => {
   return (
-    <StyledView>
-      <PostHeader>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}>
-          <Avatar
-            source={{
-              uri: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=776&q=80',
-            }}
-          />
-          <UserProfileName>{username}</UserProfileName>
-        </View>
-        <Feather name='more-horizontal' size={24} />
-      </PostHeader>
-      <PostImage
-        source={{
-          uri: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=776&q=80',
-        }}
-      />
-      <UserActions>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            maxWidth: 110,
-            flex: 1,
-          }}>
-          {isLiked ? <HeartRed /> : <Heart />}
-          <Comment />
-          <Share />
-        </View>
-        {isSaved ? <Bookmark /> : <Bookmark />}
-      </UserActions>
-      <View style={{ paddingHorizontal: 8 }}>
-        <View
-          style={{ flexDirection: 'row', marginBottom: 4 }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              width: 60,
-              marginRight: 8,
-            }}>
-            <Avatar
-              style={{
-                borderWidth: 1,
-                borderColor: '#fff',
-                position: 'absolute',
-                left: 0,
-              }}
-              zIndex={3}
-              size={24}
-              source={{
-                uri: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=776&q=80',
-              }}
-            />
-            <Avatar
-              style={{
-                borderWidth: 1,
-                borderColor: '#fff',
-                position: 'absolute',
-                left: '30%',
-              }}
-              zIndex={2}
-              size={24}
-              source={{
-                uri: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=776&q=80',
-              }}
-            />
-            <Avatar
-              style={{
-                borderWidth: 1,
-                borderColor: '#fff',
-                position: 'absolute',
-                left: '60%',
-              }}
-              zIndex={1}
-              size={24}
-              source={{
-                uri: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=776&q=80',
-              }}
-            />
-          </View>
-          <Likes>
-            {likes.length} Like
-            {likes.length > 1 ? 's' : <></>}
-          </Likes>
-        </View>
-        <View style={{ flexDirection: 'row' }}>
-          <UserProfileName>{username}</UserProfileName>
-          <PostText>
-            I love sunny days with god vibes
-          </PostText>
-        </View>
-        {comments.length !== 0 ? (
-          <>
-            <TotalComments>
-              View all {comments.length} comments
-            </TotalComments>
-            {comments.slice(0, 2).map((comment) => (
-              <TopComments key={comment.user_id}>
-                <View
+      <StyledView>
+          <PostHeader>
+              <View
                   style={{
-                    flexDirection: 'row',
-                    flex: 1,
+                      flexDirection: "row",
+                      alignItems: "center",
                   }}>
-                  <UserProfileName
-                    style={{ marginRight: 8 }}>
-                    {comment.username}
-                  </UserProfileName>
-                  <Text>{comment.comment}</Text>
-                </View>
-                <Ionicons name='heart-outline' size={16} />
-              </TopComments>
-            ))}
-          </>
-        ) : (
-          <></>
-        )}
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginVertical: 8,
-          }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <Avatar
+                  <Avatar
+                      source={{
+                          uri: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=776&q=80",
+                      }}
+                  />
+                  <UserProfileName>{rest.user.username}</UserProfileName>
+              </View>
+              <Feather name="more-horizontal" size={24} />
+          </PostHeader>
+          <PostImage
               source={{
-                uri: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=776&q=80',
+                  uri: downloadURL,
               }}
-              size='24'
-            />
-            {/* <UserCommentInput placeholder="Add a comment..."  /> */}
-            <Text
-              style={{
-                color: '#B3B3B3',
-              }}>
-              Add a comment...
-            </Text>
-          </View>
-          <View style={{ flexDirection: 'row' }}>
-            <Text style={{ fontSize:12 ,marginRight: 10 }}>❤️</Text>
+          />
+          <UserActions>
+              <View
+                  style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      maxWidth: 110,
+                      flex: 1,
+                  }}>
+                  {isLiked ? <HeartRed /> : <Heart />}
+                  <Comment />
+                  <Share />
+              </View>
+              {isSaved ? <Bookmark /> : <Bookmark />}
+          </UserActions>
+          <View style={{ paddingHorizontal: 8 }}>
+              <View style={{ flexDirection: "row", marginBottom: 4 }}>
+                  <View
+                      style={{
+                          flexDirection: "row",
+                          width: 60,
+                          marginRight: 8,
+                      }}>
+                      <Avatar
+                          style={{
+                              borderWidth: 1,
+                              borderColor: "#fff",
+                              position: "absolute",
+                              left: 0,
+                          }}
+                          zIndex={3}
+                          size={24}
+                          source={{
+                              uri: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=776&q=80",
+                          }}
+                      />
+                      <Avatar
+                          style={{
+                              borderWidth: 1,
+                              borderColor: "#fff",
+                              position: "absolute",
+                              left: "30%",
+                          }}
+                          zIndex={2}
+                          size={24}
+                          source={{
+                              uri: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=776&q=80",
+                          }}
+                      />
+                      <Avatar
+                          style={{
+                              borderWidth: 1,
+                              borderColor: "#fff",
+                              position: "absolute",
+                              left: "60%",
+                          }}
+                          zIndex={1}
+                          size={24}
+                          source={{
+                              uri: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=776&q=80",
+                          }}
+                      />
+                  </View>
+                  <Likes>
+                      {likes?.length} Like
+                      {likes?.length > 1 ? "s" : <></>}
+                  </Likes>
+              </View>
+              <View style={{ flexDirection: "row" }}>
+                  <UserProfileName>{username}</UserProfileName>
+                  <PostText>{rest.caption}</PostText>
+              </View>
+              {comments?.length !== 0 ? (
+                  <>
+                      <TotalComments>View all {comments?.length} comments</TotalComments>
+                      {comments?.slice(0, 2).map((comment) => (
+                          <TopComments key={comment.user_id}>
+                              <View
+                                  style={{
+                                      flexDirection: "row",
+                                      flex: 1,
+                                  }}>
+                                  <UserProfileName style={{ marginRight: 8 }}>
+                                      {comment.username}
+                                  </UserProfileName>
+                                  <Text>{comment.comment}</Text>
+                              </View>
+                              <Ionicons name="heart-outline" size={16} />
+                          </TopComments>
+                      ))}
+                  </>
+              ) : (
+                  <></>
+              )}
+              <View
+                  style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      marginVertical: 8,
+                  }}>
+                  <View
+                      style={{
+                          flexDirection: "row",
+                          alignItems: "center",
+                      }}>
+                      <Avatar
+                          source={{
+                              uri: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=776&q=80",
+                          }}
+                          size="24"
+                      />
+                      {/* <UserCommentInput placeholder="Add a comment..."  /> */}
+                      <Text
+                          style={{
+                              color: "#B3B3B3",
+                          }}>
+                          Add a comment...
+                      </Text>
+                  </View>
+                  <View style={{ flexDirection: "row" }}>
+                      <Text style={{ fontSize: 12, marginRight: 10 }}>❤️</Text>
 
-            <Text style={{ fontSize:12 ,marginRight: 10 }}>🙌 </Text>
-            <Text style={{ fontSize:12 }}>➕</Text>
+                      <Text style={{ fontSize: 12, marginRight: 10 }}>🙌 </Text>
+                      <Text style={{ fontSize: 12 }}>➕</Text>
+                  </View>
+              </View>
+              <PostDate>{postDate}</PostDate>
           </View>
-        </View>
-        <PostDate>{postDate}</PostDate>
-      </View>
-    </StyledView>
+      </StyledView>
   );
 };
 
