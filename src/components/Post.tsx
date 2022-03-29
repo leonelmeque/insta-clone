@@ -4,6 +4,8 @@ import { Ionicons, Feather } from "@expo/vector-icons";
 import React from "react";
 import { View, Text } from "react-native";
 import styled from "styled-components/native";
+import PostHeader from './PostHeader'
+import PostSocialActions from "./PostSocialActions";
 
 type FeedPostProps = {
     isLiked?: boolean;
@@ -30,41 +32,14 @@ const FeedPost = ({
 }: FeedPostProps) => {
     return (
         <StyledView>
-            <PostHeader>
-                <View
-                    style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                    }}>
-                    <Avatar
-                        source={{
-                            uri: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=776&q=80",
-                        }}
-                    />
-                    <UserProfileName>{rest.user.username}</UserProfileName>
-                </View>
-                <Feather name="more-horizontal" size={24} />
-            </PostHeader>
+           <PostHeader username={rest.user.username}/>
             <PostImage
                 source={{
                     uri: downloadURL,
                 }}
             />
-            <UserActions>
-                <View
-                    style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        maxWidth: 110,
-                        flex: 1,
-                    }}>
-                    {isLiked ? <HeartRed /> : <Heart />}
-                    <Comment />
-                    <Share />
-                </View>
-                {isSaved ? <Bookmark /> : <Bookmark />}
-            </UserActions>
+            <PostSocialActions hasLike={isLiked} isBookmarked={isSaved}/>
+    
             <View style={{ paddingHorizontal: 8 }}>
                 <View style={{ flexDirection: "row", marginBottom: 4 }}>
                     <View
@@ -221,14 +196,6 @@ const StyledView = styled.View`
     width: 100%;
     /* height: 400px; */
     /* background-color:blue; */
-`;
-const PostHeader = styled.View`
-    width: 100%;
-    /* height: 48px; */
-    flex-direction: row;
-    padding: 12px 8px;
-    justify-content: space-between;
-    align-items: center;
 `;
 
 const UserProfileName = styled.Text`

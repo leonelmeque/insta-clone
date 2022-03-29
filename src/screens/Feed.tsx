@@ -1,5 +1,5 @@
 import { HomeAppBar } from "@components/AppBar";
-import FeedPost from "@components/InstaPost";
+import FeedPost from "@components/Post";
 import Stories from "@components/Stories";
 import React, { useState } from "react";
 import { SafeAreaView, View, ScrollView } from "react-native";
