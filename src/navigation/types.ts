@@ -8,4 +8,5 @@ export type StackParamsList = {
     Explore: undefined;
     Profile: { uid: string }
     'Explore/Profile': { uid: string, profile?:string }
+    Landing:undefined
 }

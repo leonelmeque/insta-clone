@@ -1,11 +1,19 @@
 import * as firebase from "firebase"
 import { Dispatch } from "redux"
-import { RemoveUserFromState, UserActionType, UserPostsStateChange, UserFollowingStateChange } from "@redux/constants"
-import { UserState } from "@redux/reducers/user"
+import { RemoveUserFromState, UserActionType, UserPostsStateChange, UserFollowingStateChange, FeedActionType, FeedPostsStateChange, FeedStateChangeAction } from "@redux/constants"
+import { RootState } from "redux/store"
 
+// Loading all app data
+export function loadData() {
+    return ((dispatch: Dispatch) => {
+        dispatch<any>(fetchUser())
+        dispatch<any>(fetchUserPosts())
+        dispatch<any>(fetchUserFollowing())
+    })
+}
 
 export function fetchUser() {
-    return (dispatch: Dispatch) => {
+    return ((dispatch: Dispatch) => {
         firebase.default
             .firestore()
             .collection("users")
@@ -31,7 +39,7 @@ export function fetchUser() {
                     })
                 }
             })
-    }
+    })
 }
 
 /**
@@ -39,7 +47,7 @@ export function fetchUser() {
  * @returns Promise
  */
 export function fetchUserPosts() {
-    return (dispatch: Dispatch<UserPostsStateChange>) => {
+    return ((dispatch: Dispatch<UserPostsStateChange>) => {
         firebase.default
             .firestore()
             .collection("posts")
@@ -62,11 +70,11 @@ export function fetchUserPosts() {
                 dispatch({
                     type: UserActionType.USER_POSTS_STATE_CHANGE,
                     payload: {
-                        posts: posts
+                        posts
                     }
                 })
             })
-    }
+    })
 }
 
 /**
@@ -74,7 +82,7 @@ export function fetchUserPosts() {
  */
 
 export function fetchUserFollowing() {
-    return (dispatch: Dispatch<UserFollowingStateChange>) => {
+    return ((dispatch: Dispatch) => {
         firebase.default
             .firestore()
             .collection("following")
@@ -84,19 +92,80 @@ export function fetchUserFollowing() {
                 ?.uid)
             .collection("userFollowing")
             .onSnapshot(snapshot => {
-                let following = snapshot.docs.map(doc => {
-                    const id = doc.id
-
-                    return id
-                })
-                dispatch({
+                let following = snapshot.docs.map(doc => doc.id)
+                dispatch<UserFollowingStateChange>({
                     type: UserActionType.USER_FOLLOWING_STATE_CHANGE,
                     payload: {
-                        following: following
+                        following
                     }
                 })
+
+                for (let i = 0; i < following.length; i++) {
+                    dispatch<any>(fetchUsersData(following[i]))
+                }
             }
 
-        )
-    }
+            )
+    })
 }
+
+export function fetchUsersFollowingPosts(uid: string) {
+    return ((dispatch: Dispatch, getState: any) => {
+        firebase.default
+            .firestore()
+            .collection("posts")
+            .doc(uid)
+            .collection("userPosts")
+            .orderBy("creation", "asc")
+            .get()
+            .then((snapshot) => {
+
+                const uid = snapshot.docs[0].ref.path.split('/')[1]
+
+                const user = getState().feedState.users.find((el: any) => el.uid === uid)
+
+                let posts = snapshot.docs.map(doc => {
+                    const data = doc.data()
+                    const id = doc.id
+                    return { id, ...data, user }
+                })
+                dispatch<FeedPostsStateChange>({
+                    type: FeedActionType.FEED_POSTS_STATE_CHANGE,
+                    payload: {
+                        usersFollowingLoaded: posts.length,
+                        posts: posts as [],
+                        uid
+                    }
+                })
+
+            })
+    })
+}
+
+export function fetchUsersData(uid: string) {
+    return ((dispatch: Dispatch, getState: RootState) => {
+        const found = getState().feedState.users.some((el: any) => el.uid === uid)
+        if (!found) {
+            firebase.default
+                .firestore()
+                .collection("users")
+                .doc(uid)
+                .get()
+                .then((snapshot) => {
+                    if (snapshot.exists) {
+                        const user = snapshot.data()
+                        //@ts-ignore
+                        user.uid = snapshot.id
+                        dispatch<FeedStateChangeAction>({
+                            type: FeedActionType.FEED_STATE_CHANGE,
+                            payload: {
+                                users: user as []
+                            }
+                        })
+                        dispatch<any>(fetchUsersFollowingPosts(uid))
+                    }
+                })
+        }
+    })
+}
+
