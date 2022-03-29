@@ -4,7 +4,8 @@ import { Ionicons, Feather } from "@expo/vector-icons";
 import React from "react";
 import { View, Text } from "react-native";
 import styled from "styled-components/native";
-import PostHeader from './PostHeader'
+import PostHeader from "./PostHeader";
+import PostLikes from "./PostLikes";
 import PostSocialActions from "./PostSocialActions";
 
 type FeedPostProps = {
@@ -32,67 +33,15 @@ const FeedPost = ({
 }: FeedPostProps) => {
     return (
         <StyledView>
-           <PostHeader username={rest.user.username}/>
+            <PostHeader username={rest.user.username} />
             <PostImage
                 source={{
                     uri: downloadURL,
                 }}
             />
-            <PostSocialActions hasLike={isLiked} isBookmarked={isSaved}/>
-    
-            <View style={{ paddingHorizontal: 8 }}>
-                <View style={{ flexDirection: "row", marginBottom: 4 }}>
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            width: 60,
-                            marginRight: 8,
-                        }}>
-                        <Avatar
-                            style={{
-                                borderWidth: 1,
-                                borderColor: "#fff",
-                                position: "absolute",
-                                left: 0,
-                            }}
-                            zIndex={3}
-                            size={24}
-                            source={{
-                                uri: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=776&q=80",
-                            }}
-                        />
-                        <Avatar
-                            style={{
-                                borderWidth: 1,
-                                borderColor: "#fff",
-                                position: "absolute",
-                                left: "30%",
-                            }}
-                            zIndex={2}
-                            size={24}
-                            source={{
-                                uri: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=776&q=80",
-                            }}
-                        />
-                        <Avatar
-                            style={{
-                                borderWidth: 1,
-                                borderColor: "#fff",
-                                position: "absolute",
-                                left: "60%",
-                            }}
-                            zIndex={1}
-                            size={24}
-                            source={{
-                                uri: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=776&q=80",
-                            }}
-                        />
-                    </View>
-                    <Likes>
-                        {likes?.length} Like
-                        {likes?.length > 1 ? "s" : <></>}
-                    </Likes>
-                </View>
+            <PostSocialActions hasLike={isLiked} isBookmarked={isSaved} />
+            <PostLikes likes={likes} />
+            <View>
                 <View style={{ flexDirection: "row" }}>
                     <UserProfileName>{username}</UserProfileName>
                     <PostText>{rest.caption}</PostText>
