@@ -29,8 +29,9 @@ import { LandingScreenNavigationParams, StackParamsList } from "./types";
 import { VoidFunctionComponent } from "react";
 
 // UI Components imports
-import { Avatar } from "@components/Avatar";
+// import { Avatar } from "@components/Avatar";
 import { View } from "react-native";
+import UserAvatar from "@components/User/UserAvatar";
 
 // Creating navigators
 const Tabs = createBottomTabNavigator();
@@ -94,12 +95,23 @@ export const AppTabNavigation = () => (
                         return <Heart />;
                     case "Profile":
                         return (
-                            <Avatar
-                                size={size + 2}
-                                source={{
-                                    uri: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=776&q=80",
-                                }}
-                            />
+                            <View style={{
+                               
+                                justifyContent:'center',
+                                alignItems:'flex-end',
+                                // backgroundColor: 'blue'
+                                
+                            }}>
+                                {/* Fix this issue with styling */}
+                                <UserAvatar
+                                    size={size + 4}
+                                    style={{ margin: 10 }}
+                                    source={{
+                                        uri: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=776&q=80",
+                                    }}
+                                    hideUsernameLabel
+                                />
+                            </View>
                         );
                 }
                 return <Ionicons name={"home"} size={32} color={color} />;

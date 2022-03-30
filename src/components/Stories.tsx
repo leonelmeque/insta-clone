@@ -3,6 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { View, FlatList } from 'react-native';
 import styled from 'styled-components/native';
+import UserAvatar from './User/UserAvatar';
 
 const stories = [
   {
@@ -51,11 +52,13 @@ const Stories = () => {
         //@ts-ignore
         <Story onPress={() => alert('Viewing story')}>
           <View>
-            <Avatar
+            <UserAvatar
               size={64}
               source={{
                 uri: item.avatarImage,
               }}
+   
+              username={`${item.username.substring(0,16)}${item.username.length>14 || '...'}`}
             />
             {index === 0 && (
               <AddStoryButton>
@@ -67,7 +70,6 @@ const Stories = () => {
               </AddStoryButton>
             )}
           </View>
-          <UserStoryName>{item.username.substring(0,16)}{item.username.length>14 && <>...</> }</UserStoryName>
         </Story>
       )}
     />

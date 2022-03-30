@@ -18,6 +18,7 @@ import {
 } from "@library/backend";
 import firebase from "firebase";
 import { Avatar } from "@components/Avatar";
+import UserAvatar from "@components/User/UserAvatar";
 
 type RootState = {
     userState: UserState;
@@ -94,11 +95,13 @@ const Profile: FunctionComponent<
         <StyledView>
             <View>
                 <ProfileHeader>
-                    <Avatar
+                    <UserAvatar
                         size="84"
+                        style={{margin:0}}
                         source={{
                             uri: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=928&q=80",
                         }}
+                        username={currentUser?.username as string}
                     />
                     <View style={{ flex: 1 }}>
                         <View
@@ -161,7 +164,6 @@ const Profile: FunctionComponent<
                         </View>
                     </View>
                 </ProfileHeader>
-                <Text>{currentUser?.username}</Text>
             </View>
             {/* <UserPostGallery> */}
             <Posts

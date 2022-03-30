@@ -4,6 +4,7 @@ import {FunctionComponent} from 'react'
 import { View } from 'react-native';
 import styled from "styled-components/native";
 import { Avatar } from '@components/Avatar';
+import UserAvatar from '@components/User/UserAvatar';
 
 interface PostHeaderProps {
     [key:string]: any
@@ -17,12 +18,12 @@ const PostHeader: FunctionComponent<PostHeaderProps> = (props) => {
                     flexDirection: "row",
                     alignItems: "center",
                 }}>
-                <Avatar
-                    source={{
+                    <UserAvatar source={{
                         uri: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=776&q=80",
                     }}
-                />
-                <UserProfileName>{props.username}</UserProfileName>
+                        username={props.username}
+                        usernamePlacement={'right'}
+                    />
             </View>
             <Feather name="more-horizontal" size={24} />
         </Container>
