@@ -10,19 +10,19 @@ import {
     LandingScreenNavigation,
     AppTabNavigation,
     GlobalNavigation,
-} from "@navigation/index";
+} from "navigation/index";
 
 // Service imports
-import firebaseInit from "@library/firebaseConfig";
+import firebaseInit from "library/firebaseConfig";
 import * as firebase from "firebase";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // Redux imports
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
-import rootReducer from "@redux/reducers";
+import rootReducer from "store/reducers";
 import thunk from "redux-thunk";
-
+import ThemeProvider from "theme/context";
 // Creating redux store
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
@@ -30,6 +30,7 @@ const store = createStore(rootReducer, applyMiddleware(thunk));
 firebaseInit();
 
 export default function App() {
+    const [darkMode, setDarkMode] = useState<boolean>(false);
     const [state, setState] = useState<{
         loggenIn?: boolean;
         loaded?: boolean;
@@ -65,9 +66,11 @@ export default function App() {
 
     if (!state?.loggenIn) {
         return (
-            <NavigationContainer>
-                <LandingScreenNavigation />
-            </NavigationContainer>
+            <ThemeProvider.Provider value={{}}>
+                <NavigationContainer>
+                    <LandingScreenNavigation />
+                </NavigationContainer>
+            </ThemeProvider.Provider>
         );
     }
 

@@ -1,6 +1,6 @@
 // import { UserActions } from "redux/constants"
 import { AnyAction } from "redux"
-import { RemoveUserFromState, UserActionType, UserFollowingStateChange, UserPostsStateChange, UserStateChangeAction } from "@redux/constants"
+import { RemoveUserFromState, UserActionType, UserFollowingStateChange, UserPostsStateChange, UserStateChangeAction } from "store/constants"
 
 export interface UserState<T = unknown> {
     user?: T;

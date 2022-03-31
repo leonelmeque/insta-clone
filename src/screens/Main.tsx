@@ -3,10 +3,10 @@ import React, { useEffect, useMemo } from "react";
 import { FunctionComponent } from "react";
 
 // Navigation imports
-import { AppTabNavigation } from "@navigation/index";
-import { UserState } from "redux/reducers/user";
+import { AppTabNavigation } from "navigation/index";
+import { UserState } from "store/reducers/user";
 import { bindActionCreators, Dispatch } from "redux";
-import { loadData } from "@redux/actions";
+import { loadData } from "store/actions";
 import { connect, ConnectedProps } from "react-redux";
 
 type RootState = {

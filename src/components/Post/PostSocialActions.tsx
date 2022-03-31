@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
-import { Bookmark, Comment, Heart, HeartRed, Share } from "@components/Icons/react-icons";
+import { Bookmark, Comment, Heart, HeartRed, Share } from "components/Icons/react-icons";
 
 interface PostSocialActionsProps {
     [key:string]: any

@@ -1,4 +1,4 @@
-import { Avatar } from '@components/Avatar';
+import { Avatar } from 'components/Avatar';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { View, FlatList } from 'react-native';

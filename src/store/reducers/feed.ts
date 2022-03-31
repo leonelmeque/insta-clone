@@ -1,4 +1,4 @@
-import { FeedActionType, FeedPostsStateChange, FeedStateChangeAction } from "@redux/constants"
+import { FeedActionType, FeedPostsStateChange, FeedStateChangeAction } from "store/constants"
 export interface FeedState {
     users: any,
     usersFollowingLoaded: number;

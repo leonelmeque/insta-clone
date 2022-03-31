@@ -1,7 +1,7 @@
 import * as firebase from "firebase"
 import { Dispatch } from "redux"
-import { RemoveUserFromState, UserActionType, UserPostsStateChange, UserFollowingStateChange, FeedActionType, FeedPostsStateChange, FeedStateChangeAction } from "@redux/constants"
-import { RootState } from "redux/store"
+import { RemoveUserFromState, UserActionType, UserPostsStateChange, UserFollowingStateChange, FeedActionType, FeedPostsStateChange, FeedStateChangeAction } from "store/constants"
+import { RootState } from "store/store"
 
 // Loading all app data
 export function loadData() {

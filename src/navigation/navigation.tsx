@@ -5,33 +5,33 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 
 // Icons imports
-import SvgSearchOutlined from "@components/Icons/react-icons/SearchOutlined";
+import SvgSearchOutlined from "components/Icons/react-icons/SearchOutlined";
 import {
     HomeFilled,
     SearchOutlined,
     AddCircular,
     Heart,
-} from "@components/Icons/react-icons";
+} from "components/Icons/react-icons";
 import { Ionicons } from "@expo/vector-icons";
 
 // Screens imports
-import FeedScreen from "@screens/Feed";
-import AddScreen from "@screens/Add";
-import ExploreScreen from "@screens/Explore";
-import RegisterScreen from "@screens/auth/Register";
-import LandingScreen from "@screens/auth/Landing";
-import MainScreen from "@screens/Main";
-import UploadImage from "@screens/UploadImage";
-import ProfileScreen from "@screens/Profile";
+import FeedScreen from "screens/Feed";
+import AddScreen from "screens/Add";
+import ExploreScreen from "screens/Explore";
+import RegisterScreen from "screens/auth/Register";
+import LandingScreen from "screens/auth/Landing";
+import MainScreen from "screens/Main";
+import UploadImage from "screens/UploadImage";
+import ProfileScreen from "screens/Profile";
 
 // Types Imports
 import { LandingScreenNavigationParams, StackParamsList } from "./types";
 import { VoidFunctionComponent } from "react";
 
 // UI Components imports
-// import { Avatar } from "@components/Avatar";
+import { Avatar } from "components/Avatar";
 import { View } from "react-native";
-import UserAvatar from "@components/User/UserAvatar";
+import UserAvatar from "components/User/UserAvatar";
 
 // Creating navigators
 const Tabs = createBottomTabNavigator();

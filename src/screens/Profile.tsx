@@ -1,13 +1,13 @@
 import { FunctionComponent } from "react";
 import { connect, ConnectedProps } from "react-redux";
-import { UserState } from "@redux/reducers/user";
+import { UserState } from "store/reducers/user";
 import styled from "styled-components/native";
 import { Image, Pressable, Text, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { FlatList } from "react-native-gesture-handler";
 import { useState } from "react";
-import { StackParamsList } from "@navigation/types";
+import { StackParamsList } from "navigation/types";
 import { useEffect } from "react";
 import {
     getUser,
@@ -15,10 +15,9 @@ import {
     followUser,
     unFollowUser,
     isFollowing,
-} from "@library/backend";
+} from "library/backend";
 import firebase from "firebase";
-import { Avatar } from "@components/Avatar";
-import UserAvatar from "@components/User/UserAvatar";
+import UserAvatar from "components/User/UserAvatar";
 
 type RootState = {
     userState: UserState;

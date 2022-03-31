@@ -19,14 +19,14 @@ module.exports = function (api) {
             ".json"
           ],
           "alias": {
-            "@navigation": "./src/navigation",
-            "@components": "./src/components",
-            "@assets": "./src/assets",
-            "@screens": ["./src/screens"],
-            "@library": ["./src/library"],
-            "@hooks": ["./src/hooks"],
-            "@redux": ["./src/redux"],
-            "@shared": ["./src/shared"]
+            "navigation": "./src/navigation",
+            "components": "./src/components",
+            "assets": "./src/assets",
+            "screens": ["./src/screens"],
+            "library": ["./src/library"],
+            "hooks": ["./src/hooks"],
+            "store": ["./src/redux"],
+            "shared": ["./src/shared"]
           }
         }
       ],
