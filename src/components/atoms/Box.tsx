@@ -1,4 +1,4 @@
-import { ComponentProps, FunctionComponent, useContext } from "react";
+import React, { ComponentProps, FunctionComponent, useContext } from "react";
 import { View } from "react-native";
 import ThemeContext from "theme/context";
 import { spacing, ThemeProps } from "theme/theme";
@@ -6,7 +6,7 @@ import { spacing, ThemeProps } from "theme/theme";
 interface BoxProps extends ComponentProps<typeof View> {
     margin: keyof typeof spacing;
     padding: keyof typeof spacing;
-    backgroundColor: string;
+    backgroundColor?: string;
 }
 
 const Box: FunctionComponent<BoxProps> = ({

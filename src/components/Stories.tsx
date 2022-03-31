@@ -1,9 +1,8 @@
-import { Avatar } from 'components/Avatar';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { View, FlatList } from 'react-native';
 import styled from 'styled-components/native';
-import UserAvatar from './User/UserAvatar';
+import Avatar from 'components/molecules/Avatar/Avatar';
 
 const stories = [
   {
@@ -52,7 +51,7 @@ const Stories = () => {
         //@ts-ignore
         <Story onPress={() => alert('Viewing story')}>
           <View>
-            <UserAvatar
+            <Avatar
               size={64}
               source={{
                 uri: item.avatarImage,

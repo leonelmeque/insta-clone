@@ -17,7 +17,7 @@ import {
     isFollowing,
 } from "library/backend";
 import firebase from "firebase";
-import UserAvatar from "components/User/UserAvatar";
+import UserAvatar from "components/molecules/Avatar/Avatar";
 
 type RootState = {
     userState: UserState;

@@ -1,7 +1,7 @@
-import { ComponentProps, FunctionComponent, useContext } from "react";
+import React, { ComponentProps, FunctionComponent, useContext } from "react";
 import { Text as RNText } from "react-native";
 import ThemeContext from "theme/context";
-import { pallete, spacing, theme, ThemeProps } from "theme/theme";
+import { pallete, theme, ThemeProps } from "theme/theme";
 
 interface TextProps extends ComponentProps<typeof RNText> {
     color: keyof typeof pallete;
@@ -10,13 +10,13 @@ interface TextProps extends ComponentProps<typeof RNText> {
 
 const Text: FunctionComponent<TextProps> = ({
     children,
-    variant,
-    color,
+    variant="body",
+    color="text",
     style,
     ...rest
 }) => {
     const theme = useContext(ThemeContext) as ThemeProps;
-
+ 
     return (
         <RNText
             style={{

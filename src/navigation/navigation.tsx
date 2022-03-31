@@ -29,9 +29,8 @@ import { LandingScreenNavigationParams, StackParamsList } from "./types";
 import { VoidFunctionComponent } from "react";
 
 // UI Components imports
-import { Avatar } from "components/Avatar";
 import { View } from "react-native";
-import UserAvatar from "components/User/UserAvatar";
+import Avatar from "components/molecules/Avatar/Avatar";
 
 // Creating navigators
 const Tabs = createBottomTabNavigator();
@@ -103,7 +102,7 @@ export const AppTabNavigation = () => (
                                 
                             }}>
                                 {/* Fix this issue with styling */}
-                                <UserAvatar
+                                <Avatar
                                     size={size + 4}
                                     style={{ margin: 10 }}
                                     source={{

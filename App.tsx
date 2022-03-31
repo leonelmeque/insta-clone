@@ -3,6 +3,7 @@ import React from "react";
 import { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useState } from "react";
+import { useFonts } from "expo-font";
 
 // Navigation imports
 import { NavigationContainer } from "@react-navigation/native";
@@ -23,6 +24,7 @@ import { createStore, applyMiddleware } from "redux";
 import rootReducer from "store/reducers";
 import thunk from "redux-thunk";
 import ThemeProvider from "theme/context";
+import { theme } from "theme/theme";
 // Creating redux store
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
@@ -35,6 +37,11 @@ export default function App() {
         loggenIn?: boolean;
         loaded?: boolean;
     }>({});
+
+     let [fontsLoaded] = useFonts({
+         "MerriweatherSans-Regular": require("assets/fonts/MerriweatherSans-Regular.ttf"),
+     });
+
 
     useEffect(() => {
         if (!state.loggenIn) {
@@ -54,7 +61,7 @@ export default function App() {
         }
     });
 
-    if (!state?.loaded) {
+    if (!state?.loaded || !fontsLoaded) {
         return (
             <SafeAreaView>
                 <View>
@@ -66,7 +73,7 @@ export default function App() {
 
     if (!state?.loggenIn) {
         return (
-            <ThemeProvider.Provider value={{}}>
+            <ThemeProvider.Provider value={darkMode ? {} : theme}>
                 <NavigationContainer>
                     <LandingScreenNavigation />
                 </NavigationContainer>
@@ -75,10 +82,12 @@ export default function App() {
     }
 
     return (
-        <Provider store={store}>
-            <NavigationContainer>
-                <GlobalNavigation />
-            </NavigationContainer>
-        </Provider>
+        <ThemeProvider.Provider value={darkMode ? {} : theme}>
+            <Provider store={store}>
+                <NavigationContainer>
+                    <GlobalNavigation />
+                </NavigationContainer>
+            </Provider>
+        </ThemeProvider.Provider>
     );
 }

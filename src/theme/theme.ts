@@ -1,3 +1,4 @@
+import React from 'react'
 
 export type ColorProps = {
     background: string;
@@ -54,7 +55,7 @@ export const theme: ThemeProps = {
             fontWeight: 'bold',
         },
         body: {
-            fontFamily: 'Merriweather',
+            fontFamily: 'MerriweatherSans-Regular',
             fontSize: 16,
         },
     },
