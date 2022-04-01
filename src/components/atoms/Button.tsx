@@ -15,11 +15,11 @@ interface ButtonProps extends ComponentProps<typeof Pressable> {
 }
 
 const Button: FunctionComponent<ButtonProps> = (props) => {
-    const { variant } = props;
+    const { variant, ...rest } = props;
     const theme = useContext(ThemeContext) as ThemeProps;
 
     return (
-        <Pressable style={[style.button, style[variant]]}>
+        <Pressable style={[style.button, style[variant]]} {...rest}>
             <Text
                 style={{
                     ...theme.textVariants.body,
