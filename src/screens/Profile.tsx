@@ -19,6 +19,8 @@ import {
 import firebase from "firebase";
 import UserAvatar from "components/molecules/Avatar/Avatar";
 import ProfileStats from "components/molecules/Profile/ProfileStats";
+import Button from "components/atoms/Button";
+import Box from "components/atoms/Box";
 
 type RootState = {
     userState: UserState;
@@ -79,6 +81,18 @@ const Profile: FunctionComponent<
         setFollows(followingResult);
     };
 
+    const userFollowOrUnfollow = () => {
+        if (!follows) {
+            followUser(route?.params?.uid).then(() => {
+                setFollows(!follows);
+            });
+        } else {
+            unFollowUser(route?.params?.uid).then(() => {
+                setFollows(!follows);
+            });
+        }
+    };
+
     useEffect(() => {
         if (route?.params?.uid) {
             if (!currentUser) fetchProfile();
@@ -101,7 +115,6 @@ const Profile: FunctionComponent<
                         source={{
                             uri: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=928&q=80",
                         }}
-                        username={currentUser?.username as string}
                     />
                     <View style={{ flex: 1 }}>
                         <ProfileStats
@@ -109,44 +122,39 @@ const Profile: FunctionComponent<
                             followers={currentUserPosts?.length || 0}
                             following={currentUserPosts?.length || 0}
                         />
-
-                        <View>
-                            {route?.params?.uid &&
-                                route.params.uid !== firebase.auth().currentUser?.uid && (
-                                    <>
-                                        {!follows ? (
-                                            <StyledButton
-                                                onPress={() => {
-                                                    followUser(route?.params?.uid).then(
-                                                        () => {
-                                                            setFollows(!follows);
-                                                        }
-                                                    );
-                                                }}>
-                                                <StyledButtonText
-                                                    style={{ color: "white" }}>
-                                                    <>Follow</>
-                                                </StyledButtonText>
-                                            </StyledButton>
-                                        ) : (
-                                            <StyledButton
-                                                onPress={() => {
-                                                    unFollowUser(route?.params?.uid).then(
-                                                        () => {
-                                                            setFollows(!follows);
-                                                        }
-                                                    );
-                                                }}>
-                                                <StyledButtonText>
-                                                    Following
-                                                </StyledButtonText>
-                                            </StyledButton>
-                                        )}
-                                    </>
-                                )}
-                        </View>
                     </View>
                 </ProfileHeader>
+                <Box style={{
+                    flexDirection:'row'
+                }}>
+                    {route?.params?.uid &&
+                        route.params.uid !== firebase.auth().currentUser?.uid && (
+                            <>
+                                <Button
+                                    onPress={() => {
+                                        userFollowOrUnfollow();
+                                    }}
+                                    variant="primary"
+                                    label={!follows ? "Follow" : "Following"}
+                                />
+                            </>
+                        )}
+
+                    <Button
+                        onPress={() => {
+                            // userFollowOrUnfollow();
+                        }}
+                        variant="secondary"
+                        label={"Message"}
+                    />
+                    <Button
+                        onPress={() => {
+                            // userFollowOrUnfollow();
+                        }}
+                        variant="secondary"
+                        label={"Email"}
+                    />
+                </Box>
             </View>
             {/* <UserPostGallery> */}
             <Posts

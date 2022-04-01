@@ -19,6 +19,7 @@ export const pallete = {
     success: '',
     danger: '#ed4956',
     warning: '',
+    textWhite: "#fff",
     textLight: '#47afff',
     textDark: "#000"
 }
