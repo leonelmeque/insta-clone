@@ -21,6 +21,7 @@ import UserAvatar from "components/molecules/Avatar/Avatar";
 import ProfileStats from "components/molecules/Profile/ProfileStats";
 import Button from "components/atoms/Button";
 import Box from "components/atoms/Box";
+import ProfileActions from "components/molecules/Profile/ProfileActions";
 
 type RootState = {
     userState: UserState;
@@ -124,37 +125,7 @@ const Profile: FunctionComponent<
                         />
                     </View>
                 </ProfileHeader>
-                <Box style={{
-                    flexDirection:'row'
-                }}>
-                    {route?.params?.uid &&
-                        route.params.uid !== firebase.auth().currentUser?.uid && (
-                            <>
-                                <Button
-                                    onPress={() => {
-                                        userFollowOrUnfollow();
-                                    }}
-                                    variant="primary"
-                                    label={!follows ? "Follow" : "Following"}
-                                />
-                            </>
-                        )}
-
-                    <Button
-                        onPress={() => {
-                            // userFollowOrUnfollow();
-                        }}
-                        variant="secondary"
-                        label={"Message"}
-                    />
-                    <Button
-                        onPress={() => {
-                            // userFollowOrUnfollow();
-                        }}
-                        variant="secondary"
-                        label={"Email"}
-                    />
-                </Box>
+                <ProfileActions route={route} navigation={navigation} />
             </View>
             {/* <UserPostGallery> */}
             <Posts
