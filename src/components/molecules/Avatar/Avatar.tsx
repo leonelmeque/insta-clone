@@ -4,7 +4,7 @@ import Text from "components/atoms/Text";
 import Box from "components/atoms/Box";
 
 interface AvatarProps extends ComponentPropsWithRef<typeof Image> {
-    size?: number | string;
+    size: number;
     zIndex?: number;
     username?: string;
     usernamePlacement?: "right" | "bottom";
@@ -22,7 +22,7 @@ const Avatar: VoidFunctionComponent<AvatarProps> = ({
     const { avatar, container } = styles({ usernamePlacement, size, style });
     return (
         <Box margin="s" padding="s" style={container}>
-            <Image style={{...avatar, ...style as object}} {...rest} />
+            <Image style={{ ...avatar, ...(style as object) }} {...rest} />
             {!hideUsernameLabel && (
                 <Text variant="body" color="secondary">
                     {username}
@@ -39,8 +39,8 @@ const styles = (props: any) =>
             alignItems: "center",
         },
         avatar: {
-            width: props.size ? props.size  : 32,
-            height: props.size ? props.size  : 32,
+            width: props.size ? props.size : 32,
+            height: props.size ? props.size : 32,
             borderRadius: 9999999,
             // margin:
             //     props.style.margin || props.usernamePlacement === "right"

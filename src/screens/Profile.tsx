@@ -95,7 +95,7 @@ const Profile: FunctionComponent<
             <View>
                 <ProfileHeader>
                     <UserAvatar
-                        size="84"
+                        size={84}
                         style={{margin:0}}
                         source={{
                             uri: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=928&q=80",
