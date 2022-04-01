@@ -2,10 +2,10 @@ import { FunctionComponent } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { UserState } from "store/reducers/user";
 import styled from "styled-components/native";
-import { Image, Pressable, Text, View } from "react-native";
+import { Dimensions, Image, Pressable, Text, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { useState } from "react";
 import { StackParamsList } from "navigation/types";
 import { useEffect } from "react";
@@ -23,6 +23,7 @@ import Button from "components/atoms/Button";
 import Box from "components/atoms/Box";
 import ProfileActions from "components/molecules/Profile/ProfileActions";
 import ProfileDescription from "components/molecules/Profile/ProfileDescription";
+import ProfileGallery from "components/molecules/Profile/ProfileGallery";
 
 type RootState = {
     userState: UserState;
@@ -45,7 +46,11 @@ const Post = (props: { uri: string }) => {
     const [isImageLoading, setIsImageLoading] = useState<boolean>(true);
 
     return (
-        <View style={{ flex: 1 }}>
+        <Box
+            style={{
+                width: Dimensions.get("screen").width / 3,
+                maxHeight: Dimensions.get("screen").width / 3,
+            }}>
             {isImageLoading && (
                 <View style={{ flex: 1 }}>
                     <Text>Loading Image Content</Text>
@@ -58,7 +63,7 @@ const Post = (props: { uri: string }) => {
                 }}
                 onError={() => console.log("error loading asset")}
             />
-        </View>
+        </Box>
     );
 };
 
@@ -67,7 +72,6 @@ const Profile: FunctionComponent<
 > = ({ user, posts, following, navigation, route }) => {
     const [currentUserPosts, setCurrentUserPosts] = useState<object[] | undefined>();
     const [currentUser, setCurrentUser] = useState<{ username?: string } | undefined>();
-    const [follows, setFollows] = useState<boolean | null>(null);
 
     // Fetching user profile
     const fetchProfile = async () => {
@@ -80,19 +84,6 @@ const Profile: FunctionComponent<
         // Initializing states
         setCurrentUser(userResult as { username: string });
         setCurrentUserPosts(postsResult);
-        setFollows(followingResult);
-    };
-
-    const userFollowOrUnfollow = () => {
-        if (!follows) {
-            followUser(route?.params?.uid).then(() => {
-                setFollows(!follows);
-            });
-        } else {
-            unFollowUser(route?.params?.uid).then(() => {
-                setFollows(!follows);
-            });
-        }
     };
 
     useEffect(() => {
@@ -122,7 +113,7 @@ const Profile: FunctionComponent<
                         <ProfileStats
                             posts={currentUserPosts?.length || 0}
                             followers={currentUserPosts?.length || 0}
-                            following={currentUserPosts?.length || 0}
+                            following={following?.length || 0}
                         />
                     </View>
                 </ProfileHeader>
@@ -133,29 +124,18 @@ const Profile: FunctionComponent<
                 />
                 <ProfileActions route={route} navigation={navigation} />
             </View>
-            {/* <UserPostGallery> */}
-            <Posts
-                numColumns={3}
-                horizontal={false}
-                data={currentUserPosts}
-                renderItem={({ item, index }) => (
-                    <View
-                        style={{
-                            flex: 1 / 3,
-                        }}>
-                        <Post uri={item.downloadURL} />
-                    </View>
-                )}
-            />
+
+            <ProfileGallery posts={currentUserPosts as []} />
+
             {/* </UserPostGallery> */}
-            <StyledButton
+            {/* <StyledButton
                 onPress={() => {
                     console.log("sign out complete");
                     firebase.auth().signOut();
                     navigation.navigate("Landing");
                 }}>
                 <StyledButtonText>Sign out</StyledButtonText>
-            </StyledButton>
+            </StyledButton> */}
         </StyledView>
     );
 };
@@ -191,8 +171,9 @@ const StyledButtonText = styled(Text)`
     font-weight: bold;
 `;
 
-const StyledView = styled(View)`
+const StyledView = styled(ScrollView)`
     flex: 1;
+    background-color: white;
 `;
 
 const UserProfileContainer = styled(View)``;
