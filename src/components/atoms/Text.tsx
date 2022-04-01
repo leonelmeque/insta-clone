@@ -4,19 +4,19 @@ import ThemeContext from "theme/context";
 import { pallete, theme, ThemeProps } from "theme/theme";
 
 interface TextProps extends ComponentProps<typeof RNText> {
-    color: keyof typeof pallete;
+    color?: keyof typeof pallete ;
     variant: keyof typeof theme.textVariants;
 }
 
 const Text: FunctionComponent<TextProps> = ({
     children,
     variant="body",
-    color="text",
+    color="primary",
     style,
     ...rest
 }) => {
     const theme = useContext(ThemeContext) as ThemeProps;
- 
+    
     return (
         <RNText
             style={{

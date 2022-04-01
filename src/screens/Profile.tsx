@@ -22,6 +22,7 @@ import ProfileStats from "components/molecules/Profile/ProfileStats";
 import Button from "components/atoms/Button";
 import Box from "components/atoms/Box";
 import ProfileActions from "components/molecules/Profile/ProfileActions";
+import ProfileDescription from "components/molecules/Profile/ProfileDescription";
 
 type RootState = {
     userState: UserState;
@@ -125,6 +126,11 @@ const Profile: FunctionComponent<
                         />
                     </View>
                 </ProfileHeader>
+                <ProfileDescription
+                    username={currentUser?.username as string}
+                    profileType={"Unknow Profile Type"}
+                    description="Some type of description that we will add later"
+                />
                 <ProfileActions route={route} navigation={navigation} />
             </View>
             {/* <UserPostGallery> */}
