@@ -4,7 +4,7 @@ import { Button, SafeAreaView, View, TextInput } from "react-native";
 import { useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { LandingScreenNavigationParams } from "navigation/types";
-import { onSignIn } from "@library/backend";
+import { onSignIn } from "library/backend";
 
 interface LandingProps
     extends NativeStackScreenProps<LandingScreenNavigationParams, "Landing"> {}

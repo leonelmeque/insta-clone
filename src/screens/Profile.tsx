@@ -18,6 +18,7 @@ import {
 } from "library/backend";
 import firebase from "firebase";
 import UserAvatar from "components/molecules/Avatar/Avatar";
+import ProfileStats from "components/molecules/Profile/ProfileStats";
 
 type RootState = {
     userState: UserState;
@@ -27,7 +28,7 @@ const mapStateToProps = (store: RootState): UserState => ({
     user: store.userState.user,
     posts: store.userState.posts,
     following: store.userState.following,
-    feed:[]
+    feed: [],
 });
 
 const connector = connect(mapStateToProps);
@@ -96,36 +97,19 @@ const Profile: FunctionComponent<
                 <ProfileHeader>
                     <UserAvatar
                         size={84}
-                        style={{margin:0}}
+                        style={{ margin: 0 }}
                         source={{
                             uri: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=928&q=80",
                         }}
                         username={currentUser?.username as string}
                     />
                     <View style={{ flex: 1 }}>
-                        <View
-                            style={{
-                                flex: 1,
-                                flexDirection: "row",
-                                backgroundColor: "blue",
-                            }}>
-                            <View style={{ flex: 1, alignItems: "center" }}>
-                                <ProfileStatusNumbers>
-                                    {currentUserPosts?.length}
-                                </ProfileStatusNumbers>
-                                <ProfileStatusLabel> Posts </ProfileStatusLabel>
-                            </View>
-                            <View style={{ flex: 1, alignItems: "center" }}>
-                                <ProfileStatusNumbers>
-                                    {currentUserPosts?.length}
-                                </ProfileStatusNumbers>
-                                <ProfileStatusLabel> Following </ProfileStatusLabel>
-                            </View>
-                            <View style={{ flex: 1, alignItems: "center" }}>
-                                <ProfileStatusNumbers>{0}</ProfileStatusNumbers>
-                                <ProfileStatusLabel> Followers </ProfileStatusLabel>
-                            </View>
-                        </View>
+                        <ProfileStats
+                            posts={currentUserPosts?.length || 0}
+                            followers={currentUserPosts?.length || 0}
+                            following={currentUserPosts?.length || 0}
+                        />
+
                         <View>
                             {route?.params?.uid &&
                                 route.params.uid !== firebase.auth().currentUser?.uid && (
@@ -182,7 +166,7 @@ const Profile: FunctionComponent<
             <StyledButton
                 onPress={() => {
                     console.log("sign out complete");
-                    firebase.auth().signOut()
+                    firebase.auth().signOut();
                     navigation.navigate("Landing");
                 }}>
                 <StyledButtonText>Sign out</StyledButtonText>

@@ -1,18 +1,8 @@
 import React from 'react'
 
-export type ColorProps = {
-    background: string;
-    foreground: string;
-    primary: string;
-    secondary: string;
-    success: string;
-    danger: string;
-    warning: string;
-    text: string
-}
 
 export type ThemeProps = {
-    colors: ColorProps;
+    colors: typeof pallete;
     spacing: typeof spacing;
     textVariants: {
         header: {},
@@ -21,7 +11,7 @@ export type ThemeProps = {
     breakpoints: typeof breakpoints
 }
 
-export const pallete: ColorProps = {
+export const pallete = {
     background: '#fff',
     foreground: '#fafafa',
     primary: 'rgb(0, 149, 246)',
@@ -29,7 +19,8 @@ export const pallete: ColorProps = {
     success: '',
     danger: '#ed4956',
     warning: '',
-    text: '#47afff'
+    textLight: '#47afff',
+    textDark: "#000"
 }
 
 export const breakpoints = {
