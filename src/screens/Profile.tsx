@@ -12,14 +12,10 @@ import { useEffect } from "react";
 import {
     getUser,
     fetchUserPosts,
-    followUser,
-    unFollowUser,
     isFollowing,
 } from "library/backend";
-import firebase from "firebase";
 import UserAvatar from "components/molecules/Avatar/Avatar";
 import ProfileStats from "components/molecules/Profile/ProfileStats";
-import Button from "components/atoms/Button";
 import Box from "components/atoms/Box";
 import ProfileActions from "components/molecules/Profile/ProfileActions";
 import ProfileDescription from "components/molecules/Profile/ProfileDescription";
@@ -41,31 +37,6 @@ const connector = connect(mapStateToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 interface ProfileProps extends PropsFromRedux {}
-
-const Post = (props: { uri: string }) => {
-    const [isImageLoading, setIsImageLoading] = useState<boolean>(true);
-
-    return (
-        <Box
-            style={{
-                width: Dimensions.get("screen").width / 3,
-                maxHeight: Dimensions.get("screen").width / 3,
-            }}>
-            {isImageLoading && (
-                <View style={{ flex: 1 }}>
-                    <Text>Loading Image Content</Text>
-                </View>
-            )}
-            <StyledPost
-                source={{ uri: props.uri }}
-                onLoad={() => {
-                    setIsImageLoading(false);
-                }}
-                onError={() => console.log("error loading asset")}
-            />
-        </Box>
-    );
-};
 
 const Profile: FunctionComponent<
     NativeStackScreenProps<StackParamsList, "Profile"> & ProfileProps

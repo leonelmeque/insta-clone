@@ -16,7 +16,7 @@ const ProfileStats: FunctionComponent<ProfileStatsProps> = (props) => {
                 <Text style={{ textAlign: "center" }} variant="body" color="textDark">
                     {props.posts}
                 </Text>
-                <Text variant="body" color="textDark">
+                <Text style={{ color: "#8e8e8e" }} variant="body" color="textDark">
                     Posts
                 </Text>
             </Box>
@@ -24,7 +24,10 @@ const ProfileStats: FunctionComponent<ProfileStatsProps> = (props) => {
                 <Text style={{ textAlign: "center" }} variant="body" color="textDark">
                     {props.following}
                 </Text>
-                <Text style={{ textAlign: "center" }} variant="body" color="textDark">
+                <Text
+                    style={{ textAlign: "center", color: "#8e8e8e" }}
+                    variant="body"
+                    color="textDark">
                     Following
                 </Text>
             </Box>
@@ -32,7 +35,10 @@ const ProfileStats: FunctionComponent<ProfileStatsProps> = (props) => {
                 <Text style={{ textAlign: "center" }} variant="body" color="textDark">
                     {props.followers}
                 </Text>
-                <Text style={{ textAlign: "center" }} variant="body" color="textDark">
+                <Text
+                    style={{ textAlign: "center", color: "#8e8e8e" }}
+                    variant="body"
+                    color="textDark">
                     Followers
                 </Text>
             </Box>

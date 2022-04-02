@@ -14,11 +14,10 @@ const ProfileDescription: FunctionComponent<ProfileDescriptionProps> = ({
     description,
 }) => (
     <Box style={{ paddingHorizontal: 14, marginVertical: 12 }}>
-        {/* the username */}
         <Text variant="body" color="textDark">
             {username}
         </Text>
-        <Text variant="body" color="textLight" style={{ color: "grey" }}>
+        <Text variant="body" color="textLight" style={{ color: "#8e8e8e",fontSize:13.5 }}>
             {profileType}
         </Text>
         <Text variant="body" color="textDark">

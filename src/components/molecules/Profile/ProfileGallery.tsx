@@ -1,5 +1,4 @@
 import Box from "components/atoms/Box";
-import Text from "components/atoms/Text";
 import React, {  useState, VoidFunctionComponent } from "react";
 import { Dimensions, Image } from "react-native";
 
@@ -7,7 +6,6 @@ interface ProfileGalleryProps {
     posts: any[];
 }
 
-const numColumns = 2;
 const WIDTH = Dimensions.get("screen").width;
 const HEIGHT = Dimensions.get("screen").height;
 
