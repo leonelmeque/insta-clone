@@ -9,7 +9,6 @@ const StyledAvatar = styled.Image`
     width: ${(props: AvatarProps) => (props.size ? props.size + "px" : "32px")};
     height: ${(props: AvatarProps) => (props.size ? props.size + "px" : "32px")};
     border-radius: 999999px;
-    margin-right: 8px;
     z-index: ${(props) => (props.zIndex ? props.zIndex : 0)};
 `;
 

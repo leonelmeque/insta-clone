@@ -1,23 +1,20 @@
-import React, { FunctionComponent } from "react";
+import React, { ComponentProps, FunctionComponent } from "react";
 import styled from "styled-components/native";
-
-interface PostImageProps {
+import { Image, StyleSheet } from "react-native";
+interface PostImageProps extends ComponentProps<typeof Image>{
     [key: string]: any;
 }
 
 const PostImage: FunctionComponent<PostImageProps> = (props) => {
-    return (
-        <StyledPostImage
-            source={{
-                uri: props.downloadURL,
-            }}
-        />
-    );
+    console.log(props);
+    return <Image style={style.postImage} {...props} />;
 };
 
-const StyledPostImage = styled.Image`
-    width: 100%;
-    height: 400px;
-`;
+const style = StyleSheet.create({
+    postImage: {
+        width: "100%",
+        height: 400,
+    },
+});
 
 export default PostImage;

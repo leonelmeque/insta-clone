@@ -44,10 +44,11 @@ const FeedPost = ({
         <Box>
             <PostCaption username={rest.user.username} caption={rest.caption} />
             <PostComments comments={comments} />
-            <Text variant="body" color="textDark">{postDate}</Text>
+            <Text variant="body" color="textDark">
+                {postDate}
+            </Text>
         </Box>
     </Box>
 );
-
 
 export default FeedPost;
