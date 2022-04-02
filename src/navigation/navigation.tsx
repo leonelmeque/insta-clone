@@ -30,6 +30,7 @@ import { VoidFunctionComponent } from "react";
 // UI Components imports
 import { View } from "react-native";
 import Avatar from "components/molecules/Avatar/Avatar";
+import Box from "components/atoms/Box";
 
 // Creating navigators
 const Tabs = createBottomTabNavigator();
@@ -43,7 +44,9 @@ const VoidComponent = () => {
 
 // Main Navigation
 export const GlobalNavigation = () => (
-    <Stack.Navigator initialRouteName="Main">
+    <Stack.Navigator
+        initialRouteName="Main"
+    >
         <Stack.Screen
             name="Main"
             component={MainScreen}
@@ -80,6 +83,7 @@ export const ExploreNavigation = () => (
 export const AppTabNavigation = () => (
     <Tabs.Navigator
         initialRouteName="Home"
+        defaultScreenOptions={{}}
         screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, size, color }) => {
                 switch (route.name) {

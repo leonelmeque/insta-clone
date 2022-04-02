@@ -60,6 +60,7 @@ const PostComments: FunctionComponent<PostCommentsProps> = (props) => {
                         variant="body"
                         style={{
                             color: "#B3B3B3",
+                            marginLeft:8
                         }}>
                         Add a comment...
                     </Text>

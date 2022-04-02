@@ -32,7 +32,7 @@ const UserPost = ({
     downloadURL,
     ...rest
 }: UserPostProps) => (
-    <Box>
+    <Box style={{backgroundColor:"#fff"}}> 
         <PostHeader username={rest.user.username} />
         <PostImage
             source={{

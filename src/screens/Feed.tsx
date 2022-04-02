@@ -1,12 +1,12 @@
 import { HomeAppBar } from "components/AppBar";
-import UserPost from "components/organism/UserPost/UserPost";
-import Stories from "components/Stories";
+import UserPost from "components/organisms/UserPost/UserPost";
 import React, { useState } from "react";
 import { SafeAreaView, View, ScrollView } from "react-native";
 import { connect, ConnectedProps } from "react-redux";
 import { UserState } from "store/reducers/user";
 import { useEffect } from "react";
 import { FeedState } from "store/reducers/feed";
+import Box from "components/atoms/Box";
 
 type RootState = {
     userState: UserState<any>;
@@ -44,17 +44,16 @@ function FeedScreen(props: Props): JSX.Element {
     }, [props.usersFollowingLoaded, props.feed]);
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={{backgroundColor:"#fff"}}>
             <HomeAppBar />
             <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
-                <Stories />
-                <View style={{ flex: 1, marginBottom:79 }}>
+                <Box style={{ flex: 1, marginBottom:79}}>
                     <ScrollView>
                         {posts.map((item: any) => (
                             <UserPost key={item.id} {...item} />
                         ))}
                     </ScrollView>
-                </View>
+                </Box>
             </ScrollView>
         </SafeAreaView>
     );

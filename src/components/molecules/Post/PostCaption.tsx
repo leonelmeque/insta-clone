@@ -1,6 +1,8 @@
-import React from 'react'
+import Box from "components/atoms/Box";
+import Text from "components/atoms/Text";
+import React from "react";
 import { FunctionComponent } from "react";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import styled from "styled-components/native";
 
 interface PostCaptionProps {
@@ -11,27 +13,31 @@ interface PostCaptionProps {
 // Which will make a request to translate the caption
 const PostCaption: FunctionComponent<PostCaptionProps> = (props) => {
     return (
-        <Container >
-            <UserProfileName>{props.username}</UserProfileName>
-            <Caption>{props.caption}</Caption>
-        </Container>
+        <Box style={style.container}>
+            <Text variant="body" style={style.username} color="textDark">
+                {props.username}
+            </Text>
+            <Text variant="body" color="textDark" style={style.caption}>
+                {props.caption}
+            </Text>
+        </Box>
     );
 };
 
-const Container = styled.View`
-    flex-direction: row;
-    padding: 0px 10px;
-`;
-
-const UserProfileName = styled.Text`
-    font-weight: 600;
-    font-size: 14px;
-`;
-
-const Caption = styled.Text`
-    font-weight: 400;
-    font-size: 15px;
-    margin-left: 4px;
-`;
+const style = StyleSheet.create({
+    container: {
+        flexDirection: "row",
+        paddingHorizontal: 10,
+    },
+    username: {
+        fontWeight: "600",
+        fontSize: 14,
+    },
+    caption: {
+        fontWeight: "400",
+        fontSize: 15,
+        marginLeft: 4,
+    },
+});
 
 export default PostCaption;
