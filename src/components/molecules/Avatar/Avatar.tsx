@@ -21,13 +21,8 @@ const Avatar: VoidFunctionComponent<AvatarProps> = ({
 }) => {
     const { avatar, container } = styles({ usernamePlacement, size, style });
     return (
-        <Box margin="s" padding="s" style={container}>
+        <Box style={container}>
             <Image style={{ ...avatar, ...(style as object) }} {...rest} />
-            {!hideUsernameLabel && (
-                <Text variant="body" color="secondary">
-                    {username}
-                </Text>
-            )}
         </Box>
     );
 };
@@ -42,10 +37,6 @@ const styles = (props: any) =>
             width: props.size ? props.size : 32,
             height: props.size ? props.size : 32,
             borderRadius: 9999999,
-            // margin:
-            //     props.style.margin || props.usernamePlacement === "right"
-            //         ? "0px 8px 0px 0px"
-            //         : "0px 0px 8px 0px",
             zIndex: props.zIndex || 0,
         },
     });

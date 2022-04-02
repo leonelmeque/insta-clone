@@ -1,5 +1,6 @@
+import Box from "components/atoms/Box";
+import Text from "components/atoms/Text";
 import React from "react";
-import { View } from "react-native";
 import styled from "styled-components/native";
 import PostCaption from "./PostCaption";
 import PostComments from "./PostComments";
@@ -31,7 +32,7 @@ const FeedPost = ({
     downloadURL,
     ...rest
 }: FeedPostProps) => (
-    <StyledView>
+    <Box>
         <PostHeader username={rest.user.username} />
         <PostImage
             source={{
@@ -40,24 +41,13 @@ const FeedPost = ({
         />
         <PostSocialActions hasLike={isLiked} isBookmarked={isSaved} />
         <PostLikes likes={likes} />
-        <View>
+        <Box>
             <PostCaption username={rest.user.username} caption={rest.caption} />
             <PostComments comments={comments} />
-            <PostDate>{postDate}</PostDate>
-        </View>
-    </StyledView>
+            <Text variant="body" color="textDark">{postDate}</Text>
+        </Box>
+    </Box>
 );
 
-const PostDate = styled.Text`
-    font-size: 12px;
-    color: #acacac;
-    margin: 4px 0px;
-`;
-
-const StyledView = styled.View`
-    width: 100%;
-    /* height: 400px; */
-    /* background-color:blue; */
-`;
 
 export default FeedPost;
