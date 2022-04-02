@@ -1,8 +1,8 @@
-import { Avatar } from '@components/Avatar';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { View, FlatList } from 'react-native';
 import styled from 'styled-components/native';
+import Avatar from 'components/molecules/Avatar/Avatar';
 
 const stories = [
   {
@@ -56,6 +56,8 @@ const Stories = () => {
               source={{
                 uri: item.avatarImage,
               }}
+   
+              username={`${item.username.substring(0,16)}${item.username.length>14 || '...'}`}
             />
             {index === 0 && (
               <AddStoryButton>
@@ -67,7 +69,6 @@ const Stories = () => {
               </AddStoryButton>
             )}
           </View>
-          <UserStoryName>{item.username.substring(0,16)}{item.username.length>14 && <>...</> }</UserStoryName>
         </Story>
       )}
     />

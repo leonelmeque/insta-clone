@@ -1,9 +1,8 @@
 import React from "react";
-import styled from "styled-components/native";
 import { FlatList, Pressable, Text, View } from "react-native";
 import { useState } from "react";
 import { TextInput } from "react-native-gesture-handler";
-import { searchUsers } from "@library/backend";
+import { searchUsers } from "library/backend";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useEffect } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";

@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { View } from "react-native";
-import { Avatar } from "@components/Avatar";
+import { Avatar } from "components/Avatar";
 import styled from "styled-components/native";
 
 interface PostLikesProps {

@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 export const HomeAppBar = () => (
   <StyledHomeAppBar>
     <Logo
-      source={require('@assets/images/Instagram_logo.png')}
+      source={require('assets/images/Instagram_logo.png')}
     />
     <StyledAppBarActions>
       <Action name='add' size={32} />

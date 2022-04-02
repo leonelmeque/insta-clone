@@ -4,6 +4,7 @@ import styled from "styled-components/native";
 import PostCaption from "./PostCaption";
 import PostComments from "./PostComments";
 import PostHeader from "./PostHeader";
+import PostImage from "./PostImage";
 import PostLikes from "./PostLikes";
 import PostSocialActions from "./PostSocialActions";
 
@@ -51,11 +52,6 @@ const PostDate = styled.Text`
     font-size: 12px;
     color: #acacac;
     margin: 4px 0px;
-`;
-
-const PostImage = styled.Image`
-    width: 100%;
-    height: 400px;
 `;
 
 const StyledView = styled.View`

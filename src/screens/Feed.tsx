@@ -1,12 +1,12 @@
-import { HomeAppBar } from "@components/AppBar";
-import FeedPost from "@components/Post/Post";
-import Stories from "@components/Stories";
+import { HomeAppBar } from "components/AppBar";
+import FeedPost from "components/Post/Post";
+import Stories from "components/Stories";
 import React, { useState } from "react";
 import { SafeAreaView, View, ScrollView } from "react-native";
 import { connect, ConnectedProps } from "react-redux";
-import { UserState } from "@redux/reducers/user";
+import { UserState } from "store/reducers/user";
 import { useEffect } from "react";
-import { FeedState } from "redux/reducers/feed";
+import { FeedState } from "store/reducers/feed";
 
 type RootState = {
     userState: UserState<any>;

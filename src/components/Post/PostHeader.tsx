@@ -3,7 +3,7 @@ import { Feather } from '@expo/vector-icons';
 import {FunctionComponent} from 'react'
 import { View } from 'react-native';
 import styled from "styled-components/native";
-import { Avatar } from '@components/Avatar';
+import Avatar from 'components/molecules/Avatar/Avatar'
 
 interface PostHeaderProps {
     [key:string]: any

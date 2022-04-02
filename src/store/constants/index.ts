@@ -1,6 +1,6 @@
 //User action types
 
-import { UserState } from "redux/reducers/user";
+import { UserState } from "store/reducers/user";
 
 
 export enum UserActionType {
@@ -31,7 +31,7 @@ export interface UserFollowingStateChange {
 
 //Feed action types
 
-import { FeedState } from "redux/reducers/feed";
+import { FeedState } from "store/reducers/feed";
 
 
 export enum FeedActionType {

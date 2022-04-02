@@ -5,32 +5,32 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 
 // Icons imports
-import SvgSearchOutlined from "@components/Icons/react-icons/SearchOutlined";
+import SvgSearchOutlined from "components/Icons/react-icons/SearchOutlined";
 import {
     HomeFilled,
     SearchOutlined,
     AddCircular,
     Heart,
-} from "@components/Icons/react-icons";
+} from "components/Icons/react-icons";
 import { Ionicons } from "@expo/vector-icons";
 
 // Screens imports
-import FeedScreen from "@screens/Feed";
-import AddScreen from "@screens/Add";
-import ExploreScreen from "@screens/Explore";
-import RegisterScreen from "@screens/auth/Register";
-import LandingScreen from "@screens/auth/Landing";
-import MainScreen from "@screens/Main";
-import UploadImage from "@screens/UploadImage";
-import ProfileScreen from "@screens/Profile";
+import FeedScreen from "screens/Feed";
+import AddScreen from "screens/Add";
+import ExploreScreen from "screens/Explore";
+import RegisterScreen from "screens/auth/Register";
+import LandingScreen from "screens/auth/Landing";
+import MainScreen from "screens/Main";
+import UploadImage from "screens/UploadImage";
+import ProfileScreen from "screens/Profile";
 
 // Types Imports
 import { LandingScreenNavigationParams, StackParamsList } from "./types";
 import { VoidFunctionComponent } from "react";
 
 // UI Components imports
-import { Avatar } from "@components/Avatar";
 import { View } from "react-native";
+import Avatar from "components/molecules/Avatar/Avatar";
 
 // Creating navigators
 const Tabs = createBottomTabNavigator();
@@ -94,12 +94,23 @@ export const AppTabNavigation = () => (
                         return <Heart />;
                     case "Profile":
                         return (
-                            <Avatar
-                                size={size + 2}
-                                source={{
-                                    uri: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=776&q=80",
-                                }}
-                            />
+                            <View style={{
+                               
+                                justifyContent:'center',
+                                alignItems:'flex-end',
+                                // backgroundColor: 'blue'
+                                
+                            }}>
+                                {/* Fix this issue with styling */}
+                                <Avatar
+                                    size={size + 4}
+                                    style={{ margin: 10 }}
+                                    source={{
+                                        uri: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=776&q=80",
+                                    }}
+                                    hideUsernameLabel
+                                />
+                            </View>
                         );
                 }
                 return <Ionicons name={"home"} size={32} color={color} />;
