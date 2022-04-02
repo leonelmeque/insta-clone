@@ -1,9 +1,5 @@
 import firebase from 'firebase'
 import { SetStateAction } from 'react'
-import { Dispatch } from 'redux'
-
-require("firebase/firestore")
-require("firebase/storage")
 
 export const fireBaseUploadImage = async ({ uri, caption }: { uri: string; caption: string }) => {
     const response = await fetch(uri)
@@ -47,11 +43,11 @@ export const searchUsers = (query: string, callback: SetStateAction<any>) => {
         })
 
         callback(data)
+
     }, (err) => {
         console.log(err.message)
     })
 }
-
 
 export const getUser = (uid: string) => {
     return firebase
@@ -60,12 +56,8 @@ export const getUser = (uid: string) => {
         .doc(uid)
         .get()
         .then((snapshot) => {
-            if (snapshot.exists) {
-                return snapshot.data()
-
-            } else {
-                return null
-            }
+            if (snapshot.exists) return snapshot.data()
+            else return null
         })
 }
 
@@ -89,7 +81,6 @@ export const fetchUserPosts = (uid: string) => {
 
 }
 
-
 export const followUser = (uid: string) => {
     return firebase
         .firestore()
@@ -110,9 +101,8 @@ export const unFollowUser = (uid: string) => {
         .delete()
 }
 
-export const isFollowing = (uid: string)=> {
-
-     return firebase
+export const isFollowing = (uid: string) => {
+    return firebase
         .firestore()
         .collection("following")
         .doc(firebase.auth().currentUser?.uid)
@@ -120,13 +110,38 @@ export const isFollowing = (uid: string)=> {
         .doc(uid)
         .get()
         .then((snapshot) => {
-            if (snapshot.exists) {
-                console.log("Is already following")
-                return true
-
-            } else {
-                console.log("does not follow")
-                return false
-            }
+            if (snapshot.exists) return true
+            else return false
         })
 }
+
+export const onSignIn = (email: string, password: string) => {
+    return firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then((result) => {
+
+        })
+        .catch((result) => {
+
+        });
+};
+
+export const onSignUp = (email: string, password: string, username: string) => {
+    return firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then((result) => {
+            firebase
+                .firestore()
+                .collection("users")
+                .doc(firebase.auth()?.currentUser?.uid)
+                .set({
+                    username,
+                    email,
+                });
+        })
+        .catch((result) => {
+            console.log(result);
+        });
+};

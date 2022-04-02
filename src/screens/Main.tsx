@@ -1,16 +1,42 @@
 // React imports
-import React from 'react'
-import { FunctionComponent } from 'react';
+import React, { useEffect, useMemo } from "react";
+import { FunctionComponent } from "react";
 
 // Navigation imports
-import { AppTabNavigation } from '@navigation/index';
+import { AppTabNavigation } from "navigation/index";
+import { UserState } from "store/reducers/user";
+import { bindActionCreators, Dispatch } from "redux";
+import { loadData } from "store/actions";
+import { connect, ConnectedProps } from "react-redux";
 
-interface MainScreenProps {}
-
-const MainScreen: FunctionComponent<
-  MainScreenProps
-> = () => {
-  return <AppTabNavigation />;
+type RootState = {
+    userState: UserState;
 };
 
-export default MainScreen;
+const mapStateToProps = (store: RootState): UserState => ({
+    user: store.userState.user,
+    posts: store.userState.posts,
+    following: store.userState.following,
+    feed: [],
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) =>
+    bindActionCreators({ loadData }, dispatch);
+
+const connector = connect(mapStateToProps, mapDispatchToProps)
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+interface Props extends PropsFromRedux {}
+
+const MainScreen: FunctionComponent<Props> = (props) => {
+
+    useEffect(() => {
+        props.loadData();
+        return () => {};
+    }, []);
+
+    return <AppTabNavigation />;
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainScreen);

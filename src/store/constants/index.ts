@@ -1,6 +1,6 @@
 //User action types
 
-import { UserState } from "redux/reducers/user";
+import { UserState } from "store/reducers/user";
 
 
 export enum UserActionType {
@@ -27,4 +27,28 @@ export interface UserPostsStateChange {
 export interface UserFollowingStateChange {
     type: UserActionType.USER_FOLLOWING_STATE_CHANGE,
     payload: Pick<UserState, 'following'>
+}
+
+//Feed action types
+
+import { FeedState } from "store/reducers/feed";
+
+
+export enum FeedActionType {
+    FEED_STATE_CHANGE = "FEED_STATE_CHANGE",
+    FEED_POSTS_STATE_CHANGE = "FEED_POSTS_STATE_CHANGE",
+    // FEED_FOLLOWING_STATE_CHANGE = "FEED_FOLLOWING_STATE_CHANGE"
+}
+
+export interface FeedStateChangeAction {
+    type: FeedActionType.FEED_STATE_CHANGE,
+    payload: Pick<FeedState, 'users'>
+}
+export interface FeedPostsStateChange {
+    type: FeedActionType.FEED_POSTS_STATE_CHANGE,
+    payload: {
+        posts: [],
+        usersFollowingLoaded?: number,
+        uid: string
+    }
 }

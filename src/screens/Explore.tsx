@@ -1,83 +1,64 @@
-import React from 'react';
-import styled from 'styled-components/native';
-import {
-  FlatList,
-  Pressable,
-  Text,
-  View,
-} from 'react-native';
-import firebase from 'firebase';
-import { useState } from 'react';
-import { TextInput } from 'react-native-gesture-handler';
-import { searchUsers } from '@library/api';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useEffect } from 'react';
-import { useRef } from 'react';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { StackParamsList } from 'navigation/types';
+import React from "react";
+import { FlatList, Pressable, Text, View } from "react-native";
+import { useState } from "react";
+import { TextInput } from "react-native-gesture-handler";
+import { searchUsers } from "library/backend";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useEffect } from "react";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackParamsList } from "navigation/types";
 
-interface ExploreProps
-  extends NativeStackScreenProps<
-    StackParamsList,
-    'Explore'
-  > {}
+interface ExploreProps extends NativeStackScreenProps<StackParamsList, "Explore"> {}
 
-const Explore: React.FunctionComponent<ExploreProps> = (
-  props
-): JSX.Element => {
-  const [users, setUsers] = useState<
-    { username: string; id: string }[]
-  >([]);
-  const [searchQuery, setSearchQuery] =
-    useState<string>('');
+const Explore: React.FunctionComponent<ExploreProps> = (props): JSX.Element => {
+    const [users, setUsers] = useState<{ username: string; id: string }[]>([]);
+    const [searchQuery, setSearchQuery] = useState<string>("");
 
-  useEffect(() => {
-    if (!searchQuery) return;
-    let cancelRequest: () => void = searchUsers(
-      searchQuery,
-      setUsers
-    );
+    useEffect(() => {
+        if (!searchQuery) return;
 
-    return () => {
-      if (typeof cancelRequest === 'function') {
-        cancelRequest();
-      }
-    };
-  }, [searchQuery]);
+        let cancelRequest: () => void = searchUsers(searchQuery, setUsers);
 
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View>
-        <TextInput
-          placeholder='Search'
-          value={searchQuery}
-          onChangeText={(value) => {
-            setSearchQuery(value);
-            if (!value.length) {
-              setUsers([]);
+        return () => {
+            if (typeof cancelRequest === "function") {
+                cancelRequest();
             }
-          }}
-        />
-        <FlatList
-          data={users}
-          numColumns={1}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item, index }) => (
-            <Pressable
-              key={index.toString()}
-              onPress={() => {
-                props.navigation.navigate(
-                  'Explore/Profile',
-                  { uid: item.id, profile: item.username }
-                );
-              }}>
-              <Text>{item?.username}</Text>
-            </Pressable>
-          )}
-        />
-      </View>
-    </SafeAreaView>
-  );
+        };
+    }, [searchQuery]);
+
+    return (
+        <SafeAreaView style={{ flex: 1 }}>
+            <View>
+                <TextInput
+                    placeholder="Search"
+                    value={searchQuery}
+                    onChangeText={(value) => {
+                        setSearchQuery(value);
+                        if (!value.length) {
+                            setUsers([]);
+                        }
+                    }}
+                />
+                <FlatList
+                    data={users}
+                    numColumns={1}
+                    showsVerticalScrollIndicator={false}
+                    renderItem={({ item, index }) => (
+                        <Pressable
+                            key={index.toString()}
+                            onPress={() => {
+                                props.navigation.navigate("Explore/Profile", {
+                                    uid: item.id,
+                                    profile: item.username,
+                                });
+                            }}>
+                            <Text>{item?.username}</Text>
+                        </Pressable>
+                    )}
+                />
+            </View>
+        </SafeAreaView>
+    );
 };
 
 export default Explore;
