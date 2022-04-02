@@ -1,11 +1,15 @@
 import Box from "components/atoms/Box";
 import Text from "components/atoms/Text";
-import React, { useState, VoidFunctionComponent } from "react";
+import React, {  useState, VoidFunctionComponent } from "react";
 import { Dimensions, Image } from "react-native";
 
 interface ProfileGalleryProps {
     posts: any[];
 }
+
+const numColumns = 2;
+const WIDTH = Dimensions.get("screen").width;
+const HEIGHT = Dimensions.get("screen").height;
 
 const Post = (props: { uri: string }) => {
     const [isImageLoading, setIsImageLoading] = useState<boolean>(true);
@@ -13,14 +17,25 @@ const Post = (props: { uri: string }) => {
     return (
         <Box
             style={{
-                width: Dimensions.get("screen").width / 3,
-                maxHeight: Dimensions.get("screen").width / 3,
+                width: WIDTH / 3,
+                maxHeight: WIDTH / 3,
+                alignContent: "stretch",
+                alignItems: "stretch",
+                position: "relative",
+                padding: 1.5,
             }}>
-            {isImageLoading && (
-                <Box style={{ flex: 1 }}>
-                    <Text variant="body">Loading Image Content</Text>
-                </Box>
-            )}
+            <Box
+                style={{
+                    flex: 1,
+                    height: "100%",
+                    width: "100%",
+                    backgroundColor: "#c9c9c9",
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    padding: 1,
+                    display: isImageLoading ? "flex" : "none",
+                }}></Box>
             <Image
                 style={{
                     aspectRatio: 1,
@@ -36,6 +51,8 @@ const Post = (props: { uri: string }) => {
     );
 };
 
+
+
 const ProfileGallery: VoidFunctionComponent<ProfileGalleryProps> = (props) => {
     return (
         <Box
@@ -46,12 +63,12 @@ const ProfileGallery: VoidFunctionComponent<ProfileGalleryProps> = (props) => {
                 alignContent: "flex-start",
                 alignItems: "flex-start",
                 paddingTop: 14,
-                maxWidth: Dimensions.get("window").width,
-                height: Dimensions.get("screen").height / 2,
-                maxHeight: Dimensions.get("screen").height,
+                maxWidth: WIDTH,
+                height: HEIGHT / 2,
+                maxHeight: HEIGHT,
             }}>
             {props.posts?.map((item: any, index) => (
-                <Post key={index.toString()} uri={item.downloadURL} />
+                <Post key={item.downloadURL} uri={item.downloadURL} />
             ))}
         </Box>
     );

@@ -61,7 +61,7 @@ export default function App() {
         }
     });
 
-    if (!state?.loaded || !fontsLoaded) {
+    if (!state?.loaded && !fontsLoaded) {
         return (
             <SafeAreaView>
                 <View>
