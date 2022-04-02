@@ -1,46 +1,51 @@
 import { Avatar } from "components/Avatar";
 import { Ionicons } from "@expo/vector-icons";
 import React, { FunctionComponent } from "react";
-import { Text, View } from "react-native";
-import styled from "styled-components/native";
+import { StyleSheet, View } from "react-native";
+import Box from "components/atoms/Box";
+import Text from "components/atoms/Text";
 
 interface PostCommentsProps {
-    [key:string]: any
+    [key: string]: any;
 }
 
 const PostComments: FunctionComponent<PostCommentsProps> = (props) => {
     return (
-        <>
+        <Box padding="s">
             {props.comments?.length !== 0 ? (
                 <>
-                    <TotalComments>View all {props.comments?.length} comments</TotalComments>
-                    {props.comments?.slice(0, 2).map((comment:any) => (
-                        <TopComments key={comment.user_id}>
+                    <Text variant="body" style={style.totalComments}>
+                        View all {props.comments?.length} comments
+                    </Text>
+                    {props.comments?.slice(0, 2).map((comment: any, index: number) => (
+                        <Box style={style.topComments} key={comment.user_id || index}>
                             <View
                                 style={{
                                     flexDirection: "row",
                                     flex: 1,
                                 }}>
-                                <UserProfileName style={{ marginRight: 8 }}>
+                                <Text
+                                    variant="body"
+                                    style={{ marginRight: 8, ...style.username }}>
                                     {comment.username}
-                                </UserProfileName>
-                                <Text>{comment.comment}</Text>
+                                </Text>
+                                <Text variant="body">{comment.comment}</Text>
                             </View>
                             <Ionicons name="heart-outline" size={16} />
-                        </TopComments>
+                        </Box>
                     ))}
                 </>
             ) : (
                 <></>
             )}
-            <View
+            <Box
                 style={{
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between",
                     marginVertical: 8,
                 }}>
-                <View
+                <Box
                     style={{
                         flexDirection: "row",
                         alignItems: "center",
@@ -51,39 +56,45 @@ const PostComments: FunctionComponent<PostCommentsProps> = (props) => {
                         }}
                         size="24"
                     />
-                    {/* <UserCommentInput placeholder="Add a comment..."  /> */}
                     <Text
+                        variant="body"
                         style={{
                             color: "#B3B3B3",
                         }}>
                         Add a comment...
                     </Text>
-                </View>
-                <View style={{ flexDirection: "row" }}>
-                    <Text style={{ fontSize: 12, marginRight: 10 }}>❤️</Text>
+                </Box>
+                <Box style={{ flexDirection: "row" }}>
+                    <Text variant="body" style={{ fontSize: 12, marginRight: 10 }}>
+                        ❤️
+                    </Text>
 
-                    <Text style={{ fontSize: 12, marginRight: 10 }}>🙌 </Text>
-                    <Text style={{ fontSize: 12 }}>➕</Text>
-                </View>
-            </View>
-        </>
+                    <Text variant="body" style={{ fontSize: 12, marginRight: 10 }}>
+                        🙌{" "}
+                    </Text>
+                    <Text variant="body" style={{ fontSize: 12 }}>
+                        ➕
+                    </Text>
+                </Box>
+            </Box>
+        </Box>
     );
 };
 
-const TotalComments = styled.Text`
-    color: #707070;
-    margin: 6px 0px;
-`;
-
-const TopComments = styled.View`
-    flex-direction: row;
-    padding: 4px 0px;
-`;
-
-const UserProfileName = styled.Text`
-    font-weight: 600;
-    font-size: 14px;
-`;
-
+const style = StyleSheet.create({
+    totalComments: {
+        color: "#707070",
+        marginVertical: 6,
+        marginHorizontal: 0,
+    },
+    topComments: {
+        flexDirection: "row",
+        paddingVertical: 4,
+    },
+    username: {
+        fontWeight: "600",
+        fontSize: 14,
+    },
+});
 
 export default PostComments;
