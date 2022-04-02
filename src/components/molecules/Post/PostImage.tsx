@@ -6,7 +6,6 @@ interface PostImageProps extends ComponentProps<typeof Image>{
 }
 
 const PostImage: FunctionComponent<PostImageProps> = (props) => {
-    console.log(props);
     return <Image style={style.postImage} {...props} />;
 };
 

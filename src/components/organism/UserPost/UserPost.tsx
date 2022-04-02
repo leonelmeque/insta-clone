@@ -2,14 +2,14 @@ import Box from "components/atoms/Box";
 import Text from "components/atoms/Text";
 import React from "react";
 import styled from "styled-components/native";
-import PostCaption from "./PostCaption";
-import PostComments from "./PostComments";
-import PostHeader from "./PostHeader";
-import PostImage from "./PostImage";
-import PostLikes from "./PostLikes";
-import PostSocialActions from "./PostSocialActions";
+import PostCaption from "components/molecules/Post/PostCaption";
+import PostComments from "components/molecules/Post/PostComments";
+import PostHeader from "components/molecules/Post/PostHeader";
+import PostImage from "components/molecules/Post/PostImage";
+import PostLikes from "components/molecules/Post/PostLikes";
+import PostSocialActions from "components/molecules/Post/PostSocialActions";
 
-type FeedPostProps = {
+type UserPostProps = {
     isLiked?: boolean;
     likes: any;
     comments: any[];
@@ -21,7 +21,7 @@ type FeedPostProps = {
     [key: string]: any;
 };
 
-const FeedPost = ({
+const UserPost = ({
     isLiked,
     likes,
     comments,
@@ -31,7 +31,7 @@ const FeedPost = ({
     postId,
     downloadURL,
     ...rest
-}: FeedPostProps) => (
+}: UserPostProps) => (
     <Box>
         <PostHeader username={rest.user.username} />
         <PostImage
@@ -51,4 +51,4 @@ const FeedPost = ({
     </Box>
 );
 
-export default FeedPost;
+export default UserPost;

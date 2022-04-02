@@ -1,5 +1,5 @@
 import { HomeAppBar } from "components/AppBar";
-import FeedPost from "components/Post/Post";
+import UserPost from "components/organism/UserPost/UserPost";
 import Stories from "components/Stories";
 import React, { useState } from "react";
 import { SafeAreaView, View, ScrollView } from "react-native";
@@ -51,7 +51,7 @@ function FeedScreen(props: Props): JSX.Element {
                 <View style={{ flex: 1, marginBottom:79 }}>
                     <ScrollView>
                         {posts.map((item: any) => (
-                            <FeedPost key={item.id} {...item} />
+                            <UserPost key={item.id} {...item} />
                         ))}
                     </ScrollView>
                 </View>
