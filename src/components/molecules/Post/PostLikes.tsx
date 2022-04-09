@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { Text, View } from "react-native";
 import  Avatar from "components/molecules/Avatar/Avatar";
-import styled from "styled-components/native";
 import Box from "components/atoms/Box";
 
 interface PostLikesProps {
@@ -44,10 +43,10 @@ const PostLikes: FunctionComponent<PostLikesProps> = (props) => {
             <Text
                 style={{
                     position:'relative',
-                    left:'-60%'
+                    left:'-40%'
                 }}
             >
-                {props.likes?.length} Like
+                {props.likes?.length || 1} Like
                 {props.likes?.length > 1 ? "s" : <></>}
             </Text>
         </Box>

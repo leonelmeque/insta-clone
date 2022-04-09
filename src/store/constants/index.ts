@@ -7,7 +7,8 @@ export enum UserActionType {
     USER_STATE_CHANGE = "USER_STATE_CHANGE",
     REMOVE_USER_FROM_STATE = "REMOVE_USER_FROM_STATE",
     USER_POSTS_STATE_CHANGE = "USER_POSTS_STATE_CHANGE",
-    USER_FOLLOWING_STATE_CHANGE = "USER_FOLLOWING_STATE_CHANGE"
+    USER_FOLLOWING_STATE_CHANGE = "USER_FOLLOWING_STATE_CHANGE",
+    CLEAR_DATA = "CLEAR_DATA"
 }
 
 export interface UserStateChangeAction {
@@ -27,6 +28,11 @@ export interface UserPostsStateChange {
 export interface UserFollowingStateChange {
     type: UserActionType.USER_FOLLOWING_STATE_CHANGE,
     payload: Pick<UserState, 'following'>
+}
+
+export interface RemoveUserData {
+    type : UserActionType.CLEAR_DATA,
+    payload: {}
 }
 
 //Feed action types

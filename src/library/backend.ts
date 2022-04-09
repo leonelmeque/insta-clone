@@ -127,6 +127,10 @@ export const onSignIn = (email: string, password: string) => {
         });
 };
 
+export const onLogOut = () => {
+    return firebase.auth().signOut().then((result) => { }).catch((err) => { })
+}
+
 export const onSignUp = (email: string, password: string, username: string) => {
     return firebase
         .auth()

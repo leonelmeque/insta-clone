@@ -12,6 +12,14 @@ export function loadData() {
     })
 }
 
+export function unLoadData(){
+    return ((dispatch:Dispatch)=>{
+        dispatch({
+            type:UserActionType.CLEAR_DATA
+        })
+    })
+}
+
 export function fetchUser() {
     return ((dispatch: Dispatch) => {
         firebase.default

@@ -1,37 +1,45 @@
 import React, { FunctionComponent } from "react";
-import { View } from "react-native";
-import styled from "styled-components/native";
-import { Bookmark, Comment, Heart, HeartRed, Share } from "components/atoms/Icons/react-icons";
+import { StyleSheet, View } from "react-native";
+import {
+    Bookmark,
+    Comment,
+    Heart,
+    HeartRed,
+    Share,
+} from "components/atoms/Icons/react-icons";
+import Box from "components/atoms/Box";
 
 interface PostSocialActionsProps {
-    [key:string]: any
+    [key: string]: any;
 }
 // This is a Stateful component
 const PostSocialActions: FunctionComponent<PostSocialActionsProps> = (props) => {
     return (
-        <Container>
-            <View
-                style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    maxWidth: 110,
-                    flex: 1,
-                }}>
+        <Box style={styles.container}>
+            <Box style={styles.socialActions}>
                 {props.hasLike ? <HeartRed /> : <Heart />}
                 <Comment />
                 <Share />
-            </View>
+            </Box>
             {props.isBookmarked ? <Bookmark /> : <Bookmark />}
-        </Container>
+        </Box>
     );
 };
 
-
-const Container = styled.View`
-    padding: 12px 8px;
-    flex-direction: row;
-    justify-content: space-between;
-`;
+const styles = StyleSheet.create({
+    container: {
+        paddingVertical: 12,
+        paddingHorizontal: 8,
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+    socialActions: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        maxWidth: 110,
+        flex: 1,
+    },
+});
 
 export default PostSocialActions;
