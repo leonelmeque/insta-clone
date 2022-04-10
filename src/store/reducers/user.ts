@@ -1,6 +1,6 @@
 // import { UserActions } from "redux/constants"
 import { AnyAction } from "redux"
-import { RemoveUserData, RemoveUserFromState, UserActionType, UserFollowingStateChange, UserPostsStateChange, UserStateChangeAction } from "store/constants"
+import { RemoveUserData, RemoveUserFromState, UserActionType, UserFollowingStateChange, UserLikesStateChange, UserPostsStateChange, UserStateChangeAction } from "store/constants"
 
 export interface UserState<T = unknown> {
     user?: T;
@@ -16,10 +16,10 @@ const initState: UserState = {
     posts: [],
     following: [],
     feed: [],
-    usersFollowingLoaded:0
+    usersFollowingLoaded: 0
 }
 
-type Action = UserStateChangeAction | RemoveUserFromState | UserPostsStateChange | UserFollowingStateChange | RemoveUserData
+type Action = UserStateChangeAction | RemoveUserFromState | UserPostsStateChange | UserFollowingStateChange | RemoveUserData | UserLikesStateChange
 
 export default function userReducer(state = initState, action: Action): UserState {
     switch (action.type) {
@@ -38,6 +38,12 @@ export default function userReducer(state = initState, action: Action): UserStat
         case UserActionType.USER_FOLLOWING_STATE_CHANGE: return {
             ...state,
             following: action.payload.following,
+        }
+        case UserActionType.USER_LIKES_STATE_CHANGE: return {
+            ...state,
+            feed: state.feed.map((post) => post.id === action.payload.postId ?
+                { ...post, currentUserLike: action.payload.currentUserLike } : post
+            )
         }
         case UserActionType.CLEAR_DATA: return initState
         default: return state

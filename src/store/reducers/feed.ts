@@ -14,15 +14,17 @@ const initState: FeedState = {
 type Action = FeedPostsStateChange | FeedStateChangeAction
 
 export default function feedReducer(state = initState, action: Action): FeedState {
-    switch (action.type) {
+    const { type, payload } = action
+
+    switch (type) {
         case FeedActionType.FEED_STATE_CHANGE: return {
             ...state,
-            users: [...state.users as [], action.payload.users] as any
+            users: [...state.users as [], payload.users] as any
         }
         case FeedActionType.FEED_POSTS_STATE_CHANGE: return {
             ...state,
             usersFollowingLoaded: action?.payload?.usersFollowingLoaded || 0 + 1,
-            feed: [...state.feed, ...action.payload.posts],
+            feed: [...state.feed, ...payload.posts],
         }
         default: return state
     }

@@ -1,6 +1,6 @@
 import * as firebase from "firebase"
 import { Dispatch } from "redux"
-import { RemoveUserFromState, UserActionType, UserPostsStateChange, UserFollowingStateChange, FeedActionType, FeedPostsStateChange, FeedStateChangeAction } from "store/constants"
+import { RemoveUserFromState, UserActionType, UserPostsStateChange, UserFollowingStateChange, FeedActionType, FeedPostsStateChange, FeedStateChangeAction, UserLikesStateChange } from "store/constants"
 import { RootState } from "store/store"
 
 // Loading all app data
@@ -129,6 +129,11 @@ export function fetchUsersFollowingPosts(uid: string) {
                     const id = doc.id
                     return { id, ...data, user }
                 })
+
+                for (let i = 0; i < posts.length; i++) {
+                    dispatch<any>(fetchUsersFollowingLikes(uid, posts[i].id))
+                }
+
                 dispatch<FeedPostsStateChange>({
                     type: FeedActionType.FEED_POSTS_STATE_CHANGE,
                     payload: {
@@ -169,3 +174,37 @@ export function fetchUsersData(uid: string) {
     })
 }
 
+export function fetchUsersFollowingLikes(uid: string, postId: string) {
+   
+    return ((dispatch: Dispatch, getState: any) => {
+        firebase.default
+            .firestore()
+            .collection("posts")
+            .doc(uid)
+            .collection("userPosts")
+            .doc(postId)
+            .collection("likes")
+            .doc(firebase.default.auth().currentUser?.uid)
+            .onSnapshot((snapshot) => {
+
+                // @ts-ignore
+                const postId = snapshot.data()
+
+                let currentUserLike = false
+                if (snapshot.exists) {
+                    currentUserLike = true    
+                }
+
+                console.log(postId)
+                // dispatch<UserLikesStateChange>({
+                //     type: UserActionType.USER_LIKES_STATE_CHANGE,
+                //     payload: {
+                //         currentUserLike,
+                //         postId,
+                //         uid
+                //     }
+                // })
+
+            })
+    })
+}

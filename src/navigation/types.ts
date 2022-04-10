@@ -4,9 +4,9 @@ export type LandingScreenNavigationParams = {
 }
 
 export type StackParamsList = {
-    UploadImage: { image: string };
-    Explore: undefined;
-    Profile: { uid: string }
-    'Explore/Profile': { uid: string, profile?:string }
-    Landing:undefined
+    'global/uploadImage': { image: string };
+    'explorer/explore': undefined;
+    'tabs/profile': { uid: string }
+    'explorer/profile': { uid: string, profile?: string }
+    'landing/home': {}
 }

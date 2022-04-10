@@ -5,6 +5,7 @@ import { UserState } from "store/reducers/user";
 
 export enum UserActionType {
     USER_STATE_CHANGE = "USER_STATE_CHANGE",
+    USER_LIKES_STATE_CHANGE = "USER_LIKES_STATE_CHANGE",
     REMOVE_USER_FROM_STATE = "REMOVE_USER_FROM_STATE",
     USER_POSTS_STATE_CHANGE = "USER_POSTS_STATE_CHANGE",
     USER_FOLLOWING_STATE_CHANGE = "USER_FOLLOWING_STATE_CHANGE",
@@ -14,6 +15,15 @@ export enum UserActionType {
 export interface UserStateChangeAction {
     type: UserActionType.USER_STATE_CHANGE,
     payload: Pick<UserState, 'user'>
+}
+
+export interface UserLikesStateChange {
+    type: UserActionType.USER_LIKES_STATE_CHANGE,
+    payload: {
+        currentUserLike: boolean,
+        postId: string,
+        uid: string
+    }
 }
 
 export interface RemoveUserFromState {

@@ -14,7 +14,7 @@ import Button from "components/atoms/Button";
 import Box from "components/atoms/Box";
 
 interface ProfileActionsProps
-    extends NativeStackScreenProps<StackParamsList, "Profile"> {}
+    extends NativeStackScreenProps<StackParamsList, "tabs/profile"> {}
 
 const ProfileActions: FunctionComponent<ProfileActionsProps> = ({
     route,

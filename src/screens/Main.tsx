@@ -3,7 +3,7 @@ import React, { useEffect, useMemo } from "react";
 import { FunctionComponent } from "react";
 
 // Navigation imports
-import { AppTabNavigation } from "navigation/index";
+import { AppTabNavigation } from "navigation/tabs";
 import { UserState } from "store/reducers/user";
 import { bindActionCreators, Dispatch } from "redux";
 import { loadData } from "store/actions";

@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamsList } from "navigation/types";
 
-interface ExploreProps extends NativeStackScreenProps<StackParamsList, "Explore"> {}
+interface ExploreProps extends NativeStackScreenProps<StackParamsList, "explorer/explore"> {}
 
 const Explore: React.FunctionComponent<ExploreProps> = (props): JSX.Element => {
     const [users, setUsers] = useState<{ username: string; id: string }[]>([]);
@@ -47,7 +47,7 @@ const Explore: React.FunctionComponent<ExploreProps> = (props): JSX.Element => {
                         <Pressable
                             key={index.toString()}
                             onPress={() => {
-                                props.navigation.navigate("Explore/Profile", {
+                                props.navigation.navigate("explorer/profile", {
                                     uid: item.id,
                                     profile: item.username,
                                 });

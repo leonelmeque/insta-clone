@@ -1,5 +1,5 @@
-import { HomeAppBar } from "components/AppBar";
-import UserPost from "components/organisms/UserPost/UserPost";
+import { HomeAppBar } from "components/organisms/AppBar";
+import UserPost from "components/organisms/UserPost";
 import React, { useState } from "react";
 import { SafeAreaView, View, ScrollView } from "react-native";
 import { connect, ConnectedProps } from "react-redux";
@@ -41,6 +41,7 @@ function FeedScreen(props: Props): JSX.Element {
         ) {
             initFeed();
         }
+       
     }, [props.usersFollowingLoaded, props.feed]);
 
     return (

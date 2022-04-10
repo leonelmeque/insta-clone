@@ -7,11 +7,9 @@ import { useFonts } from "expo-font";
 
 // Navigation imports
 import { NavigationContainer } from "@react-navigation/native";
-import {
-    LandingScreenNavigation,
-    AppTabNavigation,
-    GlobalNavigation,
-} from "navigation/index";
+import { LandingScreenNavigation } from "navigation/landing";
+import { AppTabNavigation } from "navigation/tabs";
+import { GlobalNavigation } from "navigation/main";
 
 // Service imports
 import firebaseInit from "library/firebaseConfig";
@@ -38,10 +36,9 @@ export default function App() {
         loaded?: boolean;
     }>({});
 
-     let [fontsLoaded] = useFonts({
-         "MerriweatherSans-Regular": require("assets/fonts/MerriweatherSans-Regular.ttf"),
-     });
-
+    let [fontsLoaded] = useFonts({
+        "MerriweatherSans-Regular": require("assets/fonts/MerriweatherSans-Regular.ttf"),
+    });
 
     useEffect(() => {
         if (!state.loggenIn) {
@@ -59,7 +56,7 @@ export default function App() {
                 }
             });
         }
-    });
+    },[state]);
 
     if (!state?.loaded && !fontsLoaded) {
         return (

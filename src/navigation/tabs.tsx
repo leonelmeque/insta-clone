@@ -15,22 +15,15 @@ import { Ionicons } from "@expo/vector-icons";
 
 // Screens imports
 import FeedScreen from "screens/Feed";
-import AddScreen from "screens/Add";
-import ExploreScreen from "screens/Explore";
-import RegisterScreen from "screens/auth/Register";
-import LandingScreen from "screens/auth/Landing";
-import MainScreen from "screens/Main";
-import UploadImage from "screens/UploadImage";
 import ProfileScreen from "screens/Profile";
 
 // Types Imports
 import { LandingScreenNavigationParams, StackParamsList } from "./types";
-import { VoidFunctionComponent } from "react";
 
 // UI Components imports
-import { View } from "react-native";
 import Avatar from "components/molecules/Avatar/Avatar";
-import Box from "components/atoms/Box";
+import { View } from "react-native";
+import { ExploreNavigation } from "./explore";
 
 // Creating navigators
 const Tabs = createBottomTabNavigator();
@@ -38,64 +31,30 @@ const Stack = createStackNavigator<
     LandingScreenNavigationParams | any | StackParamsList
 >();
 
+
 const VoidComponent = () => {
     return <View></View>;
 };
 
-// Main Navigation
-export const GlobalNavigation = () => (
-    <Stack.Navigator
-        initialRouteName="Main"
-    >
-        <Stack.Screen
-            name="Main"
-            component={MainScreen}
-            options={{ headerShown: false }}
-        />
-        <Stack.Screen name="Add" component={AddScreen} />
-        <Stack.Screen
-            name="UploadImage"
-            options={{ title: "Save Image" }}
-            component={UploadImage}
-        />
-    </Stack.Navigator>
-);
 
-export const ExploreNavigation = () => (
-    <Stack.Navigator initialRouteName="Explore">
-        <Stack.Screen
-            name="Explore"
-            component={ExploreScreen}
-            options={{ headerShown: false }}
-        />
-        <Stack.Screen
-            name="Explore/Profile"
-            options={(props) => ({
-                title: props.route?.params?.profile,
-                headerBackTitleVisible: false,
-            })}
-            component={ProfileScreen}
-        />
-    </Stack.Navigator>
-);
 
 // App Tab navigation
 export const AppTabNavigation = () => (
     <Tabs.Navigator
-        initialRouteName="Home"
+        initialRouteName="tabs/home"
         defaultScreenOptions={{}}
         screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, size, color }) => {
                 switch (route.name) {
-                    case "Home":
+                    case "tabs/home":
                         return !focused ? <HomeFilled /> : <HomeFilled />;
-                    case "Explore":
+                    case "tabs/explore":
                         return !focused ? <SearchOutlined /> : <SearchOutlined />;
-                    case "NewPost":
+                    case "tabs/newPost":
                         return <AddCircular />;
-                    case "Activity":
+                    case "tabs/activity":
                         return <Heart />;
-                    case "Profile":
+                    case "tabs/profile":
                         return (
                             <Avatar
                                 size={size + 2}
@@ -113,7 +72,7 @@ export const AppTabNavigation = () => (
                 headerShown: false,
                 tabBarShowLabel: false,
             }}
-            name="Home"
+            name="tabs/home"
             component={FeedScreen}
         />
         <Tabs.Screen
@@ -121,21 +80,21 @@ export const AppTabNavigation = () => (
                 headerShown: false,
                 tabBarShowLabel: false,
             }}
-            name="Explore"
+            name="tabs/explore"
             component={ExploreNavigation}
         />
         <Tabs.Screen
             listeners={({ navigation, route }) => ({
                 tabPress: (event) => {
                     event.preventDefault();
-                    navigation.navigate("Add");
+                    navigation.navigate("global/add");
                 },
             })}
             options={{
                 headerShown: false,
                 tabBarShowLabel: false,
             }}
-            name="NewPost"
+            name="tabs/newPost"
             component={VoidComponent}
         />
         <Tabs.Screen
@@ -143,27 +102,15 @@ export const AppTabNavigation = () => (
                 headerShown: false,
                 tabBarShowLabel: false,
             }}
-            name="Activity"
+            name="tabs/activity"
             component={FeedScreen}
         />
         <Tabs.Screen
             options={{
                 tabBarShowLabel: false,
             }}
-            name="Profile"
+            name="tabs/profile"
             component={ProfileScreen}
         />
     </Tabs.Navigator>
-);
-
-//  Landing Screens Navigator
-export const LandingScreenNavigation: VoidFunctionComponent = () => (
-    <Stack.Navigator initialRouteName="Landing">
-        <Stack.Screen
-            name="Landing"
-            component={LandingScreen}
-            options={{ headerShown: false }}
-        />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-    </Stack.Navigator>
 );

@@ -2,7 +2,7 @@ import { FunctionComponent } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { UserState } from "store/reducers/user";
 import styled from "styled-components/native";
-import { Dimensions, Image, Pressable, Text, View } from "react-native";
+import {  Image, Pressable, Text, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
@@ -20,6 +20,7 @@ import Box from "components/atoms/Box";
 import ProfileActions from "components/molecules/Profile/ProfileActions";
 import ProfileDescription from "components/molecules/Profile/ProfileDescription";
 import ProfileGallery from "components/molecules/Profile/ProfileGallery";
+import firebase from 'firebase'
 
 type RootState = {
     userState: UserState;
@@ -39,7 +40,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 interface ProfileProps extends PropsFromRedux {}
 
 const Profile: FunctionComponent<
-    NativeStackScreenProps<StackParamsList, "Profile"> & ProfileProps
+    NativeStackScreenProps<StackParamsList, "tabs/profile"> & ProfileProps
 > = ({ user, posts, following, navigation, route }) => {
     const [currentUserPosts, setCurrentUserPosts] = useState<object[] | undefined>();
     const [currentUser, setCurrentUser] = useState<{ username?: string } | undefined>();
@@ -99,14 +100,14 @@ const Profile: FunctionComponent<
             <ProfileGallery posts={currentUserPosts as []} />
 
             {/* </UserPostGallery> */}
-            {/* <StyledButton
+            <StyledButton
                 onPress={() => {
                     console.log("sign out complete");
                     firebase.auth().signOut();
-                    navigation.navigate("Landing");
+                    navigation.navigate("landing/home",{});
                 }}>
                 <StyledButtonText>Sign out</StyledButtonText>
-            </StyledButton> */}
+            </StyledButton>
         </StyledView>
     );
 };
