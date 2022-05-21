@@ -1,6 +1,6 @@
 export type LandingScreenNavigationParams = {
-    Register: undefined;
-    Landing: undefined;
+    'landing/register': undefined;
+    'landing/login': undefined;
 }
 
 export type StackParamsList = {

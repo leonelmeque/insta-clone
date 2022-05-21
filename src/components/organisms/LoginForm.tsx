@@ -37,10 +37,7 @@ const LoginForm = ({
                 <Button
                     label="Register"
                     variant="tertiary"
-                    onPress={() => {
-                        // navigation.navigate("Register");
-                        onPushRegisterScreen();
-                    }}
+                    onPress={() =>onPushRegisterScreen()}
                 />
             </Box>
         </Box>
