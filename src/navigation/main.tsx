@@ -24,9 +24,9 @@ export const GlobalNavigation = () => (
         <Stack.Screen
             name="global/main"
             component={MainScreen}
-            options={{ headerShown: false }}
+            options={{ headerShown: false, title:'Explore' }}
         />
-        <Stack.Screen name="global/add" component={AddScreen} />
+        <Stack.Screen name="global/add" options={{title:'Add'}} component={AddScreen} />
         <Stack.Screen
             name="global/uploadImage"
             options={{ title: "Save Image" }}

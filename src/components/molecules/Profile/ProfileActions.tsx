@@ -51,7 +51,6 @@ const ProfileActions: FunctionComponent<ProfileActionsProps> = ({
         <Box
             style={{
                 flexDirection: "row",
-                paddingHorizontal: 16,
                 justifyContent: "space-between",
                 alignItems: "stretch",
             }}>

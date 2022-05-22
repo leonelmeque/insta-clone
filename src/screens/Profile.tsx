@@ -72,30 +72,34 @@ const Profile: FunctionComponent<
 
     return (
         <StyledView>
-            <View>
-                <ProfileHeader>
+            <Box>
+                <Box style={{
+                    paddingHorizontal: 16,
+                    flexDirection:'row',
+                    justifyContent:'center'
+                }}>
                     <UserAvatar
-                        size={84}
+                        size={74}
                         style={{ margin: 0 }}
                         source={{
                             uri: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=928&q=80",
                         }}
                     />
-                    <View style={{ flex: 1 }}>
+                    <Box style={{ flex: 1}}>
                         <ProfileStats
                             posts={currentUserPosts?.length || 0}
                             followers={currentUserPosts?.length || 0}
                             following={following?.length || 0}
                         />
-                    </View>
-                </ProfileHeader>
+                    </Box>
+                </Box>
                 <ProfileDescription
                     username={currentUser?.username as string}
                     profileType={"Unknow Profile Type"}
                     description="Some type of description that we will add later"
                 />
                 <ProfileActions route={route} navigation={navigation} />
-            </View>
+            </Box>
 
             <ProfileGallery posts={currentUserPosts as []} />
 

@@ -71,6 +71,7 @@ export const AppTabNavigation = () => (
             options={{
                 headerShown: false,
                 tabBarShowLabel: false,
+                title: 'Home'
             }}
             name="tabs/home"
             component={FeedScreen}
@@ -79,6 +80,7 @@ export const AppTabNavigation = () => (
             options={{
                 headerShown: false,
                 tabBarShowLabel: false,
+                title:'Explore'
             }}
             name="tabs/explore"
             component={ExploreNavigation}
@@ -93,6 +95,7 @@ export const AppTabNavigation = () => (
             options={{
                 headerShown: false,
                 tabBarShowLabel: false,
+                title:'New Post'
             }}
             name="tabs/newPost"
             component={VoidComponent}
@@ -108,6 +111,7 @@ export const AppTabNavigation = () => (
         <Tabs.Screen
             options={{
                 tabBarShowLabel: false,
+                title:'Profile'
             }}
             name="tabs/profile"
             component={ProfileScreen}

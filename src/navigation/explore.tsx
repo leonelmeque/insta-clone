@@ -20,7 +20,8 @@ export const ExploreNavigation = () => (
         <Stack.Screen
             name="explorer/explore"
             component={ExploreScreen}
-            options={{ headerShown: false }}
+            options={{ headerShown: false, title:'Explore' }}
+            
         />
         <Stack.Screen
             name="explorer/profile"
