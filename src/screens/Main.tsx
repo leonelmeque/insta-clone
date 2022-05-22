@@ -4,7 +4,7 @@ import { FunctionComponent } from "react";
 
 // Navigation imports
 import { AppTabNavigation } from "navigation/tabs";
-import { UserState } from "store/reducers/user";
+import { UserState } from "store/reducers/user-reducer";
 import { bindActionCreators, Dispatch } from "redux";
 import { loadData } from "store/actions";
 import { connect, ConnectedProps } from "react-redux";

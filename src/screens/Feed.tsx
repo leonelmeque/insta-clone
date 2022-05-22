@@ -3,9 +3,9 @@ import UserPost from "components/organisms/UserPost";
 import React, { useState } from "react";
 import { SafeAreaView, View, ScrollView } from "react-native";
 import { connect, ConnectedProps } from "react-redux";
-import { UserState } from "store/reducers/user";
+import { UserState } from "store/reducers/user-reducer";
 import { useEffect } from "react";
-import { FeedState } from "store/reducers/feed";
+import { FeedState } from "store/reducers/feed-reducer";
 import Box from "components/atoms/Box";
 
 type RootState = {

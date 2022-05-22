@@ -84,7 +84,7 @@ const AddScreen: FunctionComponent<AddScreenProps> = ({ navigation }) => {
                 <Button title="Choose image from gallery" onPress={() => pickImage()} />
                 <Button
                     title="Save"
-                    onPress={() => navigation.navigate("UploadImage", { image })}
+                    onPress={() => navigation.navigate("global/uploadImage", { image })}
                 />
                 {image && <StyledImage source={{ uri: image }} />}
             </View>

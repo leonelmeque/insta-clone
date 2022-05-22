@@ -16,3 +16,12 @@ export type User = {
     email: string;
     [key:string]: string;
 }
+
+export type UserInfo = {
+    description?: string
+    userType?: string
+    following?: string[]
+    followers?: string[]
+    userProfilePicture?: string
+    isPrivate?: boolean
+}

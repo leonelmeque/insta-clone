@@ -1,13 +1,17 @@
 import firebase from 'firebase'
 import { SetStateAction } from 'react'
+import { UserInfo } from 'shared/types';
 
 export const fireBaseUploadImage = async ({ uri, caption }: { uri: string; caption: string }) => {
     const response = await fetch(uri)
     const blob = await response.blob()
 
-    const savePostData = (downloadURL: string) => {
+    const savePostData = (imageUrl: string) => {
         return firebase.firestore().collection('posts').doc(firebase.auth().currentUser?.uid).collection("userPosts").add({
-            downloadURL,
+            imageUrl,
+            bookmarks: [],
+            comments: [],
+            likes: [],
             caption: caption,
             creation: firebase.firestore.FieldValue.serverTimestamp()
         })
@@ -49,6 +53,21 @@ export const searchUsers = (query: string, callback: SetStateAction<any>) => {
     })
 }
 
+export const updateUserInfo = ({ description, isPrivate, userProfilePicture, userType }: UserInfo) => {
+    return firebase.firestore().collection('userInfo').doc(firebase.auth().currentUser?.uid).set({ description, userProfilePicture, userType, isPrivate })
+}
+
+export const getUserProfileInfo = (uid: string) => {
+    return firebase
+        .firestore()
+        .collection('userInfo')
+        .doc(uid)
+        .get().then((snapshop) => {
+            if (snapshop.exists) return snapshop.data()
+            else return null
+        })
+}
+
 export const getUser = (uid: string) => {
     return firebase
         .firestore()
@@ -84,11 +103,9 @@ export const fetchUserPosts = (uid: string) => {
 export const followUser = (uid: string) => {
     return firebase
         .firestore()
-        .collection("following")
+        .collection("userInfo")
         .doc(firebase.auth().currentUser?.uid)
-        .collection("userFollowing")
-        .doc(uid)
-        .set({})
+        .set({ followers: firebase.firestore.FieldValue.arrayUnion(uid) })
 }
 
 export const unFollowUser = (uid: string) => {
@@ -149,3 +166,27 @@ export const onSignUp = (email: string, password: string, username: string) => {
             console.log(result);
         });
 };
+
+
+export const authFetchUserPosts = () => {
+    return firebase
+        .firestore()
+        .collection("posts")
+        .doc(firebase
+            ?.auth()
+            ?.currentUser
+            ?.uid)
+        .collection("userPosts")
+        .orderBy('creation', 'asc')
+        .get()
+        .then((snapshop) => {
+            const posts = snapshop.docs.map(doc => {
+                const data = doc.data()
+                const id = doc.id
+                return {
+                    id, ...data
+                }
+            })
+            return posts
+        })
+}

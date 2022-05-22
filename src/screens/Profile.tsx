@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import { connect, ConnectedProps } from "react-redux";
-import { UserState } from "store/reducers/user";
+import { UserState } from "store/reducers/user-reducer";
 import styled from "styled-components/native";
 import {  Image, Pressable, Text, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";

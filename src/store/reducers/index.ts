@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 
-import user from './user'
-import feed from './feed'
+import user from './user-reducer'
+import feed from './feed-reducer'
 
 const Reducers = combineReducers({
     userState: user,

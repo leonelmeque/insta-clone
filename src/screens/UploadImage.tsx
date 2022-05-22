@@ -8,7 +8,7 @@ import { useState } from "react";
 import { fireBaseUploadImage } from "library/backend";
 
 interface UploadImageProps
-    extends NativeStackScreenProps<StackParamsList, "UploadImage"> {}
+    extends NativeStackScreenProps<StackParamsList, "global/uploadImage"> {}
 
 const UploadImage: FunctionComponent<UploadImageProps> = (props) => {
     const [caption, setCaption] = useState<string | undefined>();
