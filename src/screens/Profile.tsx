@@ -21,13 +21,7 @@ import { RootState } from "store/types";
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 import { asyncFetchUserProfile } from "store/actions/user-profile-actions";
-
-// const mapStateToProps = (store: RootState): UserState => ({
-//     user: store.userState.user,
-//     posts: store.userState.posts,
-//     following: store.userState.following,
-//     feed: [],
-// });
+import { useAuth } from "hooks";
 
 const mapStateToProps = (state: RootState) => {
     const { userInfo, user } = state;
@@ -67,6 +61,7 @@ const Profile: FunctionComponent<
 }) => {
     const [currentUserPosts, setCurrentUserPosts] = useState<object[] | undefined>();
     const [currentUser, setCurrentUser] = useState<{ username?: string } | undefined>();
+    const {onLogOut} = useAuth()
 
     // Fetching user profile
     const fetchProfile = async () => {
@@ -84,15 +79,6 @@ const Profile: FunctionComponent<
     useEffect(() => {
         console.log(`User profile with uid ${uid}, user profile with id ${id}`)
         fetchUserProfile((uid as string) || (id as string));
-        // if (route?.params?.uid) {
-        //     if (!currentUser) fetchProfile();
-
-        //     return;
-        // }
-
-        // setCurrentUser(user as object);
-        // setCurrentUserPosts(posts);
-        // return () => {};
     }, []);
 
     return (
@@ -121,7 +107,7 @@ const Profile: FunctionComponent<
                 </Box>
                 <ProfileDescription
                     username={currentUser?.username as string}
-                    profileType={userType as string}
+                profileType={userType as string}
                     description={description as string}
                 />
                 <ProfileActions route={route} navigation={navigation} />
@@ -132,7 +118,7 @@ const Profile: FunctionComponent<
             {/* </UserPostGallery> */}
             <StyledButton
                 onPress={() => {
-                    firebase.auth().signOut();
+                    onLogOut()
                     navigation.navigate("landing/home", {});
                 }}>
                 <StyledButtonText>Sign out</StyledButtonText>
