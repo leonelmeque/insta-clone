@@ -1,10 +1,6 @@
 import React from "react";
-
-// Navigation imports
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-
-// Icons imports
 import {
     HomeFilled,
     SearchOutlined,
@@ -12,20 +8,13 @@ import {
     Heart,
 } from "components/atoms/Icons/react-icons";
 import { Ionicons } from "@expo/vector-icons";
-
-// Screens imports
 import FeedScreen from "screens/Feed";
 import ProfileScreen from "screens/Profile";
-
-// Types Imports
 import { LandingScreenNavigationParams, StackParamsList } from "./types";
-
-// UI Components imports
 import Avatar from "components/molecules/Avatar/Avatar";
 import { View } from "react-native";
 import { ExploreNavigation } from "./explore";
 
-// Creating navigators
 const Tabs = createBottomTabNavigator();
 const Stack = createStackNavigator<
     LandingScreenNavigationParams | any | StackParamsList
@@ -36,9 +25,6 @@ const VoidComponent = () => {
     return <View></View>;
 };
 
-
-
-// App Tab navigation
 export const AppTabNavigation = () => (
     <Tabs.Navigator
         initialRouteName="tabs/home"

@@ -1,14 +1,13 @@
 // React imports
 import React from "react";
 import { useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { useState } from "react";
 import { useFonts } from "expo-font";
 
 // Navigation imports
 import { NavigationContainer } from "@react-navigation/native";
 import { LandingScreenNavigation } from "navigation/landing";
-import { AppTabNavigation } from "navigation/tabs";
 import { GlobalNavigation } from "navigation/main";
 
 // Service imports
@@ -18,13 +17,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 // Redux imports
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware } from "redux";
-import rootReducer from "store/reducers";
-import thunk from "redux-thunk";
 import ThemeProvider from "theme/context";
 import { theme } from "theme/theme";
+import store from "store";
 // Creating redux store
-const store = createStore(rootReducer, applyMiddleware(thunk));
+
 
 //Initializing firebase
 firebaseInit();

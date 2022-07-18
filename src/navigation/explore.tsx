@@ -1,14 +1,7 @@
 import React from "react";
-
-// Navigation imports
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-
-// Screens imports
 import ExploreScreen from "screens/Explore";
 import ProfileScreen from "screens/Profile";
-
-// Types Imports
 import { LandingScreenNavigationParams, StackParamsList } from "./types";
 
 const Stack = createStackNavigator<

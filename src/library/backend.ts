@@ -111,11 +111,9 @@ export const followUser = (uid: string) => {
 export const unFollowUser = (uid: string) => {
     return firebase
         .firestore()
-        .collection("following")
+        .collection("userInfo")
         .doc(firebase.auth().currentUser?.uid)
-        .collection("userFollowing")
-        .doc(uid)
-        .delete()
+        .set({ followers: firebase.firestore.FieldValue.arrayRemove(uid) })
 }
 
 export const isFollowing = (uid: string) => {
@@ -137,7 +135,7 @@ export const onSignIn = (email: string, password: string) => {
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then((result) => {
-
+            return result
         })
         .catch((result) => {
 

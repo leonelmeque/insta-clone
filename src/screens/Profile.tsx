@@ -1,47 +1,70 @@
 import { FunctionComponent } from "react";
-import { connect, ConnectedProps } from "react-redux";
+import { connect, ConnectedProps, useDispatch } from "react-redux";
 import { UserState } from "store/reducers/user-reducer";
 import styled from "styled-components/native";
-import {  Image, Pressable, Text, View } from "react-native";
+import { Pressable, Text } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
-import { FlatList, ScrollView } from "react-native-gesture-handler";
+import { ScrollView } from "react-native-gesture-handler";
 import { useState } from "react";
 import { StackParamsList } from "navigation/types";
 import { useEffect } from "react";
-import {
-    getUser,
-    fetchUserPosts,
-    isFollowing,
-} from "library/backend";
+import { getUser, fetchUserPosts, isFollowing } from "library/backend";
 import UserAvatar from "components/molecules/Avatar/Avatar";
 import ProfileStats from "components/molecules/Profile/ProfileStats";
 import Box from "components/atoms/Box";
 import ProfileActions from "components/molecules/Profile/ProfileActions";
 import ProfileDescription from "components/molecules/Profile/ProfileDescription";
 import ProfileGallery from "components/molecules/Profile/ProfileGallery";
-import firebase from 'firebase'
+import firebase from "firebase";
+import { RootState } from "store/types";
+import { ThunkDispatch } from "redux-thunk";
+import { AnyAction } from "redux";
+import { asyncFetchUserProfile } from "store/actions/user-profile-actions";
 
-type RootState = {
-    userState: UserState;
+// const mapStateToProps = (store: RootState): UserState => ({
+//     user: store.userState.user,
+//     posts: store.userState.posts,
+//     following: store.userState.following,
+//     feed: [],
+// });
+
+const mapStateToProps = (state: RootState) => {
+    const { userInfo, user } = state;
+    return {
+        ...userInfo,
+    };
 };
 
-const mapStateToProps = (store: RootState): UserState => ({
-    user: store.userState.user,
-    posts: store.userState.posts,
-    following: store.userState.following,
-    feed: [],
-});
+const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, void, AnyAction>) => {
+    return {
+        fetchUserProfile: (uid: string) => dispatch(asyncFetchUserProfile(uid)),
+    };
+};
 
-const connector = connect(mapStateToProps);
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-interface ProfileProps extends PropsFromRedux {}
+interface ProfileProps extends PropsFromRedux {
+    uid?: string;
+}
 
 const Profile: FunctionComponent<
     NativeStackScreenProps<StackParamsList, "tabs/profile"> & ProfileProps
-> = ({ user, posts, following, navigation, route }) => {
+> = ({
+    fetchUserProfile,
+    id,
+    description,
+    following,
+    followers,
+    userProfilePicture,
+    userType,
+    isPrivate,
+    uid,
+    navigation,
+    route,
+}) => {
     const [currentUserPosts, setCurrentUserPosts] = useState<object[] | undefined>();
     const [currentUser, setCurrentUser] = useState<{ username?: string } | undefined>();
 
@@ -59,44 +82,47 @@ const Profile: FunctionComponent<
     };
 
     useEffect(() => {
-        if (route?.params?.uid) {
-            if (!currentUser) fetchProfile();
+        console.log(`User profile with uid ${uid}, user profile with id ${id}`)
+        fetchUserProfile((uid as string) || (id as string));
+        // if (route?.params?.uid) {
+        //     if (!currentUser) fetchProfile();
 
-            return;
-        }
+        //     return;
+        // }
 
-        setCurrentUser(user as object);
-        setCurrentUserPosts(posts);
-        return () => {};
+        // setCurrentUser(user as object);
+        // setCurrentUserPosts(posts);
+        // return () => {};
     }, []);
 
     return (
         <StyledView>
             <Box>
-                <Box style={{
-                    paddingHorizontal: 16,
-                    flexDirection:'row',
-                    justifyContent:'center'
-                }}>
+                <Box
+                    style={{
+                        paddingHorizontal: 16,
+                        flexDirection: "row",
+                        justifyContent: "center",
+                    }}>
                     <UserAvatar
                         size={74}
                         style={{ margin: 0 }}
                         source={{
-                            uri: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=928&q=80",
+                            uri: userProfilePicture,
                         }}
                     />
-                    <Box style={{ flex: 1}}>
+                    <Box style={{ flex: 1 }}>
                         <ProfileStats
                             posts={currentUserPosts?.length || 0}
-                            followers={currentUserPosts?.length || 0}
+                            followers={followers?.length || 0}
                             following={following?.length || 0}
                         />
                     </Box>
                 </Box>
                 <ProfileDescription
                     username={currentUser?.username as string}
-                    profileType={"Unknow Profile Type"}
-                    description="Some type of description that we will add later"
+                    profileType={userType as string}
+                    description={description as string}
                 />
                 <ProfileActions route={route} navigation={navigation} />
             </Box>
@@ -106,31 +132,14 @@ const Profile: FunctionComponent<
             {/* </UserPostGallery> */}
             <StyledButton
                 onPress={() => {
-                    console.log("sign out complete");
                     firebase.auth().signOut();
-                    navigation.navigate("landing/home",{});
+                    navigation.navigate("landing/home", {});
                 }}>
                 <StyledButtonText>Sign out</StyledButtonText>
             </StyledButton>
         </StyledView>
     );
 };
-
-const ProfileHeader = styled(View)`
-    flex-direction: row;
-`;
-
-const ProfileStatusLabel = styled(Text)`
-    text-align: center;
-    font-size: 12px;
-    font-weight: bold;
-`;
-
-const ProfileStatusNumbers = styled(Text)`
-    text-align: center;
-    font-size: 16px;
-    font-weight: 600;
-`;
 
 const StyledButton = styled(Pressable)`
     padding: 14px;
@@ -151,18 +160,5 @@ const StyledView = styled(ScrollView)`
     flex: 1;
     background-color: white;
 `;
-
-const UserProfileContainer = styled(View)``;
-
-const UserPostGallery = styled(View)`
-    flex: 1;
-`;
-
-const StyledPost = styled(Image)`
-    flex: 1;
-    aspect-ratio: 1;
-`;
-
-const Posts = styled(FlatList)``;
 
 export default connector(Profile);

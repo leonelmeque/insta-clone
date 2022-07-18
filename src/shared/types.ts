@@ -1,27 +1,39 @@
-import { Action } from "redux"
-import { AnyAction } from "redux"
-
-// Loading states
 export type LoadingState = 'idle' | 'pending' | 'success' | 'error'
 
-// ActionTypes
 export type AnyActionTypeWithPayload<A, P> = {
     type: A,
-    payload?:P
+    payload?: P
 }
 
 
 export type User = {
     username: string;
     email: string;
-    [key:string]: string;
+    uid: string;
+}
+
+export type UserPosts = {
+    id?: string
+    bookmark: string[]
+    comments: string[]
+    likes: string[]
 }
 
 export type UserInfo = {
+    id?: string
     description?: string
     userType?: string
     following?: string[]
     followers?: string[]
     userProfilePicture?: string
     isPrivate?: boolean
+}
+
+export type UserTimeline = {
+    id: string
+    event: {
+        action: string
+        timestamp: string
+        userId: string
+    }
 }
