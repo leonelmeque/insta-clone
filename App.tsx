@@ -20,16 +20,33 @@ import { Provider } from "react-redux";
 import ThemeProvider from "theme/context";
 import { theme } from "theme/theme";
 import store from "store";
+import { UserProvider } from "context/user-context";
 // Creating redux store
 
 
 //Initializing firebase
 firebaseInit();
 
+const initializeLogin =  async () => {
+    await firebase.default.auth().onAuthStateChanged((user) => {
+        if (!user) {
+            return {
+                loggedIn: false,
+                loaded: true
+            }
+        }
+
+    });
+    return {
+        loggedIn: true,
+        loaded: true,
+    };
+}
+
 export default function App() {
     const [darkMode, setDarkMode] = useState<boolean>(false);
     const [state, setState] = useState<{
-        loggenIn?: boolean;
+        loggedIn?: boolean;
         loaded?: boolean;
     }>({});
 
@@ -38,22 +55,13 @@ export default function App() {
     });
 
     useEffect(() => {
-        if (!state.loggenIn) {
-            firebase.default.auth().onAuthStateChanged((user) => {
-                if (!user) {
-                    setState({
-                        loggenIn: false,
-                        loaded: true,
-                    });
-                } else {
-                    setState({
-                        loggenIn: true,
-                        loaded: true,
-                    });
-                }
-            });
+        if (!state.loggedIn) {
+           initializeLogin().then(result=>{
+                setState(result)
+            })
+           
         }
-    },[state]);
+    }, [state]);
 
     if (!state?.loaded && !fontsLoaded) {
         return (
@@ -65,13 +73,15 @@ export default function App() {
         );
     }
 
-    if (!state?.loggenIn) {
+    if (!state?.loggedIn) {
         return (
-            <ThemeProvider.Provider value={darkMode ? {} : theme}>
-                <NavigationContainer>
-                    <LandingScreenNavigation />
-                </NavigationContainer>
-            </ThemeProvider.Provider>
+            <UserProvider>
+                <ThemeProvider.Provider value={darkMode ? {} : theme}>
+                    <NavigationContainer>
+                        <LandingScreenNavigation />
+                    </NavigationContainer>
+                </ThemeProvider.Provider>
+            </UserProvider>
         );
     }
 
