@@ -1,20 +1,19 @@
 import { useUser } from 'context/user-context'
-import firebase from 'firebase'
 import { getUser } from 'library/backend'
 import { useEffect, useState } from 'react'
 
 
 export const useFetchUser = (uid: string) => {
   const [userState, _] = useUser()
-  const [state, setState] = useState<any | undefined>()
-
-  if (userState.user.uid === uid) {
-    return userState.user
-  }
+  const [state, setState] = useState<{uid:string, [key:string]: any} | undefined>()
 
   const fetchUser = async () => {
-    const results = await getUser(uid)
-    setState(results)
+    const id = uid === undefined ? userState?.user?.uid : uid
+    const results = await getUser(id)
+    setState({
+      uid:id,
+      ...results
+    })
   }
 
   useEffect(() => {

@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import firebase from 'firebase';
 import { useUser } from 'context/user-context';
 import { useNavigation } from '@react-navigation/native';
+import { getUser } from 'library/backend';
 
 export function useAuth() {
     const [userState, userDispatch] = useUser()
@@ -10,18 +11,16 @@ export function useAuth() {
     const onCheckLoginStatus = () => {
         firebase.auth().onAuthStateChanged((user) => {
             if (!user) return
-
             userDispatch({
                 type: 'USER_STATE_CHANGE',
                 payload: {
                     user: {
-                        uid: user?.uid
+                        uid: user.uid,
+                     
                     }
                 }
             })
-            //  @ts-ignore
             navigation.navigate("global/main")
-
         });
 
     }
@@ -31,8 +30,6 @@ export function useAuth() {
             .auth()
             .signInWithEmailAndPassword(email, password)
             .then((result) => {
-                console.log("signin success")
-
                 userDispatch({
                     type: 'USER_STATE_CHANGE',
                     payload: {

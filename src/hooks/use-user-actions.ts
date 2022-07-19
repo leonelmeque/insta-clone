@@ -23,6 +23,9 @@ export const useUserActions = (uid: string) => {
     });
   };
 
+  // send a message
+  //send email
+
   useEffect(() => {
     if (!follows) fetchFollowStatus();
     return;
