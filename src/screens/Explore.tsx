@@ -9,6 +9,7 @@ import { StackParamsList } from "navigation/types";
 import InputText from "components/atoms/Input";
 import Box from "components/atoms/Box";
 import { Avatar } from "components/Avatar";
+import { useNavigation } from "@react-navigation/native";
 
 interface ExploreProps
     extends NativeStackScreenProps<StackParamsList, "explorer/explore"> {}
@@ -16,7 +17,7 @@ interface ExploreProps
 const Explore: React.FunctionComponent<ExploreProps> = (props): JSX.Element => {
     const [users, setUsers] = useState<{ username: string; id: string }[]>([]);
     const [searchQuery, setSearchQuery] = useState<string>("");
-
+    const navigation = useNavigation()
 
     const searchResults = () => (
         <FlatList
@@ -27,7 +28,8 @@ const Explore: React.FunctionComponent<ExploreProps> = (props): JSX.Element => {
                 <Pressable
                     key={index.toString()}
                     onPress={() => {
-                        props.navigation.navigate("explorer/profile", {
+                        //@ts-ignore
+                        navigation.navigate("explorer/profile", {
                             uid: item.id,
                             profile: item.username,
                         });

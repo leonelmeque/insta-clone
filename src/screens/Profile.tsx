@@ -1,85 +1,25 @@
-import { FunctionComponent } from "react";
-import { connect, ConnectedProps, useDispatch } from "react-redux";
-import { UserState } from "store/reducers/user-reducer";
+import React from "react";
 import styled from "styled-components/native";
 import { Pressable, Text } from "react-native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React from "react";
 import { ScrollView } from "react-native-gesture-handler";
-import { useState } from "react";
-import { StackParamsList } from "navigation/types";
-import { useEffect } from "react";
-import { getUser, fetchUserPosts, isFollowing } from "library/backend";
 import UserAvatar from "components/molecules/Avatar/Avatar";
 import ProfileStats from "components/molecules/Profile/ProfileStats";
 import Box from "components/atoms/Box";
 import ProfileActions from "components/molecules/Profile/ProfileActions";
 import ProfileDescription from "components/molecules/Profile/ProfileDescription";
 import ProfileGallery from "components/molecules/Profile/ProfileGallery";
-import firebase from "firebase";
-import { RootState } from "store/types";
-import { ThunkDispatch } from "redux-thunk";
-import { AnyAction } from "redux";
-import { asyncFetchUserProfile } from "store/actions/user-profile-actions";
-import { useAuth } from "hooks";
+import { useAuth, useFetchUser, usefetchUserPosts } from "hooks";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
-const mapStateToProps = (state: RootState) => {
-    const { userInfo, user } = state;
-    return {
-        ...userInfo,
-    };
-};
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, void, AnyAction>) => {
-    return {
-        fetchUserProfile: (uid: string) => dispatch(asyncFetchUserProfile(uid)),
-    };
-};
+const Profile = () => {
+    const route = useRoute()
+    const navigation = useNavigation()
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
+    const _currentUser = useFetchUser(route?.params?.uid as string)
+    const userPosts = usefetchUserPosts(route?.params?.uid as string)
 
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-interface ProfileProps extends PropsFromRedux {
-    uid?: string;
-}
-
-const Profile: FunctionComponent<
-    NativeStackScreenProps<StackParamsList, "tabs/profile"> & ProfileProps
-> = ({
-    fetchUserProfile,
-    id,
-    description,
-    following,
-    followers,
-    userProfilePicture,
-    userType,
-    isPrivate,
-    uid,
-    navigation,
-    route,
-}) => {
-    const [currentUserPosts, setCurrentUserPosts] = useState<object[] | undefined>();
-    const [currentUser, setCurrentUser] = useState<{ username?: string } | undefined>();
-    const {onLogOut} = useAuth()
-
-    // Fetching user profile
-    const fetchProfile = async () => {
-        const [userResult, postsResult, followingResult] = await Promise.all([
-            getUser(route.params.uid),
-            fetchUserPosts(route?.params?.uid),
-            isFollowing(route?.params?.uid),
-        ]);
-
-        // Initializing states
-        setCurrentUser(userResult as { username: string });
-        setCurrentUserPosts(postsResult);
-    };
-
-    useEffect(() => {
-        console.log(`User profile with uid ${uid}, user profile with id ${id}`)
-        fetchUserProfile((uid as string) || (id as string));
-    }, []);
+    const { onLogOut } = useAuth()
 
     return (
         <StyledView>
@@ -94,28 +34,25 @@ const Profile: FunctionComponent<
                         size={74}
                         style={{ margin: 0 }}
                         source={{
-                            uri: userProfilePicture,
+                            uri: _currentUser?.userProfilePicture,
                         }}
                     />
                     <Box style={{ flex: 1 }}>
                         <ProfileStats
-                            posts={currentUserPosts?.length || 0}
-                            followers={followers?.length || 0}
-                            following={following?.length || 0}
+                            posts={userPosts?.length || 0}
+                            followers={_currentUser?.followers?.length || 0}
+                            following={_currentUser?.following?.length || 0}
                         />
                     </Box>
                 </Box>
                 <ProfileDescription
-                    username={currentUser?.username as string}
-                profileType={userType as string}
-                    description={description as string}
+                    username={_currentUser?.username as string}
+                    profileType={_currentUser?.userType as string}
+                    description={_currentUser?.description as string}
                 />
-                <ProfileActions route={route} navigation={navigation} />
+                <ProfileActions uid={route?.params?.uid} />
             </Box>
-
-            <ProfileGallery posts={currentUserPosts as []} />
-
-            {/* </UserPostGallery> */}
+            <ProfileGallery posts={userPosts as []} />
             <StyledButton
                 onPress={() => {
                     onLogOut()
@@ -147,4 +84,4 @@ const StyledView = styled(ScrollView)`
     background-color: white;
 `;
 
-export default connector(Profile);
+export default Profile;
