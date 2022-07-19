@@ -1,26 +1,17 @@
-import firebase from 'firebase'
+import { fetchUserPosts } from 'library/backend'
+import { useEffect, useState } from 'react'
 
-export const usefetchUserPosts = () => {
-  const posts = firebase
-    .firestore()
-    .collection("posts")
-    .doc(firebase
-      ?.auth()
-      ?.currentUser
-      ?.uid)
-    .collection("userPosts")
-    .orderBy('creation', 'asc')
-    .get()
-    .then((snapshop) => {
-      const posts = snapshop.docs.map(doc => {
-        const data = doc.data()
-        const id = doc.id
-        return {
-          id, ...data
-        }
-      })
-      return posts
-    })
+export const usefetchUserPosts = (uid:string) => {
+  const [state, setState] = useState<any | []>([])
 
-  return posts
+  const fetchPosts = async () => {
+     const result = await fetchUserPosts(uid)
+     setState(result)
+  }
+
+  useEffect(()=>{
+    fetchPosts()
+  },[])
+
+  return state
 }
