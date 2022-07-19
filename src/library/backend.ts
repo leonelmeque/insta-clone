@@ -45,7 +45,7 @@ export const searchUsers = (query: string, callback: SetStateAction<any>) => {
             const id = doc.id
             return { id, ...data }
         })
-
+      
         callback(data)
 
     }, (err) => {
@@ -68,8 +68,8 @@ export const getUserProfileInfo = (uid: string) => {
         })
 }
 
-export const getUser = (uid: string) => {
-    return firebase
+export const getUser =  (uid: string) => {
+    return  firebase
         .firestore()
         .collection("users")
         .doc(uid)
