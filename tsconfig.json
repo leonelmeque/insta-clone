@@ -13,14 +13,15 @@
     "baseUrl": ".",
     "paths": {
       "*": ["src/*"],
-      "@navigation/*": ["./src/navigation/*"],
-      "@components/*": ["./src/components/*"],
-      "@assets/*": ["./src/assets/*"],
-      "@screens/*": ["./src/screens/*"],
-      "@library/*": ["./src/library/*"],
-      "@hooks/*": ["./src/hooks/*"],
-      "@redux/*": ["./src/redux/*"],
-      "@shared/*": ["./src/shared/*"],
+      "navigation/*": ["./src/navigation/*"],
+      "components/*": ["./src/components/*"],
+      "assets/*": ["./src/assets/*"],
+      "screens/*": ["./src/screens/*"],
+      "library/*": ["./src/library/*"],
+      "hooks/*": ["./src/hooks/*"],
+      "store/*": ["src/store/*"],
+      "shared/*": ["./src/shared/*"],
+      "theme/*": ["./src/theme/*"],
     }
   },
   "exclude": [
