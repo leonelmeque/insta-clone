@@ -20,7 +20,7 @@ const ProfileActions: FunctionComponent<ProfileActionsProps> = ({
                 justifyContent: "space-between",
                 alignItems: "stretch",
             }}>
-            {uid !== firebase.auth().currentUser?.uid && (
+            {(firebase.auth().currentUser?.uid!==uid) && (
                 <Button
                     onPress={() => {
                         if(follows) unfollowUser()

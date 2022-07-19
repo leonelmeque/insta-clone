@@ -15,12 +15,14 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 const Profile = () => {
     const route = useRoute()
     const navigation = useNavigation()
-
+    
+    //  @ts-ignore
     const _currentUser = useFetchUser(route?.params?.uid as string)
+    //  @ts-ignore
     const userPosts = usefetchUserPosts(route?.params?.uid as string)
 
     const { onLogOut } = useAuth()
-
+    console.log(_currentUser)
     return (
         <StyledView>
             <Box>
@@ -50,12 +52,13 @@ const Profile = () => {
                     profileType={_currentUser?.userType as string}
                     description={_currentUser?.description as string}
                 />
-                <ProfileActions uid={route?.params?.uid} />
+                <ProfileActions uid={_currentUser?.uid as string} />
             </Box>
             <ProfileGallery posts={userPosts as []} />
             <StyledButton
                 onPress={() => {
                     onLogOut()
+                    //  @ts-ignore
                     navigation.navigate("landing/home", {});
                 }}>
                 <StyledButtonText>Sign out</StyledButtonText>
