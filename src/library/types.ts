@@ -6,3 +6,10 @@ export interface UserState<T = {}> {
   feed: any[];
   usersFollowingLoaded?: any
 }
+
+export interface FeedState {
+  users: any,
+  usersFollowingLoaded: number;
+  feedPosts: [],
+  isLoading: boolean
+}
