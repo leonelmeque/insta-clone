@@ -2,10 +2,9 @@ import React, { useContext } from 'react'
 import firebase from 'firebase';
 import { useUser } from 'context/user-context';
 import { useNavigation } from '@react-navigation/native';
-import { getUser } from 'library/backend';
 
 export function useAuth() {
-    const [userState, userDispatch] = useUser()
+    const [_, userDispatch] = useUser()
     const navigation = useNavigation()
 
     const onCheckLoginStatus = () => {
@@ -20,6 +19,7 @@ export function useAuth() {
                     }
                 }
             })
+            //@ts-ignore
             navigation.navigate("global/main")
         });
 
