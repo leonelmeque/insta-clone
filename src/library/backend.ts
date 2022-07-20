@@ -105,12 +105,14 @@ export const followUser = (uid: string) => {
         .firestore()
         .collection("userInfo")
         .doc(firebase.auth().currentUser?.uid)
-        .set({ following: firebase.firestore.FieldValue.arrayUnion(uid) })
+        .set({ following: firebase.firestore.FieldValue.arrayUnion(uid) }, { merge: true })
         .then(() => {
             return firebase
                 .firestore()
                 .collection("userInfo").doc(uid)
-                .set({ followers: firebase.firestore.FieldValue.arrayUnion(uid) })
+                .set({ followers: firebase.firestore.FieldValue.arrayUnion(uid) }, { merge: true })
+        }).catch((err) => {
+            console.log(err)
         })
 }
 
@@ -119,12 +121,12 @@ export const unFollowUser = (uid: string) => {
         .firestore()
         .collection("userInfo")
         .doc(firebase.auth().currentUser?.uid)
-        .set({ following: firebase.firestore.FieldValue.arrayRemove(uid) })
+        .set({ following: firebase.firestore.FieldValue.arrayRemove(uid) }, { merge: true })
         .then(() => {
             return firebase
                 .firestore()
                 .collection("userInfo").doc(uid)
-                .set({ followers: firebase.firestore.FieldValue.arrayRemove(uid) })
+                .set({ followers: firebase.firestore.FieldValue.arrayRemove(uid) }, { merge: true })
         })
 }
 
@@ -245,11 +247,11 @@ export const fetchUsersPosts = () => {
         })
 }
 
-export const fetchUserInfo = () => {
+export const fetchUserInfo = (uid?: string) => {
     return firebase.firestore()
         .collection("userInfo")
         .doc(
-            firebase?.auth()?.currentUser?.uid
+            uid || firebase?.auth()?.currentUser?.uid
         )
         .get()
         .then(snapshot => {
