@@ -22,7 +22,7 @@ const Profile = () => {
     const userPosts = usefetchUserPosts(route?.params?.uid as string)
 
     const { onLogOut } = useAuth()
-    console.log(_currentUser)
+    
     return (
         <StyledView>
             <Box>

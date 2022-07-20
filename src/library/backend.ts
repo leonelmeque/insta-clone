@@ -45,7 +45,7 @@ export const searchUsers = (query: string, callback: SetStateAction<any>) => {
             const id = doc.id
             return { id, ...data }
         })
-      
+
         callback(data)
 
     }, (err) => {
@@ -68,8 +68,8 @@ export const getUserProfileInfo = (uid: string) => {
         })
 }
 
-export const getUser =  (uid: string) => {
-    return  firebase
+export const getUser = (uid: string) => {
+    return firebase
         .firestore()
         .collection("users")
         .doc(uid)
@@ -105,7 +105,13 @@ export const followUser = (uid: string) => {
         .firestore()
         .collection("userInfo")
         .doc(firebase.auth().currentUser?.uid)
-        .set({ followers: firebase.firestore.FieldValue.arrayUnion(uid) })
+        .set({ following: firebase.firestore.FieldValue.arrayUnion(uid) })
+        .then(() => {
+            return firebase
+                .firestore()
+                .collection("userInfo").doc(uid)
+                .set({ followers: firebase.firestore.FieldValue.arrayUnion(uid) })
+        })
 }
 
 export const unFollowUser = (uid: string) => {
@@ -113,19 +119,32 @@ export const unFollowUser = (uid: string) => {
         .firestore()
         .collection("userInfo")
         .doc(firebase.auth().currentUser?.uid)
-        .set({ followers: firebase.firestore.FieldValue.arrayRemove(uid) })
+        .set({ following: firebase.firestore.FieldValue.arrayRemove(uid) })
+        .then(() => {
+            return firebase
+                .firestore()
+                .collection("userInfo").doc(uid)
+                .set({ followers: firebase.firestore.FieldValue.arrayRemove(uid) })
+        })
 }
 
 export const isFollowing = (uid: string) => {
     return firebase
         .firestore()
-        .collection("following")
-        .doc(firebase.auth().currentUser?.uid)
-        .collection("userFollowing")
+        .collection("userInfo")
         .doc(uid)
         .get()
         .then((snapshot) => {
-            if (snapshot.exists) return true
+            if (snapshot.exists) {
+                let doeFollow = false
+                const { followers = [] } = snapshot.data() as any
+
+                followers.forEach((item: string) => {
+                    if (item === uid) doeFollow = true
+                })
+
+                return doeFollow
+            }
             else return false
         })
 }
@@ -165,7 +184,6 @@ export const onSignUp = (email: string, password: string, username: string) => {
         });
 };
 
-
 export const authFetchUserPosts = () => {
     return firebase
         .firestore()
@@ -187,4 +205,56 @@ export const authFetchUserPosts = () => {
             })
             return posts
         })
+}
+
+
+export const getFirebaseUser = () => {
+    return firebase
+        .firestore()
+        .collection("users")
+        .doc(
+            firebase?.auth()?.currentUser?.uid
+        )
+        .get()
+        .then(snapshot => {
+            if (snapshot.exists) {
+                return snapshot.data()
+            } else {
+                return null
+            }
+        })
+}
+
+
+export const fetchUsersPosts = () => {
+    return firebase.firestore()
+        .collection("posts")
+        .doc(firebase?.auth()?.currentUser?.uid)
+        .collection("userPosts")
+        .orderBy('creation', 'asc')
+        .get()
+        .then(snapshot => {
+            const posts = snapshot.docs.map(doc => {
+                const data = doc.data()
+                const id = doc.id
+                return {
+                    id, ...data
+                }
+            })
+            return posts
+        })
+}
+
+export const fetchUserInfo = () => {
+    return firebase.firestore()
+        .collection("userInfo")
+        .doc(
+            firebase?.auth()?.currentUser?.uid
+        )
+        .get()
+        .then(snapshot => {
+            if (snapshot.exists) return snapshot.data()
+            return null
+        })
+
 }
