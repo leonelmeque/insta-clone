@@ -1,9 +1,18 @@
+type User = {
+  uid: string
+  email: string
+  username: string
+}
+
 export interface UserState<T = {}> {
-  user?: T | any;
+  user?: User;
+  description?: string
   posts?: any[];
+  isPrivate?: boolean
   following?: any[];
   followers?: any[];
-  feed: any[];
+  profilePicture?: string;
+  userType?: string;
   usersFollowingLoaded?: any
 }
 
