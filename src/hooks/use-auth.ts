@@ -1,22 +1,27 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import firebase from 'firebase';
 import { useUser } from 'context/user-context';
 import { useNavigation } from '@react-navigation/native';
+import { getUser, getUserProfileInfo } from 'library/backend';
 
 export function useAuth() {
     const [_, userDispatch] = useUser()
     const navigation = useNavigation()
 
     const onCheckLoginStatus = () => {
-        firebase.auth().onAuthStateChanged((user) => {
+        firebase.auth().onAuthStateChanged(async (user) => {
             if (!user) return
+
+            const _user = await getUser(user.uid) as { email: string, username: string }
+            const _userInfo = await getUserProfileInfo(user.uid)
             userDispatch({
                 type: 'USER_STATE_CHANGE',
                 payload: {
                     user: {
                         uid: user.uid,
-                     
-                    }
+                        ..._user
+                    },
+                    ..._userInfo
                 }
             })
             //@ts-ignore
@@ -29,13 +34,21 @@ export function useAuth() {
         return firebase
             .auth()
             .signInWithEmailAndPassword(email, password)
-            .then((result) => {
+            .then(async (result) => {
+                const { user } = result
+                const _user = await getUser(user?.uid as string) as { email: string, username: string }
+                const _userInfo = await getUserProfileInfo(user?.uid as string)
+
+                console.log(_userInfo)
+
                 userDispatch({
                     type: 'USER_STATE_CHANGE',
                     payload: {
                         user: {
-                            uid: result.user?.uid
-                        }
+                            uid: user?.uid as string,
+                            ..._user
+                        },
+                        ..._userInfo
                     }
                 })
                 // @ts-ignore
