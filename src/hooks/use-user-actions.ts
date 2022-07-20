@@ -6,10 +6,8 @@ export const useUserActions = (uid: string) => {
 
   const fetchFollowStatus = async () => {
     const result = await isFollowing(uid);
-    console.log('from result ', result)
     setFollows(result);
   };
-
 
   const _followUser = () => {
     followUser(uid).then(() => {
@@ -23,13 +21,10 @@ export const useUserActions = (uid: string) => {
     });
   };
 
-  // send a message
-  //send email
-
   useEffect(() => {
     if (!follows) fetchFollowStatus();
     return;
-  }, []);
+  },);
 
   return {
     followUser: _followUser,

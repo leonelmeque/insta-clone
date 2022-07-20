@@ -28,20 +28,20 @@ const UserPost = ({
     postDate,
     username,
     postId,
-    downloadURL,
-    ...rest
+    imageUrl,
+    caption
 }: UserPostProps) => (
     <Box style={{backgroundColor:"#fff"}}> 
-        <PostHeader username={rest.user.username} />
+        <PostHeader username={username} />
         <PostImage
             source={{
-                uri: downloadURL,
+                uri: imageUrl,
             }}
         />
         <PostSocialActions hasLike={isLiked} isBookmarked={isSaved} />
         <PostLikes likes={likes} />
         <Box>
-            <PostCaption username={rest.user.username} caption={rest.caption} />
+            <PostCaption username={username} caption={caption} />
             <PostComments comments={comments} />
             <Text variant="body" color="textDark">
                 {postDate}
