@@ -1,7 +1,6 @@
 import { useFeed } from "context";
-import { useFetchUser } from "hooks/use-fetch-user";
 import { authFetchUserPosts } from "library/backend";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export const useFetchFeed = (uid: string) => {
   const { feedState, feedDispatch } = useFeed()
@@ -14,7 +13,6 @@ export const useFetchFeed = (uid: string) => {
 
   useEffect(() => {
     authFetchUserPosts().then(results => {
-      console.log(results)
       feedDispatch({
         type: 'FEED_POSTS_STATE_CHANGE',
         payload: {
@@ -37,10 +35,9 @@ export const useFetchFeed = (uid: string) => {
     //   initFeed();
     // }
 
-  });
+  }, []);
 
   return {
-    posts: feedState.feedPosts,
     isLoading
   }
 }

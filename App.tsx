@@ -9,10 +9,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import firebaseInit from "library/firebaseConfig";
 
 // Redux imports
-import { Provider } from "react-redux";
 import ThemeProvider from "theme/context";
 import { theme } from "theme/theme";
-import store from "store";
 import { UserProvider, useUser } from "context/user-context";
 
 import Container from "./Container";
@@ -26,11 +24,9 @@ export default function App() {
     return (
         <UserProvider>
             <ThemeProvider.Provider value={darkMode ? {} : theme}>
-                <Provider store={store}>
-                    <NavigationContainer>
-                       <Container />
-                    </NavigationContainer>
-                </Provider>
+                <NavigationContainer>
+                    <Container />
+                </NavigationContainer>
             </ThemeProvider.Provider>
         </UserProvider>
     );

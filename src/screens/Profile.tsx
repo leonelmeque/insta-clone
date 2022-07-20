@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components/native";
 import { Pressable, Text } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -9,20 +9,21 @@ import ProfileActions from "components/molecules/Profile/ProfileActions";
 import ProfileDescription from "components/molecules/Profile/ProfileDescription";
 import ProfileGallery from "components/molecules/Profile/ProfileGallery";
 import { useAuth, useFetchUser, usefetchUserPosts } from "hooks";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
 
 
 const Profile = () => {
     const route = useRoute()
+    const screenFocus = useIsFocused()
     const navigation = useNavigation()
     
     //  @ts-ignore
-    const _currentUser = useFetchUser(route?.params?.uid as string)
+    const _currentUser = useFetchUser(route?.params?.uid as string, screenFocus)
     //  @ts-ignore
-    const userPosts = usefetchUserPosts(route?.params?.uid as string)
+    const userPosts = usefetchUserPosts(route?.params?.uid as string, screenFocus)
 
     const { onLogOut } = useAuth()
-    console.log(_currentUser)
+
     return (
         <StyledView>
             <Box>
