@@ -1,11 +1,11 @@
-type User = {
+export type User = {
   uid: string
   email: string
   username: string
 }
 
 export interface UserState<T = {}> {
-  user?: User;
+  user?: User | null;
   description?: string
   posts?: any[];
   isPrivate?: boolean

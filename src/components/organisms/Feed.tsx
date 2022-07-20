@@ -7,7 +7,7 @@ import Text from 'components/atoms/Text'
 
 const Feed = () => {
   const [userState] = useUser()
-  const { isLoading } = useFetchFeed(userState.user.uid)
+  const { isLoading } = useFetchFeed(userState.user?.uid as string)
   const { feedState } = useFeed()
 
   if (isLoading) {

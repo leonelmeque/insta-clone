@@ -3,25 +3,23 @@ import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import { useUser } from "context";
 import { fetchUsersPosts, getFirebaseUser } from "library/backend";
-import { useDispatch } from "react-redux";
 import { fetchUserInfo } from "library/backend";
+import { User } from "library/types";
 
 export const useInitializeLogin = () => {
   const { onCheckLoginStatus } = useAuth()
   const [_, userDispatch] = useUser()
 
   const initUser = async () => {
-    const result = await getFirebaseUser()
+    const user = await getFirebaseUser() as User
     const userInfo = await fetchUserInfo()
-   
+
     userDispatch({
       type: 'USER_STATE_CHANGE',
       payload: {
-        user: {
-          ...result
-        },
+        uid: user.uid,
+        user: user,
         ...userInfo
-
       }
     })
   }

@@ -1,16 +1,12 @@
-import { UserState } from "library/types";
+import { User, UserState } from "library/types";
 import React, { useContext, Dispatch } from 'react'
 import { createContext, ReactNode, useReducer } from "react";
-import {
-  UserActionType,
-} from "store/constants"
 
 const initialState: UserState = {
   user: null,
   posts: [],
   followers: [],
   following: [],
-  feed: [],
   usersFollowingLoaded: false
 }
 
@@ -20,15 +16,14 @@ type UserContext = {
   userDispatch: Dispatch<Action>
 }
 
-
 const Context = createContext<UserContext>({ userState: initialState, userDispatch: () => ({}) })
 
 type Action =
-  | { type: "USER_STATE_CHANGE", payload: Pick<UserState, 'user'> }
+  | { type: "USER_STATE_CHANGE", payload: { uid: string, user: UserState['user'] } }
   | { type: "USER_LIKES_STATE_CHANGE" }
   | { type: "REMOVE_USER_FROM_STATE" }
-  | { type: "USER_POSTS_STATE_CHANGE", payload: { posts: string[] } }
-  | { type: "USER_FOLLOWING_STATE_CHANGE", payload: { following: string[] } }
+  | { type: "USER_POSTS_STATE_CHANGE", payload: { posts: any[] } }
+  | { type: "USER_FOLLOWING_STATE_CHANGE", payload: { [K in 'following' | 'followers']: string[] } }
   | { type: "CLEAR_DATA" }
 
 
@@ -36,7 +31,10 @@ function userReducer(state = initialState, action: Action): UserState {
   switch (action.type) {
     case 'USER_STATE_CHANGE': return {
       ...state,
-      user: action.payload?.user
+      user: {
+        uid: action.payload.uid,
+        ...action.payload?.user as Omit<User, 'uid'>
+      }
     }
     case 'REMOVE_USER_FROM_STATE': return {
       ...state,
@@ -48,15 +46,8 @@ function userReducer(state = initialState, action: Action): UserState {
     }
     case "USER_FOLLOWING_STATE_CHANGE": return {
       ...state,
-      following: action.payload.following,
+      ...action.payload,
     }
-    // case UserActionType.USER_LIKES_STATE_CHANGE: return {
-    //     ...state,
-    //     feed: state.feed.map((post) => post.id === action.payload.postId ?
-    //         { ...post, currentUserLike: action.payload.currentUserLike } : post
-    //     )
-    // }
-    case UserActionType.CLEAR_DATA: return initialState
     default: return state
   }
 }
@@ -69,13 +60,13 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     userState: state,
     userDispatch: dispatch
   }
-  
+
   return <Context.Provider value={value}>{children}</Context.Provider>
 }
 
 export const useUser = () => {
   const { userDispatch, userState } = useContext(Context)
-  
+
   return [userState, userDispatch] as const
 }
 

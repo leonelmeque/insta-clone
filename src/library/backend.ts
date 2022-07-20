@@ -220,7 +220,10 @@ export const getFirebaseUser = () => {
         .get()
         .then(snapshot => {
             if (snapshot.exists) {
-                return snapshot.data()
+                return {
+                    uid: firebase?.auth()?.currentUser?.uid,
+                    ...snapshot.data()
+                }
             } else {
                 return null
             }
