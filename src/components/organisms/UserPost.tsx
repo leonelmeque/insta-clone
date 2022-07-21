@@ -7,47 +7,28 @@ import PostHeader from "components/molecules/Post/PostHeader";
 import PostImage from "components/molecules/Post/PostImage";
 import PostLikes from "components/molecules/Post/PostLikes";
 import PostSocialActions from "components/molecules/Post/PostSocialActions";
+import { PostProps } from "library/types";
 
 type UserPostProps = {
-    isLiked?: boolean;
-    likes: any;
-    comments: any[];
-    isSaved: boolean;
-    postDate: string;
-    username: string;
-    postId?: string;
-    name: string;
-    [key: string]: any;
+   ownerID: string
+   post: PostProps
 };
 
-const UserPost = ({
-    isLiked,
-    likes,
-    comments,
-    isSaved,
-    postDate,
-    username,
-    postId,
-    imageUrl,
-    caption
-}: UserPostProps) => (
+const UserPost = ({ownerID, post}: UserPostProps) => (
     <Box style={{backgroundColor:"#fff"}}> 
-    {
-        console.log(username)
-    }
-        <PostHeader username={username} />
+        <PostHeader username={ownerID} />
         <PostImage
             source={{
-                uri: imageUrl,
+                uri: post.imageUrl,
             }}
         />
-        <PostSocialActions hasLike={isLiked} isBookmarked={isSaved} />
-        <PostLikes likes={likes} />
+        <PostSocialActions hasLike={post.isLiked} isBookmarked={post.isSaved} />
+        <PostLikes likes={post.likes} />
         <Box>
-            <PostCaption username={username} caption={caption} />
-            <PostComments comments={comments} />
+            <PostCaption username={post.username} caption={post.caption} />
+            <PostComments comments={post.comments} />
             <Text variant="body" color="textDark">
-                {postDate}
+                {post.postDate}
             </Text>
         </Box>
     </Box>
