@@ -49,8 +49,6 @@ const Post = (props: { uri: string }) => {
     );
 };
 
-
-
 const ProfileGallery: VoidFunctionComponent<ProfileGalleryProps> = (props) => {
     return (
         <Box
@@ -66,7 +64,7 @@ const ProfileGallery: VoidFunctionComponent<ProfileGalleryProps> = (props) => {
                 maxHeight: HEIGHT,
             }}>
             {props.posts?.map((item: any, index) => (
-                <Post key={index} uri={item.downloadURL} />
+                <Post key={index} uri={item.imageUrl} />
             ))}
         </Box>
     );
