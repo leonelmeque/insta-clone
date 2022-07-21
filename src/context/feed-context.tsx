@@ -1,9 +1,9 @@
 import React from 'react'
-import { FeedState } from "library/types";
+import { FeedPost, FeedState, PostProps } from "library/types";
 import { createContext, Dispatch, ReactNode, useContext, useReducer } from "react";
 
 const initialFeedState: FeedState = {
-  feedPosts: [],
+  feedPosts: {},
   isLoading: true,
   users: [],
   usersFollowingLoaded: 0
@@ -21,7 +21,7 @@ type Action =
   | { type: "FEED_LOADING_STARTED", }
   | { type: "FEED_LOADING_ENDED" }
   | { type: "FEED_STATE_CHANGE", payload: { users: any[] } }
-  | { type: "FEED_POSTS_STATE_CHANGE", payload: { usersFollowingLoaded: number, posts: any[] } }
+  | { type: "FEED_POSTS_STATE_CHANGE", payload: { usersFollowingLoaded: number, key: string, posts: PostProps[] } }
 
 
 export default function feedReducer(state = initialFeedState, action: Action): FeedState {
@@ -38,10 +38,21 @@ export default function feedReducer(state = initialFeedState, action: Action): F
       ...state,
       users: [...state.users as [], action.payload.users] as any
     }
-    case 'FEED_POSTS_STATE_CHANGE': return {
-      ...state,
-      usersFollowingLoaded: action?.payload?.usersFollowingLoaded || 0 + 1,
-      feedPosts: [...state.feedPosts as [], ...action.payload.posts] as any,
+    case 'FEED_POSTS_STATE_CHANGE': {
+      const { feedPosts } = state
+      const { key, posts } = action.payload
+   
+      const temp = feedPosts[key] || []
+      const newPosts = [...temp, ...posts]
+      feedPosts[key] = newPosts as PostProps[]
+      // const temp = [...feedPosts, action.payload.posts]
+
+      // temp.sort((x: any, y: any) => y.creation.toDate() - x.creation.toDate());
+
+      return {
+        ...state,
+        feedPosts: feedPosts
+      }
     }
     default: return state
   }
