@@ -96,7 +96,6 @@ export const fetchUserPosts = (uid: string) => {
                 }
             })
         })
-
 }
 
 export const followUser = (uid: string) => {
@@ -230,10 +229,10 @@ export const getFirebaseUser = () => {
 }
 
 
-export const fetchUsersPosts = () => {
+export const fetchFollowingPosts = (uid:string) => {
     return firebase.firestore()
         .collection("posts")
-        .doc(firebase?.auth()?.currentUser?.uid)
+        .doc(uid)
         .collection("userPosts")
         .orderBy('creation', 'asc')
         .get()
@@ -260,5 +259,4 @@ export const fetchUserInfo = (uid?: string) => {
             if (snapshot.exists) return snapshot.data()
             return null
         })
-
 }
