@@ -32,6 +32,9 @@ const UserPost = ({
     caption
 }: UserPostProps) => (
     <Box style={{backgroundColor:"#fff"}}> 
+    {
+        console.log(username)
+    }
         <PostHeader username={username} />
         <PostImage
             source={{
