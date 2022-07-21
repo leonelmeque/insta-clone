@@ -6,8 +6,7 @@ import UserPost from "./UserPost"
 import Text from 'components/atoms/Text'
 
 const Feed = () => {
-  const [userState] = useUser()
-  const { isLoading } = useFetchFeed(userState.user?.uid as string)
+  const { isLoading, } = useFetchFeed()
   const { feedState } = useFeed()
 
   if (isLoading) {
@@ -22,8 +21,8 @@ const Feed = () => {
   
   return (
     <ScrollView>
-      {feedState.feedPosts.map(({id, ...rest}: any) => (
-        <UserPost key={id} {...rest} />
+      {feedState.feedPosts.map(({id, ...rest}: any, index) => (
+        <UserPost key={index.toString()} {...rest} />
       ))}
     </ScrollView>
   )
