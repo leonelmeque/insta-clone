@@ -16,9 +16,28 @@ export interface UserState<T = {}> {
   usersFollowingLoaded?: any
 }
 
+
+export type PostProps = {
+  isLiked?: boolean;
+  likes: any;
+  comments: any[];
+  isSaved: boolean;
+  postDate: string;
+  username: string;
+  postId?: string;
+  name: string;
+  [key: string]: any;
+}
+
+export type FeedPost = {
+  ownerID: string,
+  post: PostProps
+}
 export interface FeedState {
   users: any,
   usersFollowingLoaded: number;
-  feedPosts: [],
+  feedPosts: {
+    [key: string]: PostProps[]
+  },
   isLoading: boolean
 }

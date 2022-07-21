@@ -92,7 +92,7 @@ export const fetchUserPosts = (uid: string) => {
                 const data = doc.data()
                 const id = doc.id
                 return {
-                    id, ...data
+                    ...data
                 }
             })
         })
@@ -185,13 +185,15 @@ export const onSignUp = (email: string, password: string, username: string) => {
 };
 
 export const authFetchUserPosts = () => {
+    const uid = firebase
+        ?.auth()
+        ?.currentUser
+        ?.uid
+
     return firebase
         .firestore()
         .collection("posts")
-        .doc(firebase
-            ?.auth()
-            ?.currentUser
-            ?.uid)
+        .doc(uid)
         .collection("userPosts")
         .orderBy('creation', 'asc')
         .get()
@@ -200,7 +202,7 @@ export const authFetchUserPosts = () => {
                 const data = doc.data()
                 const id = doc.id
                 return {
-                    id, ...data
+                    ...data
                 }
             })
             return posts
@@ -229,7 +231,7 @@ export const getFirebaseUser = () => {
 }
 
 
-export const fetchFollowingPosts = (uid:string) => {
+export const fetchFollowingPosts = (uid: string) => {
     return firebase.firestore()
         .collection("posts")
         .doc(uid)
