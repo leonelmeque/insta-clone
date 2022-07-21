@@ -7,7 +7,11 @@ const initialState: UserState = {
   posts: [],
   followers: [],
   following: [],
-  usersFollowingLoaded: false
+  usersFollowingLoaded: false,
+  userType: "",
+  description: "",
+  isPrivate: false,
+  profilePicture: ""
 }
 
 
@@ -19,7 +23,8 @@ type UserContext = {
 const Context = createContext<UserContext>({ userState: initialState, userDispatch: () => ({}) })
 
 type Action =
-  | { type: "USER_STATE_CHANGE", payload: { uid: string, user: UserState['user'] } }
+  | { type: "USER_STATE_CHANGE", payload: { user: UserState['user'] } }
+  | { type: "USER_DESCRIPTION_CHANGE", payload: { [key: string]: any } }
   | { type: "USER_LIKES_STATE_CHANGE" }
   | { type: "REMOVE_USER_FROM_STATE" }
   | { type: "USER_POSTS_STATE_CHANGE", payload: { posts: any[] } }
@@ -31,9 +36,13 @@ function userReducer(state = initialState, action: Action): UserState {
   switch (action.type) {
     case 'USER_STATE_CHANGE': return {
       ...state,
-      user: {
-        uid: action.payload.uid,
-        ...action.payload?.user as Omit<User, 'uid'>
+      user: action.payload.user
+    }
+    case 'USER_DESCRIPTION_CHANGE': {
+      console.log("USER_DESCRIPTION_CHANGE ", action.payload)
+      return {
+        ...state,
+        ...action.payload
       }
     }
     case 'REMOVE_USER_FROM_STATE': return {
