@@ -5,9 +5,9 @@ import { Text } from "react-native-svg";
 import React from 'react'
 
 export default function Container(){
-  const { fontsLoaded } = useInitializeLogin();
+  const { fontsLoaded, userLoaded } = useInitializeLogin();
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded || !userLoaded) {
       return (
           <SafeAreaView>
               <View>
