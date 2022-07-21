@@ -5,12 +5,14 @@ import { StyleSheet } from "react-native";
 import Avatar from "components/molecules/Avatar/Avatar";
 import Box from "components/atoms/Box";
 import Text from "components/atoms/Text";
+import { useFetchUser } from "hooks";
 
 interface PostHeaderProps {
     [key: string]: any;
 }
 
 const PostHeader: FunctionComponent<PostHeaderProps> = (props) => {
+    const user = useFetchUser(props.username, false)
     return (
         <Box style={style.container}>
             <Box
@@ -24,7 +26,7 @@ const PostHeader: FunctionComponent<PostHeaderProps> = (props) => {
                     }}
                     size={28}
                 />
-                <Text style={style.usernameText} variant="body" color="textDark">{props.username}</Text>
+                <Text style={style.usernameText} variant="body" color="textDark">{user?.username}</Text>
             </Box>
             <Feather name="more-horizontal" size={24} />
         </Box>
