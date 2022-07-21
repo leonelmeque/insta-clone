@@ -11,18 +11,14 @@ export function useAuth() {
     const onCheckLoginStatus = () => {
         firebase.auth().onAuthStateChanged(async (user) => {
             if (!user) return
-
             const _user = await getUser(user.uid) as { email: string, username: string }
-            const _userInfo = await getUserProfileInfo(user.uid)
             userDispatch({
                 type: 'USER_STATE_CHANGE',
                 payload: {
-                    uid: user.uid as string, 
                     user: {
                         uid: user.uid,
                         ..._user
                     },
-                    ..._userInfo
                 }
             })
             //@ts-ignore
@@ -38,19 +34,14 @@ export function useAuth() {
             .then(async (result) => {
                 const { user } = result
                 const _user = await getUser(user?.uid as string) as { email: string, username: string }
-                const _userInfo = await getUserProfileInfo(user?.uid as string)
-
-                console.log(_userInfo)
-
+                
                 userDispatch({
                     type: 'USER_STATE_CHANGE',
                     payload: {
-                        uid: user?.uid as string,
                         user: {
                             uid: user?.uid as string,
                             ..._user
                         },
-                        ..._userInfo
                     }
                 })
                 // @ts-ignore

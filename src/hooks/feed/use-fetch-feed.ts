@@ -1,9 +1,10 @@
-import { useFeed } from "context";
-import { authFetchUserPosts } from "library/backend";
+import { useFeed, useUser } from "context";
+import { authFetchUserPosts, fetchUserPosts } from "library/backend";
 import { useEffect } from "react";
 
-export const useFetchFeed = (uid: string) => {
+export const useFetchFeed = () => {
   const { feedState, feedDispatch } = useFeed()
+  const [userState, _] = useUser()
   const { isLoading } = feedState
 
   // function initFeed() {
@@ -11,18 +12,26 @@ export const useFetchFeed = (uid: string) => {
   //   setPosts(props.feed);
   // }
 
+  const fetchLoggedUserPosts = async () => {
+    const userPosts = await authFetchUserPosts()
+    feedDispatch({
+      type: 'FEED_POSTS_STATE_CHANGE',
+      payload: {
+        posts: userPosts,
+        usersFollowingLoaded: 0
+      }
+    })
+  }
+
+  const fetchUserFollowingPosts = async () => {
+    userState.following?.forEach(async (uid) => {
+      const result = await fetchUserPosts(uid)
+    })
+  }
+
   useEffect(() => {
-    authFetchUserPosts().then(results => {
-      feedDispatch({
-        type: 'FEED_POSTS_STATE_CHANGE',
-        payload: {
-          posts: results,
-          usersFollowingLoaded: results.length
-        }
-      })
-      // dispatch(feedPostSuccess(posts, uid))
-    }).finally(() => {
-      // dispatch(feedLoadingEnded())
+    fetchUserFollowingPosts()
+    fetchLoggedUserPosts().then(() => {
       feedDispatch({
         type: 'FEED_LOADING_ENDED',
       })

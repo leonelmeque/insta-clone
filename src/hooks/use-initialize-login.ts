@@ -1,31 +1,29 @@
 import { useAuth } from "./use-auth";
 import { useFonts } from "expo-font";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useUser } from "context";
-import { fetchUsersPosts, getFirebaseUser } from "library/backend";
+import { fetchUserPosts, getFirebaseUser } from "library/backend";
 import { fetchUserInfo } from "library/backend";
-import { User } from "library/types";
+import { User, UserState } from "library/types";
 
 export const useInitializeLogin = () => {
+  const [userLoaded, setUserLoaded] = useState(false)
+
   const { onCheckLoginStatus } = useAuth()
-  const [_, userDispatch] = useUser()
+  const [userState, userDispatch] = useUser()
 
   const initUser = async () => {
     const user = await getFirebaseUser() as User
-    const userInfo = await fetchUserInfo()
-
     userDispatch({
       type: 'USER_STATE_CHANGE',
       payload: {
-        uid: user.uid,
-        user: user,
-        ...userInfo
+        user: user
       }
     })
   }
 
   const initUserPosts = async () => {
-    const result = await fetchUsersPosts()
+    const result = await fetchUserPosts(userState.user?.uid as string)
     userDispatch({
       type: 'USER_POSTS_STATE_CHANGE',
       payload: {
@@ -34,17 +32,31 @@ export const useInitializeLogin = () => {
     })
   }
 
+  const initUserInformation = async () => {
+    const userInfo = await fetchUserInfo() as Omit<UserState, 'user'>
+    userDispatch({
+      type: 'USER_DESCRIPTION_CHANGE',
+      payload: {
+        ...userInfo
+      }
+    })
+    setUserLoaded(true)
+  }
+
   let [fontsLoaded] = useFonts({
     "MerriweatherSans-Regular": require("assets/fonts/MerriweatherSans-Regular.ttf"),
   });
 
   useEffect(() => {
     onCheckLoginStatus()
-    initUser()
-    initUserPosts()
+    initUser().then(() => {
+      return initUserPosts()
+    }).then(() => {
+      initUserInformation()
+    })
   }, [])
 
-  return { fontsLoaded }
+  return { fontsLoaded, userLoaded }
 }
 
 
