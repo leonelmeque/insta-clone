@@ -43,6 +43,7 @@ export default function feedReducer(state = initialFeedState, action: Action): F
       const { key, posts } = action.payload
    
       const temp = feedPosts[key] || []
+    
       const newPosts = [...temp, ...posts]
       feedPosts[key] = newPosts as PostProps[]
       // const temp = [...feedPosts, action.payload.posts]

@@ -45,7 +45,8 @@ const style = StyleSheet.create({
         alignItems:'center' 
     },
     usernameText:{
-        marginLeft:8
+        marginLeft:8,
+        color:'black'
     }
 })
 

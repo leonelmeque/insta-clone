@@ -85,13 +85,11 @@ export function fetchUserFollowing() {
                       following
                   }
               })
-
               for (let i = 0; i < following.length; i++) {
                   dispatch<any>(fetchUsersData(following[i]))
               }
           }
-
-          )
+        )
   })
 }
 

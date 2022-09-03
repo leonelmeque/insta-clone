@@ -17,14 +17,14 @@ const Box: FunctionComponent<BoxProps> = ({
     style,
     ...rest
 }) => {
-   
+
     const theme = useContext(ThemeContext) as ThemeProps;
 
     return (
         <View
             style={{
-                margin: typeof margin==='string' ? theme.spacing[margin] : margin || 0,
-                padding: typeof padding==='string' ? theme.spacing[padding] : padding || 0,
+                margin: typeof margin === 'string' ? theme.spacing[margin] : margin || 0,
+                padding: typeof padding === 'string' ? theme.spacing[padding] : padding || 0,
                 ...style as object
             }}
             {...rest}>

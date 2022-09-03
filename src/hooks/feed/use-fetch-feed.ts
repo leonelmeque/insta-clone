@@ -1,6 +1,6 @@
 import { useFeed, useUser } from "context";
 import { authFetchUserPosts, fetchUserPosts } from "library/backend";
-import { FeedPost, PostProps } from "library/types";
+import { PostProps } from "library/types";
 import { useEffect } from "react";
 
 export const useFetchFeed = () => {
@@ -39,7 +39,11 @@ export const useFetchFeed = () => {
         type: 'FEED_LOADING_ENDED',
       })
     })
-  }, []);
+
+    return () => {
+      console.log("cleaning up")
+    }
+  },[]);
 
   return {
     isLoading

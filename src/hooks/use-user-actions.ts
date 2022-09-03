@@ -22,8 +22,9 @@ export const useUserActions = (uid: string) => {
   };
 
   useEffect(() => {
-    if (!follows) fetchFollowStatus();
-    return;
+    if (follows) return;
+    fetchFollowStatus();
+    
   },);
 
   return {
